@@ -1,0 +1,62 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+html {
+    margin: 25px;
+}
+body {
+    padding: 120px 0 0;
+}
+table {
+    width: 100%;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+footer {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center
+}
+tr
+{
+    width: 100%;
+}
+td {
+    padding: 10px;
+}
+label {
+    display: block;
+    width: 100%;
+    margin: 0 0 5px;
+}
+.table {
+    border-collapse: collapse;
+}
+.table tr {
+    background: #f4f4f4;
+}
+.table tr:nth-child(odd) {
+    background: #eee
+}
+.table td {
+    border: 1px solid #ddd;
+}
+.table th {
+    padding: 10px;
+    background: #13325A;
+    color: #fff;
+}
+tr.no-bg {
+    background: none;
+}
