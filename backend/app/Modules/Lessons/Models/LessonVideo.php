@@ -18,14 +18,24 @@ class LessonVideo extends Model{
         return $this->belongsTo('App\Models\Lesson','lesson_id','id');
     }
 
+    public function Course(){
+        return $this->belongsTo('App\Models\Course','course_id','id');
+    }
+
     public function Comments(){
         return $this->hasMany('App\Models\VideoComment','video_id','id');
     }
 
     static function getOne($id){
-        return self::NotDeleted()
-            ->where('id', $id)
-            ->first();
+        $source = self::NotDeleted()
+            ->where('id', $id);
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
+        return $source->first();
     }
 
     static function dataList($lesson_id=null) {
@@ -36,6 +46,11 @@ class LessonVideo extends Model{
             $source->where('lesson_id', $lesson_id);
         } 
 
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
         return self::generateObj($source);
     }
 
@@ -88,6 +103,8 @@ class LessonVideo extends Model{
         $data->duration = self::getDuration($source->duration);
         $data->size = self::getSize($source->size);
         $data->title = $source->title;
+        $data->video_id = $source->video_id; 
+        $data->link = "https://player.vimeo.com/video/".$source->video_id;
         $data->video = self::getVideoPath($source->lesson_id,$source->video) != null ? self::getVideoPath($source->lesson_id,$source->video) : [];
         return $data;
     }

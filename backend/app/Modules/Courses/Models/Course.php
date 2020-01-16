@@ -47,9 +47,14 @@ class Course extends Model{
     }
 
     static function getOne($id){
-        return self::NotDeleted()
-            ->where('id', $id)
-            ->first();
+        $source = self::NotDeleted()
+            ->where('id', $id);
+        
+        if(IS_ADMIN == false){
+            $source->where('instructor_id',USER_ID);
+        }
+
+        return $source->first();
     }
 
     static function getOneD($id) {
@@ -87,6 +92,10 @@ class Course extends Model{
         if ($instructor_id != null) {
             $source->where('instructor_id', $instructor_id);
         } 
+
+        if(IS_ADMIN == false){
+            $source->where('instructor_id',USER_ID);
+        }
 
         return self::generateObj($source);
     }

@@ -15,10 +15,21 @@ class LessonQuestion extends Model{
         return $this->belongsTo('App\Models\Lesson','lesson_id','id');
     }
 
+    public function Course(){
+        return $this->belongsTo('App\Models\Course','course_id','id');
+    }
+
     static function getOne($id){
-        return self::NotDeleted()
-            ->where('id', $id)
-            ->first();
+        $source = self::NotDeleted()
+            ->where('id', $id);
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
+
+        return $source->first();
     }
 
     static function dataList($lesson_id=null) {
@@ -28,6 +39,12 @@ class LessonQuestion extends Model{
         if (isset($lesson_id) && !empty($lesson_id) ) {
             $source->where('lesson_id', $lesson_id);
         } 
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
 
         return self::generateObj($source);
     }

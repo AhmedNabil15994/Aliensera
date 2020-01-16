@@ -56,6 +56,9 @@
         color: #FFC400;
         font-size: 15px;
     }
+    .profile_left{
+        border-right: 1px solid #DDD;
+    }
 </style>
 @endsection
 @section('content')

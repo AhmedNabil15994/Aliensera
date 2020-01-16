@@ -37,12 +37,11 @@
       19 => 'Illuminate\\Translation\\TranslationServiceProvider',
       20 => 'Illuminate\\Validation\\ValidationServiceProvider',
       21 => 'Illuminate\\View\\ViewServiceProvider',
-      22 => 'Vimeo\\Laravel\\VimeoServiceProvider',
-      23 => 'App\\Providers\\AppServiceProvider',
-      24 => 'App\\Providers\\SettingsServiceProvider',
-      25 => 'App\\Providers\\AuthServiceProvider',
-      26 => 'App\\Providers\\EventServiceProvider',
-      27 => 'App\\Providers\\RouteServiceProvider',
+      22 => 'App\\Providers\\AppServiceProvider',
+      23 => 'App\\Providers\\SettingsServiceProvider',
+      24 => 'App\\Providers\\AuthServiceProvider',
+      25 => 'App\\Providers\\EventServiceProvider',
+      26 => 'App\\Providers\\RouteServiceProvider',
     ),
     'aliases' => 
     array (
@@ -80,7 +79,6 @@
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Input' => 'Illuminate\\Support\\Facades\\Input',
-      'Vimeo' => 'Vimeo\\Laravel\\Facades\\Vimeo',
     ),
   ),
   'auth' => 
@@ -608,9 +606,9 @@
     array (
       'main' => 
       array (
-        'client_id' => '2f7dd206e51d35773bfd2f4401ec06bddc933344',
-        'client_secret' => 'I3gkxnWmKJUdwJBZP70JvobWqqwwplvcbw+r8yWYe+W01kD9Ryrym87Kjso1RL/44xoImYVpxwQBmeKX+LxCK70Ul/aJdJYvwp0DCglzYsMlidfPyejUNIJ7FIhWMYS3',
-        'access_token' => '8ec097ca101d1f347c2e94cbdc17b937',
+        'client_id' => '768de31caaa059ee2ae606b37beb51150e0d1ede',
+        'client_secret' => 'vZ8jJy/h/oQyHYfE1cbH8CEx7G9hJg3mCxWd60NCK6sLELmQ2L3O6uHcW6nKQiK2fJixQvfxBocWBh33OkOz4WVGWVIcJAHNoJllvk7Mxzor4Nv3QLTui9j9DkJ46pDd',
+        'access_token' => '2459d81ad89f48966c811689929d8496',
       ),
     ),
   ),

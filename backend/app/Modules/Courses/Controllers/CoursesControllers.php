@@ -85,6 +85,8 @@ class CoursesControllers extends Controller {
             return Redirect('404');
         }
 
+        $old_title = $courseObj->title;
+
         $validate = $this->validateCourse($input);
         if($validate->fails()){
             \Session::flash('error', $validate->messages()->first());
@@ -140,6 +142,11 @@ class CoursesControllers extends Controller {
                 \Session::flash('error', "Upload images Failed");
                 return \Redirect::back()->withInput();
             }
+        }
+
+        if($old_title != $input['title']){
+            $vimeoObj = new \Vimeos();
+            $project_id = $vimeoObj->renameFolder($input['title'],$courseObj->project_id);
         }
 
         \Session::flash('success', "Alert! Update Successfully");
@@ -209,6 +216,11 @@ class CoursesControllers extends Controller {
                 return \Redirect::back()->withInput();
             }
         }
+
+        $vimeoObj = new \Vimeos();
+        $project_id = $vimeoObj->createFolder($courseObj->title);
+        $courseObj->project_id = $project_id;
+        $courseObj->save();
 
         \Session::flash('success', "Alert! Create Successfully");
         return redirect()->to('courses/edit/' . $courseObj->id);

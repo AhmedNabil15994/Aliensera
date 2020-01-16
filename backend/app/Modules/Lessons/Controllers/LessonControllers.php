@@ -124,17 +124,20 @@ class LessonControllers extends Controller {
 
         if ($request->hasFile('file')) {
             $files = $request->file('file');
+            $vimeoObj = new \Vimeos();
+
             $fileName = \ImagesHelper::UploadVideo('lessons', $files, $id);
             if($fileName == false){
                 return \TraitsFunc::ErrorMessage('Upload Video Failed !!', 400);
             }
-            $vimeo = Vimeo::connection('main')->upload($files);
-            dd($vimeo);
+            $video_id = $vimeoObj->upload(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0],$fileName[1],$lessonObj->Course->project_id);
             $fileData = $this->getDuration(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0]);
+            unlink(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0]);
             $courseObj = new LessonVideo;
             $courseObj->video = $fileName[0];
             $courseObj->title = $fileName[1];
             $courseObj->lesson_id = $id;
+            $courseObj->video_id = $video_id;
             $courseObj->course_id = $lessonObj->course_id;
             $courseObj->duration = $fileData[0];
             $courseObj->size = $fileData[1];

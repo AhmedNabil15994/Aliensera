@@ -48,15 +48,4 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
-  'vimeo/laravel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Vimeo\\Laravel\\VimeoServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Vimeo' => 'Vimeo\\Laravel\\Facades\\Vimeo',
-    ),
-  ),
 );

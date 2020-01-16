@@ -24,10 +24,16 @@ class Lesson extends Model{
     }
 
     static function getOne($id){
-        return self::NotDeleted()
+        $source = self::NotDeleted()
             ->where('id', $id)
-            ->where('status', 1)
-            ->first();
+            ->where('status', 1);
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
+        return $source->first();
     }
 
     static function dataList($course_id=null) {
@@ -46,6 +52,12 @@ class Lesson extends Model{
         if (isset($course_id) && !empty($course_id) && $course_id != null) {
             $source->where('course_id', $course_id);
         } 
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
 
         return self::generateObj($source);
     }

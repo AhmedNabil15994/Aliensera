@@ -88,7 +88,7 @@ myDropzone.on("success", function( file, result ) {
                             '<div class="col-xs-2 text-center">'+ result.data.duration +'</div>'+
                             '<div class="col-xs-2 text-center">'+ result.data.size +'</div>'+
                             '<div class="col-xs-2 text-center">'+ 
-                                '<button class="btn btn-default btn-xs" data-link="'+result.data.video+'"><i class="fa fa-play"></i></button>'+
+                                '<button class="btn btn-default btn-xs" data-link="'+result.data.link+'"><i class="fa fa-play"></i></button>'+
                                 '<a href="/videos/'+result.data.id+'/comments" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>'+
                                 '<button class="btn btn-danger btn-xs" onclick="deleteLecture('+result.data.id+')"><i class="fa fa-trash"></i></button>'+
                             '</div>'+
@@ -96,6 +96,7 @@ myDropzone.on("success", function( file, result ) {
         $('.playlist').append(videoString);
         $('span.total_videos').html(newCount);
         successNotification(result.status.message);
+        location.reload();
     }else{
         alert(result.status.message);
     }
@@ -103,12 +104,12 @@ myDropzone.on("success", function( file, result ) {
 
 $(document).on('click','.row.results .btn.btn-default.btn-xs',function(){
     var link = $(this).attr('data-link');
-    $('#myModal .embed-responsive-item').attr('src',link);
+    $('#myModal iframe').attr('src',link);
     $('#myModal').modal('toggle');
 });
 
 $('#myModal').on('hidden.bs.modal', function () {
-    $('#myModal .embed-responsive-item').attr('src','');
+    $('#myModal iframe').attr('src','');
 });
 
 function deleteLecture(video_id) {

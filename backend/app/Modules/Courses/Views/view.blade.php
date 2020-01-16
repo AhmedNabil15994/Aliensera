@@ -122,6 +122,20 @@
     p.desc{
         color: #777;
     }
+    .embed-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }    
+    .embed-container iframe,
+    .embed-container object,
+    .embed-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 @endsection
 @section('content')
@@ -355,20 +369,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>        
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> 
+@include('Partials.videoPlayer')
 @stop()
 @section('script')
 <script src="{{ URL::asset('assets/components/courses.js')}}"></script>

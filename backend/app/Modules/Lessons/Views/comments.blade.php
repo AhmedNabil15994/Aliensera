@@ -67,10 +67,9 @@
                     <div class="col-xs-12">
                         <div class="profile_title">
                             <div class="embed-responsive embed-responsive-16by9 col-xs-12 col-md-8">
-                                {{-- <iframe class="embed-responsive-item" src="{{ $data->data->video }}" id="video"  allowscriptaccess="always" allow="autoplay"></iframe> --}}
-                                <video controls width="100%" height="100%" autoplay>
-                                  <source src="{{ $data->data->video }}">
-                                </video>
+                                <div class="embed-container">
+                                    <iframe src="{{ $data->data->link }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                </div>
                             </div>
                             <div class="col-md-4 col-xs-12">
                                 <div class="row results">

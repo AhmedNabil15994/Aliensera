@@ -19,9 +19,15 @@ class CourseFeedback extends Model{
     }
 
     static function getOne($id){
-        return self::NotDeleted()
-            ->where('id', $id)
-            ->first();
+        $source = self::NotDeleted()
+            ->where('id', $id);
+            
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
+        return $source->first();
     }
 
     static function dataList($course_id=null,$creator=null) {
@@ -34,6 +40,13 @@ class CourseFeedback extends Model{
         if (isset($creator) && $creator != null ) {
             $source->where('created_by', $creator);
         } 
+
+        if(IS_ADMIN == false){
+            $source->whereHas('Course',function($courseQuery) {
+                $courseQuery->where('instructor_id',USER_ID);
+            });
+        }
+
         $source->orderBy('id','DESC');
         return self::generateObj($source);
     }

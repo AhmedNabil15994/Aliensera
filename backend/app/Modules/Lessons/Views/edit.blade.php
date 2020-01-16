@@ -79,6 +79,8 @@
     button i.fa-play{
         margin-left: 3px;
     }
+    .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
+    .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 </style>
 @endsection
 @section('content')
@@ -253,7 +255,7 @@
                                             <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                             <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                             <div class="col-xs-2 text-center">
-                                                <button class="btn btn-default btn-xs" data-link="{{ $video->video }}"><i class="fa fa-play"></i></button>
+                                                <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i></button>
                                                 <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>
                                                 @if(\Helper::checkRules('delete-lesson-video'))
                                                 <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
@@ -268,20 +270,7 @@
                                     </div>
                                     @endif
                                 </div>
-                                <div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>        
-                                                <div class="embed-responsive embed-responsive-16by9">
-                                                    <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
+                                @include('Partials.videoPlayer')
                             </div>
                         </div>
                     </div>
@@ -293,7 +282,6 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="row">
-                        @if(\Helper::checkRules('add-lesson-question'))
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -359,7 +347,6 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
                         @if(\Helper::checkRules('list-lesson-questions'))
                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
                             <div class="x_panel">
@@ -430,4 +417,5 @@
 @stop()
 @section('script')
 <script src="{{ asset('assets/components/lessons.js') }}" type="text/javascript"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
 @endsection
