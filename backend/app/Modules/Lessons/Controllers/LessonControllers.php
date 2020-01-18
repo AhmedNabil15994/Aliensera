@@ -130,9 +130,9 @@ class LessonControllers extends Controller {
             if($fileName == false){
                 return \TraitsFunc::ErrorMessage('Upload Video Failed !!', 400);
             }
-            $video_id = $vimeoObj->upload(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0],$fileName[1],$lessonObj->Course->project_id);
-            $fileData = $this->getDuration(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0]);
-            unlink(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0]);
+            // $video_id = $vimeoObj->upload(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0],$fileName[1],$lessonObj->Course->project_id);
+            $video_id = $vimeoObj->upload($_FILES['file']['tmp_name'],$fileName[1],$lessonObj->Course->project_id);
+            $fileData = $this->getDuration($_FILES['file']['tmp_name']);
             $courseObj = new LessonVideo;
             $courseObj->video = $fileName[0];
             $courseObj->title = $fileName[1];

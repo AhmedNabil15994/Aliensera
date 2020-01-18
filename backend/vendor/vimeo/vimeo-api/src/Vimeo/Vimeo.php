@@ -554,6 +554,7 @@ class Vimeo
 
         $curl_opts = array(
             CURLOPT_POST => true,
+            CURLOPT_TIMEOUT => 300,
             CURLOPT_CUSTOMREQUEST => 'PATCH',
             CURLOPT_INFILE => $file,
             CURLOPT_INFILESIZE => filesize($file_path),

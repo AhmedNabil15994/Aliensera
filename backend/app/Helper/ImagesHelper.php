@@ -143,15 +143,15 @@ class ImagesHelper {
             return false;
         }
 
-        if (!file_exists($directory)) {
-            mkdir($directory, 0777, true);
-        }
+        // if (!file_exists($directory)) {
+        //     mkdir($directory, 0777, true);
+        // }
 
-        if ($fileObj->move($directory, $fileName_full)){
-            return [$fileName_full,str_replace('.'.$extension, "", $fileName_full)];
-        }
-
-        return false;
+        // if ($fileObj->move($directory, $fileName_full)){
+        //     return [$fileName_full,str_replace('.'.$extension, "", $fileName_full)];
+        // }
+        return [$fileName_full,str_replace('.'.$extension, "", $fileName_full)];
+        // return false;
     }
 
     static function deleteDirectory($dir) {

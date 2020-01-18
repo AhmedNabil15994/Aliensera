@@ -120,7 +120,7 @@ class Vimeos {
             $lib->request($uri, array(
                 'name' => $title,
                 'description' => $title
-            ), 'PATCH');
+            ), 'POST');
             // Make an API call to see if the video is finished transcoding.
             $video_data = $lib->request($uri . '?fields=transcode.status');
             $arr = explode("/", $uri, 3);

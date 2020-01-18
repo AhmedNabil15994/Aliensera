@@ -96,7 +96,7 @@ myDropzone.on("success", function( file, result ) {
         $('.playlist').append(videoString);
         $('span.total_videos').html(newCount);
         successNotification(result.status.message);
-        location.reload();
+        // location.reload();
     }else{
         alert(result.status.message);
     }
