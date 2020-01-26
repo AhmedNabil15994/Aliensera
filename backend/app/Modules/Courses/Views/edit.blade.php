@@ -44,6 +44,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if(IS_ADMIN == true)
                             <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">
@@ -66,7 +67,6 @@
                                             <label>Status</label>
                                             <select name="status" class="form-control">
                                                 <option value="">Select A Status...</option>
-                                                <option value="0" {{ $data->data->status == 0 ? 'selected' : '' }}>New</option>
                                                 <option value="1" {{ $data->data->status == 1 ? 'selected' : '' }}>Instructor Sent Request</option>
                                                 <option value="2" {{ $data->data->status == 2 ? 'selected' : '' }}>Request Refused</option>
                                                 <option value="3" {{ $data->data->status == 3 ? 'selected' : '' }}>Active</option>
@@ -75,6 +75,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">

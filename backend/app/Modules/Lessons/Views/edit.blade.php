@@ -86,15 +86,15 @@
 @section('content')
 <div class="">
     <div class="row" >
-        <form method="post" action="{{ URL::to('/fields/update/' . $data->data->id) }}" class="form-horizontal form-label-left">
+        <form method="post" action="{{ URL::to('/lessons/update/' . $data->data->id) }}" class="form-horizontal form-label-left">
             <div class="col-md-12 col-sm-12 col-xs-12" >
                 <div class="x_panel" >
                     <div class="x_title">
-                        <strong>Edit Field information</strong>
+                        <strong>Edit Lesson information</strong>
                         <ul class="nav navbar-right panel_toolbox">
                             <div align="right">
-                                <a href="{{ URL::to('/fields') }}" class="btn btn-round btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
-                                @if(\Helper::checkRules('edit-field'))
+                                <a href="{{ URL::to('/lessons') }}" class="btn btn-round btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
+                                @if(\Helper::checkRules('edit-lesson'))
                                 <button type="submit" class="btn btn-round btn-success">Save <i class="fa fa-check"></i></button>
                                 @endif
                             </div>
@@ -103,6 +103,7 @@
                     </div>
                     <div class="x_content">
                         <div class="row" >
+                            @if(IS_ADMIN == true)
                             <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">
@@ -121,6 +122,18 @@
                                     </div>
                                 </div>
                             </div>
+                            @else
+                            <div class="col-md-6">
+                                <div class="row" >
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Title</label>
+                                            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col-md-6">
                                 <div class="row" >
                                     <div class="col-md-12">
@@ -152,6 +165,7 @@
             </div>
         </form>
         <hr>
+        @if($data->data->status == 1 || IS_ADMIN == true)
         <div class="col-xs-12">
             <div class="row" >
                 <div class="col-xs-12">
@@ -238,7 +252,7 @@
                                     </ul>
                                     <div class="clearfix"></div>
                                 </div>
-                                <div class="x_content">
+                                <div class="x_content x_content_playlist">
                                     @if(!empty((array)$data->data->videos))
                                     <div class="playlist">
                                         <div class="row">
@@ -357,7 +371,7 @@
                                     </ul>
                                     <div class="clearfix"></div>
                                 </div>
-                                <div class="x_content">
+                                <div class="x_content x_content_questions">
                                     @if(!empty((array)$data->data->questions))
                                     <div class="quiz">
                                         <div class="row">
@@ -412,6 +426,11 @@
                 </div>
             </div>
         </div>
+        @elseif($data->data->status == 0 && IS_ADMIN == false)
+        <div class="col-xs-12">
+        Lesson Is In Active.
+        </div>
+        @endif
     </div>
 </div>
 @stop()

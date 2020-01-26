@@ -1,5 +1,5 @@
 @extends('Layouts.master')
-@section('title', $data->data->id . ' - ' . $data->data->display_name)
+@section('title', $data->data->id . ' - ' . $data->data->name)
 @section('content')
 <div class="">
     <div class="row" >
@@ -46,6 +46,12 @@
                                             <input type="password" class="form-control" placeholder="Enter New Password" name="password">
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" placeholder="Enter Address" name="address" value="{{ $data->data->address }}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -65,7 +71,7 @@
                                         <div class="form-group">
                                             <label>Active</label>
                                             <div class="checkbox">
-                                                <input type="checkbox" class="flat" {{ $data->data->active == 1 ? "checked" : ""  }} name="active">
+                                                <input type="checkbox" class="flat" {{ $data->data->is_active == 1 ? "checked" : ""  }} name="active">
                                             </div>
                                         </div>
                                     </div>
@@ -73,6 +79,16 @@
                                         <div class="form-group">
                                             <label>Phone</label>
                                             <input type="text" class="form-control" placeholder="Enter Phone" name="phone" value="{{ $data->data->phone}}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gender</label>
+                                            <select name="gender" class="form-control" required>
+                                                <option value="">Choose..</option>
+                                                <option value="1" {{ $data->data->gender == 1 ? 'selected' : '' }}>Male</option>
+                                                <option value="2" {{ $data->data->gender == 2 ? 'selected' : '' }}>Female</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

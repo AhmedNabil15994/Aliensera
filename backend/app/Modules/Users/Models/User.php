@@ -69,13 +69,19 @@ class User extends Model{
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
-        $data->name = $source->Profile != null ? $source->Profile->display_name : '';
-        $data->image = $source->Profile->image != null ? self::getPhotoPath($source->id, $source->image) : '';
+        $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
+        $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
+        $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
+        $data->image = self::getPhotoPath($source->id, $source->image);
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
+        $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
         $data->phone = $source->Profile != null ? $source->Profile->phone: '';
+        $data->address = $source->Profile != null ? $source->Profile->address: '';
+        $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
         $data->email = $source->email;
         $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
+        $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
         $data->active = $source->is_active == 1 ? "Yes" : "No";
         $data->is_active = $source->is_active;
         $data->deleted_by = $source->deleted_by;
@@ -172,7 +178,7 @@ class User extends Model{
 
         $userObj = new User();
         $userObj->email = $input['email'];
-        $userObj->group_id = $input['group_id'];
+        $userObj->name = $input['first_name'].' '.$input['last_name'];
         $userObj->is_active = isset($input['active']) ? 1 : 0;
         $userObj->password = \Hash::make($input['password']);
         if(isset($input['permissions'])){
@@ -190,14 +196,17 @@ class User extends Model{
         $profileObj = $userObj->Profile;
 
         if($profileObj == null){
-            $profileObj = new Profiles();
+            $profileObj = new Profile();
         }
 
         $profileObj->user_id = $userObj->id;
         $profileObj->first_name = $input['first_name'];
         $profileObj->last_name = $input['last_name'];
         $profileObj->phone = $input['phone'];
+        $profileObj->address = isset($input['address']) && !empty($input['address']) ? $input['address'] : '' ;
+        $profileObj->gender = $input['gender'];
         $profileObj->display_name = $input['first_name'].' '.$input['last_name'];
+        $profileObj->group_id = $input['group_id'];
         $profileObj->save();
     }
 

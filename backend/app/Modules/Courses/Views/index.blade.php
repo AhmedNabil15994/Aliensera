@@ -27,6 +27,7 @@
                                         <input type="text" class="form-control" name="title" placeholder="Title" value="{{ Input::get('title') }}">
                                     </div>
                                 </div>
+                                @if(IS_ADMIN == true)
                                 <div class="col-xs-6 col-md-4">
                                     <div class="form-group">
                                         <label>Instructor</label>
@@ -38,6 +39,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="col-xs-6 col-md-4">
                                     <div class="form-group">
                                         <label>Status</label>
@@ -167,7 +169,7 @@
                         @if($data->pagination->total_count == 0)
                             <tr>
                                 <td></td>
-                                <td colspan="10">No Data Found</td>
+                                <td colspan="11">No Data Found</td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>

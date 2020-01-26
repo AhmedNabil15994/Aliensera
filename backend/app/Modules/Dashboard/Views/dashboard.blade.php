@@ -1,16 +1,38 @@
 @extends('Layouts.master')
 @section('title', 'Dashboard')
+@section('otherhead')
+<style type="text/css" media="screen">
+  .media .date{
+    width: 60px;
+  }
+  .media .date img{
+    width: 50px;
+    height: 50px;
+  }
+</style>
+@endsection
 @section('content')
 <div class="">
     <div class="row top_tiles">
+      @if(IS_ADMIN == false)
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-users"></i></div>
-          <div class="count">{{ $data->allStudents }}</div>
-          <h3>Students</h3>
-          <p>Active Students Only.</p>
+          <div class="icon"><i class="fa fa-book"></i></div>
+          <div class="count">{{ $data->allCourses2 }}</div>
+          <h3>All Courses</h3>
+          <p>All Courses</p>
         </div>
       </div>
+      @endif
+      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+          <div class="icon"><i class="fa fa-book"></i></div>
+          <div class="count">{{ $data->allCourses }}</div>
+          <h3>Active Courses</h3>
+          <p>Active Courses Only.</p>
+        </div>
+      </div>
+      @if(IS_ADMIN == true)
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-users"></i></div>
@@ -19,12 +41,13 @@
           <p>Active Instructors Only.</p>
         </div>
       </div>
+      @endif
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-book"></i></div>
-          <div class="count">{{ $data->allCourses }}</div>
-          <h3>Active Courses</h3>
-          <p>Active Courses Only.</p>
+          <div class="icon"><i class="fa fa-users"></i></div>
+          <div class="count">{{ $data->allStudents }}</div>
+          <h3>Students</h3>
+          <p>Active Students Only.</p>
         </div>
       </div>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -52,7 +75,7 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <div class="col-md-9 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="demo-container" style="height:280px">
                 <div id="chart_plot_02" class="demo-placeholder"></div>
               </div>
@@ -79,382 +102,92 @@
                   </span>
                 </div>
               </div>
-
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div>
-                <div class="x_title">
-                  <h2>Top Profiles</h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <ul class="list-unstyled top_profiles scroll-view">
-                  <li class="media event">
-                    <a class="pull-left border-aero profile_thumb">
-                      <i class="fa fa-user aero"></i>
-                    </a>
-                    <div class="media-body">
-                      <a class="title" href="#">Ms. Mary Jane</a>
-                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                      <p> <small>12 Sales Today</small>
-                      </p>
-                    </div>
-                  </li>
-                  <li class="media event">
-                    <a class="pull-left border-green profile_thumb">
-                      <i class="fa fa-user green"></i>
-                    </a>
-                    <div class="media-body">
-                      <a class="title" href="#">Ms. Mary Jane</a>
-                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                      <p> <small>12 Sales Today</small>
-                      </p>
-                    </div>
-                  </li>
-                  <li class="media event">
-                    <a class="pull-left border-blue profile_thumb">
-                      <i class="fa fa-user blue"></i>
-                    </a>
-                    <div class="media-body">
-                      <a class="title" href="#">Ms. Mary Jane</a>
-                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                      <p> <small>12 Sales Today</small>
-                      </p>
-                    </div>
-                  </li>
-                  <li class="media event">
-                    <a class="pull-left border-aero profile_thumb">
-                      <i class="fa fa-user aero"></i>
-                    </a>
-                    <div class="media-body">
-                      <a class="title" href="#">Ms. Mary Jane</a>
-                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                      <p> <small>12 Sales Today</small>
-                      </p>
-                    </div>
-                  </li>
-                  <li class="media event">
-                    <a class="pull-left border-green profile_thumb">
-                      <i class="fa fa-user green"></i>
-                    </a>
-                    <div class="media-body">
-                      <a class="title" href="#">Ms. Mary Jane</a>
-                      <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                      <p> <small>12 Sales Today</small>
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>Weekly Summary <small>Activity shares</small></h2>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-
-            <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-              <div class="col-md-7" style="overflow:hidden;">
-                <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
-                              <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
-                          </span>
-                <h4 style="margin:18px">Weekly sales progress</h4>
-              </div>
-
-              <div class="col-md-5">
-                <div class="row" style="text-align: center;">
-                  <div class="col-md-4">
-                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                    <h4 style="margin:0">Bounce Rates</h4>
-                  </div>
-                  <div class="col-md-4">
-                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                    <h4 style="margin:0">New Traffic</h4>
-                  </div>
-                  <div class="col-md-4">
-                    <canvas class="canvasDoughnut" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                    <h4 style="margin:0">Device Share</h4>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
 
     <div class="row">
       <div class="col-md-4">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Top Profiles <small>Sessions</small></h2>
+            <h2>Top Courses</h2>
             <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
+              <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             </ul>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
+            @foreach($data->topCourses as $course)
             <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
+              <a class="pull-left date" href="{{ URL::to('/courses/view/'.$course->course->id) }}">
+                <img src="{{ $course->course->image }}" alt="">
               </a>
               <div class="media-body">
-                <a class="title" href="#">Item One Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a class="title" href="{{ URL::to('/courses/view/'.$course->course->id) }}">{{ $course->course->title }}</a>
+                <p>{{ substr($course->course->description, 0, 60) }}...</p>
+                <p>Instructor: {{ $course->course->instructor }}</p>
+                <p>{{ $course->count }} Students</p>
               </div>
             </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Three Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
+            @endforeach
           </div>
         </div>
       </div>
-
+      @if(IS_ADMIN == true)
       <div class="col-md-4">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Top Profiles <small>Sessions</small></h2>
+            <h2>Top Instructors</h2>
             <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
+              <li  class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             </ul>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
+            @foreach($data->topInstructors as $instructor)
             <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
+              <a class="pull-left date" href="{{ URL::to('/users/view/'.$instructor->instructor->id) }}">
+                <img src="{{ $instructor->instructor->image }}" alt="">
               </a>
               <div class="media-body">
-                <a class="title" href="#">Item One Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a class="title" href="{{ URL::to('/users/view/'.$instructor->instructor->id) }}">{{ $instructor->instructor->name }}</a>
+                <p>{{ $instructor->count }} Courses</p>
+                <p>{{ $instructor->count2 }} Students</p>
               </div>
             </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Three Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
+            @endforeach
           </div>
         </div>
       </div>
-
+      @endif
       <div class="col-md-4">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Top Profiles <small>Sessions</small></h2>
+            <h2>Top Students</h2>
             <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Settings 1</a>
-                  </li>
-                  <li><a href="#">Settings 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a>
-              </li>
+              <li  class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             </ul>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
+            @foreach($data->topStudents as $student)
             <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
+              <a class="pull-left date" href="{{ URL::to('/users/view/'.$student->student->id) }}">
+                <img src="{{ $student->student->image }}" alt="">
               </a>
               <div class="media-body">
-                <a class="title" href="#">Item One Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a class="title" href="{{ URL::to('/users/view/'.$student->student->id) }}">{{ $student->student->name }}</a>
+                <p>{{ $student->count }} Courses</p>
               </div>
             </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Two Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
-            <article class="media event">
-              <a class="pull-left date">
-                <p class="month">April</p>
-                <p class="day">23</p>
-              </a>
-              <div class="media-body">
-                <a class="title" href="#">Item Three Title</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </article>
+            @endforeach
           </div>
         </div>
       </div>
     </div>
+
   </div>
 @stop()
 

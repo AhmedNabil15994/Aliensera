@@ -30,6 +30,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\CourseFeedback', 'course_id','id');
     }
 
+    function StudentCourse(){
+        return $this->hasMany('App\Models\StudentCourse', 'course_id','id');
+    }
+
     function Lesson(){
         return $this->hasMany('App\Models\Lesson', 'course_id','id');
     }
@@ -62,7 +66,7 @@ class Course extends Model{
             ->first();
     }
 
-    static function dataList($instructor_id=null) {
+    static function dataList($instructor_id=null,$student_id=null) {
         $input = \Input::all();
 
         $source = self::with('Feedback');
@@ -93,6 +97,12 @@ class Course extends Model{
             $source->where('instructor_id', $instructor_id);
         } 
 
+        if ($student_id != null) {
+            $source->whereHas('StudentCourse',function($query) use ($student_id){
+                $query->NotDeleted()->where('student_id',$student_id)->where('status',1);
+            });
+        } 
+
         if(IS_ADMIN == false){
             $source->where('instructor_id',USER_ID);
         }
@@ -121,9 +131,7 @@ class Course extends Model{
 
     static function getStatus($status){
         $statusLabel = '';
-        if($status == 0){
-            $statusLabel = "<span class='btn btn-primary btn-xs'>New</span>";
-        }elseif($status == 1){
+        if($status == 1){
             $statusLabel = "<span class='btn btn-warning btn-xs'>Instructor Sent Request</span>";
         }elseif($status == 2){
             $statusLabel = "<span class='btn btn-danger btn-xs'>Request Refused</span>";

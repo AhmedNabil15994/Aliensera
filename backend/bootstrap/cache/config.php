@@ -454,6 +454,8 @@
     'CoursesControllers@addImage' => 'add-course-image',
     'CoursesControllers@imageDelete' => 'delete-course-image',
     'CoursesControllers@deleteReview' => 'delete-course-review',
+    'CoursesControllers@getUniversities' => 'get-universities',
+    'CoursesControllers@getFaculties' => 'get-faculties',
     'UniversityControllers@index' => 'list-universities',
     'UniversityControllers@edit' => 'edit-university',
     'UniversityControllers@update' => 'edit-university',

@@ -93,10 +93,13 @@ myDropzone.on("success", function( file, result ) {
                                 '<button class="btn btn-danger btn-xs" onclick="deleteLecture('+result.data.id+')"><i class="fa fa-trash"></i></button>'+
                             '</div>'+
                           '</div>';
-        $('.playlist').append(videoString);
-        $('span.total_videos').html(newCount);
+        if(result.count > 1){
+            $('.playlist').append(videoString);
+            $('span.total_videos').html(newCount);
+        }else if(result.count == 1){
+            location.reload();
+        }                       
         successNotification(result.status.message);
-        // location.reload();
     }else{
         alert(result.status.message);
     }
@@ -124,13 +127,17 @@ function deleteLecture(video_id) {
     }, function () {
         swal("Deleted!", "Your imaginary data has been deleted.", "success");
         $.get('/lessons/removeVideo/'+video_id,function(data) {
-            if (data.status.status == 1) {
+            if (data.status.status.status == 1) {
+                if(data.count == 0){
+                    $('.playlist').remove();
+                    $('.x_content_playlist').append('<div class="empty">No Videos Available</div>');
+                } 
                 $('#results' + video_id).remove();
                 var count = $('span.total_videos').html();
                 $('span.total_videos').html(count-1);
-                successNotification(data.status.message);
+                successNotification(data.status.status.message);
             } else {
-                errorNotification(data.status.message);
+                errorNotification(data.status.status.message);
             }
         })
     });
@@ -166,7 +173,6 @@ $('.add-question').on('click',function(){
         },
         success:function(data){
             if(data.status.status == 1){
-                successNotification(data.status.message);
                 clearAll();
                 var count = parseInt($('span.total_questions').html());
                 var newCount = count + 1;
@@ -181,8 +187,13 @@ $('.add-question').on('click',function(){
                                         '<button class="btn btn-danger btn-xs" onclick="deleteQuestion('+data.data.id+')"><i class="fa fa-trash"></i></button>'+
                                     '</div>'+
                                   '</div>';
-                $('.quiz').append(videoString);
-                $('span.total_questions').html(newCount);
+                if(data.count > 1){
+                    $('.quiz').append(videoString);
+                    $('span.total_questions').html(newCount);
+                }else if(data.count == 1){
+                    location.reload();
+                }                                   
+                successNotification(data.status.message);
             }else{
                 errorNotification(data.status.message);
             }
@@ -206,13 +217,17 @@ function deleteQuestion(question_id) {
     }, function () {
         swal("Deleted!", "Your imaginary data has been deleted.", "success");
         $.get('/lessons/removeQuestion/'+question_id,function(data) {
-            if (data.status.status == 1) {
+            if (data.status.status.status == 1) {
+                if(data.count == 0){
+                    $('.quiz').remove();
+                    $('.x_content_questions').append('<div class="empty">No Quizes Available</div>');
+                } 
                 $('#questions' + question_id).remove();
                 var count = $('span.total_questions').html();
                 $('span.total_questions').html(count-1);
-                successNotification(data.status.message);
+                successNotification(data.status.status.message);
             } else {
-                errorNotification(data.status.message);
+                errorNotification(data.status.status.message);
             }
         })
     });

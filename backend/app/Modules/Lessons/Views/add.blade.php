@@ -20,6 +20,7 @@
                         </div>
                         <div class="x_content">
                             <div class="row" >
+                                @if(IS_ADMIN == true)
                                 <div class="col-md-4">
                                     <div class="row" >
                                         <div class="col-md-12">
@@ -38,6 +39,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                @else
+                                <div class="col-md-6">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="col-md-6">
                                     <div class="row" >
                                         <div class="col-md-12">

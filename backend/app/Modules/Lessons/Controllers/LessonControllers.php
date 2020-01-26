@@ -32,7 +32,7 @@ class LessonControllers extends Controller {
 
     public function index() {
         $dataList = Lesson::dataList();
-        $dataList['courses'] = Course::where('status',3)->orderBy('id','DESC')->get();
+        $dataList['courses'] = Course::dataList()['data'];
         return view('Lessons.Views.index')
             ->with('data', (Object) $dataList);
     }
@@ -45,7 +45,7 @@ class LessonControllers extends Controller {
         }
 
         $data['data'] = Lesson::getData($universityObj);
-        $data['courses'] = Course::where('status',3)->orderBy('id','DESC')->get();
+        $data['courses'] = Course::dataList()['data'];
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
@@ -77,7 +77,7 @@ class LessonControllers extends Controller {
     }
 
     public function add() {
-        $data['courses'] = Course::where('status',3)->orderBy('id','DESC')->get();
+        $data['courses'] = Course::dataList()['data'];
         return view('Lessons.Views.add')->with('data', (object) $data);
     }
 
@@ -144,7 +144,9 @@ class LessonControllers extends Controller {
             $courseObj->created_by = USER_ID;
             $courseObj->created_at = date('Y-m-d H:i:s');
             $courseObj->save();
+            \Session::flash('success', "Upload Video Success !!");
             $statusObj['status'] = \TraitsFunc::SuccessResponse('Upload Video Success !!');
+            $statusObj['count'] = LessonVideo::NotDeleted()->where('lesson_id',$id)->count();
             $statusObj['data'] = LessonVideo::getData($courseObj);
             return $statusObj;
         }       
@@ -155,7 +157,9 @@ class LessonControllers extends Controller {
         if($videoObj == null){
             return \TraitsFunc::ErrorMessage('This Lesson Lecture Not Found !!', 400);
         }
-        return \Helper::globalDelete($videoObj);
+        $statusObj['status'] = \Helper::globalDelete($videoObj)->original;
+        $statusObj['count'] = LessonVideo::NotDeleted()->where('lesson_id',$videoObj->lesson_id)->count();
+        return $statusObj;
     }
 
     public function addQuestion($lesson_id){
@@ -201,7 +205,9 @@ class LessonControllers extends Controller {
         $questionObj->created_at = date('Y-m-d H:i:s');
         $questionObj->save();
 
+        \Session::flash('success', "Lesson Question Saved Successfully !!");
         $statusObj['status'] = \TraitsFunc::SuccessResponse('Lesson Question Saved Successfully !!');
+        $statusObj['count'] = LessonQuestion::NotDeleted()->where('lesson_id',$lesson_id)->count();
         $statusObj['data'] = LessonQuestion::getData($questionObj);
         return $statusObj;
     }
@@ -211,7 +217,9 @@ class LessonControllers extends Controller {
         if($questionObj == null){
             return \TraitsFunc::ErrorMessage('This Lesson Question Not Found !!', 400);
         }
-        return \Helper::globalDelete($questionObj);
+        $statusObj['status'] = \Helper::globalDelete($questionObj)->original;
+        $statusObj['count'] = LessonQuestion::NotDeleted()->where('lesson_id',$questionObj->lesson_id)->count();
+        return $statusObj;
     }
 
     public function comments($video_id){

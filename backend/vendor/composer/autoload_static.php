@@ -505,6 +505,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Models\\LessonQuestion' => __DIR__ . '/../..' . '/app/Modules/Lessons/Models/LessonQuestion.php',
         'App\\Models\\LessonVideo' => __DIR__ . '/../..' . '/app/Modules/Lessons/Models/LessonVideo.php',
         'App\\Models\\Profile' => __DIR__ . '/../..' . '/app/Modules/Users/Models/Profile.php',
+        'App\\Models\\StudentCourse' => __DIR__ . '/../..' . '/app/Modules/Courses/Models/StudentCourse.php',
         'App\\Models\\University' => __DIR__ . '/../..' . '/app/Modules/University/Models/University.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Modules/Users/Models/User.php',
         'App\\Models\\Variable' => __DIR__ . '/../..' . '/app/Modules/Variables/Models/Variable.php',

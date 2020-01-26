@@ -79,7 +79,10 @@ class CoursesControllers extends Controller {
     public function update($id,Request $request) {
         $id = (int) $id;
         $input = \Input::all();
-
+        if(IS_ADMIN == false){
+            $input['instructor_id'] = USER_ID;
+            $input['status'] = 1;
+        }
         $courseObj = Course::getOne($id);
         if($courseObj == null) {
             return Redirect('404');
@@ -90,19 +93,19 @@ class CoursesControllers extends Controller {
         $validate = $this->validateCourse($input);
         if($validate->fails()){
             \Session::flash('error', $validate->messages()->first());
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
 
         if($input['course_type'] == 2){
 
             if(empty($input['university_id']) || !isset($input['university_id'])){
                 \Session::flash('error', 'Sorry University Required');
-                return redirect()->back();
+                return redirect()->back()->withInput();
             }
 
             if(empty($input['faculty_id']) || !isset($input['faculty_id'])){
                 \Session::flash('error', 'Sorry Faculty Required');
-                return redirect()->back();
+                return redirect()->back()->withInput();
             }
 
             $universityObj = University::getOne($input['university_id']);
@@ -161,23 +164,26 @@ class CoursesControllers extends Controller {
 
     public function create(Request $request) {
         $input = \Input::all();
-        
+        if(IS_ADMIN == false){
+            $input['instructor_id'] = USER_ID;
+            $input['status'] = 1;
+        }
         $validate = $this->validateCourse($input);
         if($validate->fails()){
             \Session::flash('error', $validate->messages()->first());
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }   
         
         if($input['course_type'] == 2){
 
             if(empty($input['university_id']) || !isset($input['university_id'])){
                 \Session::flash('error', 'Sorry University Required');
-                return redirect()->back();
+                return redirect()->back()->withInput();
             }
 
             if(empty($input['faculty_id']) || !isset($input['faculty_id'])){
                 \Session::flash('error', 'Sorry Faculty Required');
-                return redirect()->back();
+                return redirect()->back()->withInput();
             }
 
             $universityObj = University::getOne($input['university_id']);

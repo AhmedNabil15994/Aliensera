@@ -25,9 +25,8 @@ class Lesson extends Model{
 
     static function getOne($id){
         $source = self::NotDeleted()
-            ->where('id', $id)
-            ->where('status', 1);
-
+            ->where('id', $id);
+            
         if(IS_ADMIN == false){
             $source->whereHas('Course',function($courseQuery) {
                 $courseQuery->where('instructor_id',USER_ID);

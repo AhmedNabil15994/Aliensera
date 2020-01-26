@@ -46,6 +46,7 @@ return array(
     'App\\Models\\LessonQuestion' => $baseDir . '/app/Modules/Lessons/Models/LessonQuestion.php',
     'App\\Models\\LessonVideo' => $baseDir . '/app/Modules/Lessons/Models/LessonVideo.php',
     'App\\Models\\Profile' => $baseDir . '/app/Modules/Users/Models/Profile.php',
+    'App\\Models\\StudentCourse' => $baseDir . '/app/Modules/Courses/Models/StudentCourse.php',
     'App\\Models\\University' => $baseDir . '/app/Modules/University/Models/University.php',
     'App\\Models\\User' => $baseDir . '/app/Modules/Users/Models/User.php',
     'App\\Models\\Variable' => $baseDir . '/app/Modules/Variables/Models/Variable.php',

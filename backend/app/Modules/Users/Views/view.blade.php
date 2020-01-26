@@ -1,5 +1,5 @@
 @extends('Layouts.master')
-@section('title', $data->data->id . ' - ' . $data->data->display_name)
+@section('title', $data->data->id . ' - ' . $data->data->name)
 @section('otherhead')
 <style type="text/css" media="screen">
     .user_data li{
@@ -59,6 +59,10 @@
     .profile_left{
         border-right: 1px solid #DDD;
     }
+    div.empty{
+        border-bottom: 1px dotted #e6e6e6;
+        padding: 8px 0;
+    }
 </style>
 @endsection
 @section('content')
@@ -67,7 +71,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>{{ $data->data->group }}: <small>{{ $data->data->display_name }}</small></h2>
+                    <h2>{{ $data->data->group }}: <small>{{ $data->data->name }}</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -81,11 +85,10 @@
                                 <img class="img-responsive avatar-view" src="{{ $data->data->image }}" alt="Avatar" title="Change the avatar">
                             </div>
                         </div>
-                        <h3>{{ $data->data->display_name }}</h3>
+                        <h3>{{ $data->data->name }}</h3>
                         <ul class="list-unstyled user_data">
                             <li><i class="fa fa-map-marker user-profile-icon"></i> {{$data->data->address}}</li>
-                            <li><i class="fa fa-briefcase user-profile-icon"></i> {{ $data->data->group }}</li>
-                            <li><i class="fa fa-user"></i> {{ $data->data->gender }}</li>
+                            <li><i class="fa fa-user"></i> {{ $data->data->gender == 1 ? 'Male' : 'Female' }}</li>
                             <li class="m-top-xs"><i class="fa fa-phone"></i> {{ $data->data->phone }}</li>
                             <li class="m-top-xs"><i class="fa fa-envelope"></i> {{ $data->data->email }}</li>
                         </ul>
@@ -101,6 +104,7 @@
                             </ul>
                             <div id="myTabContent" class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                    @if(!empty((array) $data->courses))
                                     <!-- start user projects -->
                                     <table class="data table table-striped no-margin">
                                         <thead>
@@ -142,6 +146,9 @@
                                         </tbody>
                                     </table>
                                     <!-- end user projects -->
+                                    @else
+                                    <div class="empty">No Courses Available</div>
+                                    @endif
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="comment-tab">
                                     <!-- start recent activity -->
