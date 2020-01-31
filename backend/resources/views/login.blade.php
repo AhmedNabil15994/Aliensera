@@ -8,20 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>AlienSera | Login </title>
-    <link rel="icon" href="{{ URL::asset('assets/images/logo.jpeg') }}" type="image/ico" />
+    <link rel="icon" href="{{ asset('assets/images/logo.jpeg') }}" type="image/ico" />
     <!-- Bootstrap -->
-    <link href="{{ URL::asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="{{ URL::asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <!-- NProgress -->
-    <link href="{{ URL::asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="{{ URL::asset('assets/vendors/animate.css/animate.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/animate.css/animate.min.css')}}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ URL::asset('assets/production/css/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/production/css/toastr.min.css')}}">
 
     <!-- Custom Theme Style -->
-    <link href="{{ URL::asset('assets/build/css/customLogin.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/build/css/customLogin.css')}}" rel="stylesheet">
     @include('Partials.notf_messages')
   </head>
 
@@ -31,7 +31,7 @@
           <section class="login_content">
               <form method="post" action="{{ URL::to('/login') }}">
                 {!! csrf_field() !!}
-              <img src="{{ URL::asset('assets/images/logo.jpeg') }}" height="100" alt="" />
+              <img src="{{ asset('assets/images/logo.jpeg') }}" height="100" alt="" />
               <br>
               <br>
               <span>Login to AlienSera</span>
@@ -61,5 +61,5 @@
       </div>
   </body>
 </html>
-<script  src="{{ URL::asset('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
-<script src="{{ URL::asset('assets/production/js/toastr.min.js')}}"></script>
+<script  src="{{ asset('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
+<script src="{{ asset('assets/production/js/toastr.min.js')}}"></script>

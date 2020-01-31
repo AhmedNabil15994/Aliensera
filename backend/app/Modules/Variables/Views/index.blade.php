@@ -138,5 +138,5 @@
 @stop()
 
 @section('script')
-    <script src="{{ URL::asset('assets/components/variable.js')}}"></script>
+    <script src="{{ asset('assets/components/variable.js')}}"></script>
 @stop()

@@ -1,36 +1,35 @@
-	<link rel="icon" href="{{ URL::asset('assets/images/logo.jpeg') }}" type="image/ico" />
+	<link rel="icon" href="{{ asset('assets/images/logo.jpeg') }}" type="image/ico" />
     <!-- Bootstrap -->
-    <link href="{{ URL::asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="{{ URL::asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <!-- NProgress -->
-    <link href="{{ URL::asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
     <!-- iCheck -->
-    <link href="{{ URL::asset('assets/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
-	@csrf
+    <link href="{{ asset('assets/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
     <!-- bootstrap-progressbar -->
-    <link href="{{ URL::asset('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/vendors/dropzone/dist/min/dropzone.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/dropzone/dist/min/dropzone.min.css') }}" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="{{ URL::asset('assets/vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('assets/vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
-    <link href="{{ URL::asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <!-- bootstrap-datetimepicker -->
-    <link href="{{ URL::asset('assets/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('assets/production/css/toastr.min.css')}}">
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/sweetalert.css')}}">
+    <link href="{{ asset('assets/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/production/css/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/sweetalert.css')}}">
 
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/fancybox/jquery.fancybox.css')}}" type="text/css" media="screen">
+    <link rel="stylesheet" href="{{ asset('assets/css/fancybox/jquery.fancybox.css')}}" type="text/css" media="screen">
 
     <!-- editor -->
-    <link rel="stylesheet" href="{{ URL::asset('assets/plugins/summernote/dist/summernote.css') }}">
-    <link href="{{ URL::asset('assets/plugins/lou-multi-select/css/multi-select.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/dist/summernote.css') }}">
+    <link href="{{ asset('assets/plugins/lou-multi-select/css/multi-select.css')}}" rel="stylesheet">
 
 
     <!-- Custom Theme Style -->
-    <link href="{{ URL::asset('assets/build/css/custom.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/build/css/custom.css')}}" rel="stylesheet">
 
-    <script src="{{ URL::asset('assets/components/header.js')}}"></script>
+    <script src="{{ asset('assets/components/header.js')}}"></script>
 
     <style>
         .imagesHolder {overflow: hidden;}

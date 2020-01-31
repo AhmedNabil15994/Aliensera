@@ -115,5 +115,5 @@
 @stop()
 
 @section('script')
-    <script src="{{ URL::asset('assets/components/lessons.js')}}"></script>
+    <script src="{{ asset('assets/components/lessons.js')}}"></script>
 @stop()

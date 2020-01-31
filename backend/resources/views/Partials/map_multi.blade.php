@@ -62,7 +62,7 @@
 
 @section('script-2')
 
-<script src="{{ URL::asset('assets/js/components/map.polygon.js')}}"></script>
+<script src="{{ asset('assets/js/components/map.polygon.js')}}"></script>
 <script>
     function initMap() {
         var position = {

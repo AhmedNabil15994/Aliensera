@@ -56,5 +56,5 @@
 @stop()
 
 @section('script')
-    <script src="{{URL::asset('assets/components/groups.js')}}"></script>
+    <script src="{{asset('assets/components/groups.js')}}"></script>
 @stop

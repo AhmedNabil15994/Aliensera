@@ -192,6 +192,6 @@
 @stop()
 
 @section('script')
-    <script src="{{ URL::asset('assets/components/dashboard.js')}}"></script>
+    <script src="{{ asset('assets/components/dashboard.js')}}"></script>
 @stop()
 
