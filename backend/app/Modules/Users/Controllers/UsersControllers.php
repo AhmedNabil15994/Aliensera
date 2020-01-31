@@ -27,12 +27,55 @@ class UsersControllers extends Controller {
         ];
 
         $message = [
-            'first_name.required' => "Sorry first_name Required",
-            'last_name.required' => "Sorry last_name Required",
-            'phone.required' => "Sorry phone Required",
+            'first_name.required' => "Sorry First Name Required",
+            'last_name.required' => "Sorry Last Name Required",
+            'phone.required' => "Sorry Phone Required",
             'gender.required' => "Sorry Gender Required",
-            'email.required' => "Sorry email Required",
-            'email.format' => "Please check email format",
+            'email.required' => "Sorry Email Required",
+            'email.format' => "Please Check Email format",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+
+        return $validate;
+    }
+
+    protected function validateProfile(){
+        $input = Input::all();
+
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone' => 'required',
+            'gender' => 'required',
+        ];
+
+        $message = [
+            'first_name.required' => "Sorry First Name Required",
+            'last_name.required' => "Sorry Last Name Required",
+            'phone.required' => "Sorry Phone Required",
+            'gender.required' => "Sorry Gender Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+
+        return $validate;
+    }
+
+    protected function validatePassword(){
+        $input = Input::all();
+
+        $rules = [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|min:6',
+        ];
+
+        $message = [
+            'password.required' => "Sorry New Password Required",
+            'password.min' => "Sorry New Password Must Be At Least 6 Characters",
+            'password.confirmed' => "Sorry Passwords Don't Match",
+            'password_confirmation.required' => "Sorry Password Confirmation Required",
+            'password_confirmation.min' => "Sorry Password Confirmation Must Be At Least 6 Characters",
         ];
 
         $validate = \Validator::make($input, $rules, $message);
@@ -207,5 +250,72 @@ class UsersControllers extends Controller {
         return \Helper::globalRestore($userObj);
     }
 
+    public function getProfile(){
+        $usersList = User::getData(User::getOne(USER_ID));
+        return view('Users.Views.profile')
+            ->with('data', (Object) $usersList);
+    }
 
+    public function updateProfile(Request $request){
+        $id = (int) USER_ID;
+
+        $userObj = User::getOne($id);
+        if($userObj == null) {
+            return Redirect('404');
+        }
+
+        $profileObj = $userObj->Profile;
+        if($profileObj == null) {
+            return Redirect('404');
+        }
+        
+        $input = \Input::all();
+
+        $validate = $this->validateProfile();
+        if($validate->fails()){
+            \Session::flash('error', $validate->messages()->first());
+            return redirect()->back()->withInput();
+        }
+
+        $checkByPhone = User::checkUserByPhone($input['phone'],USER_ID);
+        if($checkByPhone){
+            \Session::flash('error', "Sorry Phone Used Before.");
+            return redirect()->back()->withInput();
+        }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $fileName = \ImagesHelper::UploadImage('users', $image, USER_ID);
+            if($image == false || $fileName == false){
+                \Session::flash('error', "Upload Image Failed !!");
+                return redirect()->back();
+            }            
+            $profileObj->image = $fileName;
+            $profileObj->save();
+        }
+
+        if(isset($input['password'])){
+            $validate = $this->validatePassword();
+            if($validate->fails()){
+                \Session::flash('error', $validate->messages()->first());
+                return redirect()->back()->withInput();
+            }
+            $userObj->password = \Hash::make($input['password']);
+            $userObj->save();
+        }
+
+        $display_name = $input['first_name'].' '.$input['last_name'];
+        $userObj->name = $display_name;
+        $userObj->save();
+
+        $profileObj->first_name = $input['first_name'];
+        $profileObj->last_name = $input['last_name'];
+        $profileObj->display_name = $display_name;
+        $profileObj->phone = $input['phone'];
+        $profileObj->gender = $input['gender'];
+        $profileObj->address = $input['address'];
+        $profileObj->save();
+
+        \Session::flash('success', "Alert! Update Successfully");
+        return \Redirect::back()->withInput();
+    }
 }

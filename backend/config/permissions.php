@@ -16,6 +16,8 @@ return [
     'UsersControllers@create' => 'add-user',
     'UsersControllers@delete' => 'delete-user',
     'UsersControllers@restore' => 'restore-user',
+    'UsersControllers@getProfile' => 'update-profile',
+    'UsersControllers@updateProfile' => 'update-profile',
 
     'GroupsControllers@index' => 'list-groups',
     'GroupsControllers@edit' => 'edit-group',
@@ -78,33 +80,9 @@ return [
     'VariablesControllers@add' => 'add-variable',
     'VariablesControllers@create' => 'add-variable',
     'VariablesControllers@delete' => 'delete-variable',
-    // 'BranchControllers@index' => 'list-branchs',
-    // 'BranchControllers@edit' => 'edit-branch',
-    // 'BranchControllers@update' => 'edit-branch',
-    // 'BranchControllers@add' => 'add-branch',
-    // 'BranchControllers@create' => 'add-branch',
-    // 'BranchControllers@delete' => 'delete-branch',
-
-    // 'DeptControllers@index' => 'list-depts',
-    // 'DeptControllers@edit' => 'edit-dept',
-    // 'DeptControllers@update' => 'edit-dept',
-    // 'DeptControllers@add' => 'add-dept',
-    // 'DeptControllers@create' => 'add-dept',
-    // 'DeptControllers@delete' => 'delete-dept',
-
-    // 'ManagementControllers@index' => 'list-managements',
-    // 'ManagementControllers@edit' => 'edit-management',
-    // 'ManagementControllers@update' => 'edit-management',
-    // 'ManagementControllers@add' => 'add-management',
-    // 'ManagementControllers@create' => 'add-management',
-    // 'ManagementControllers@delete' => 'delete-management',
-
-    // 'RelationControllers@index' => 'list-relations',
-    // 'RelationControllers@edit' => 'edit-relation',
-    // 'RelationControllers@update' => 'edit-relation',
-    // 'RelationControllers@add' => 'add-relation',
-    // 'RelationControllers@create' => 'add-relation',
-    // 'RelationControllers@delete' => 'delete-relation',
     
+    'RequestControllers@index' => 'list-student-requests',
+    'RequestControllers@update' => 'edit-student-request',
+    'RequestControllers@delete' => 'delete-student-request',
 
 ];

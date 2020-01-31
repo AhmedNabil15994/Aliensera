@@ -9,19 +9,18 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ asset('assets/images/avatar.png') }}" alt="">{{ FULL_NAME }}
+                    <img src="{{ App\Models\User::getData(App\Models\User::getOne(USER_ID))->image }}" alt="">{{ ucwords(FULL_NAME) }}
                     <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a href="{{ URL::to('/profile') }}"><i class="fa fa-user"></i> Profile</a></li>
                     @if(IS_ADMIN)
                     <li><a href="{{ URL::to('/variables') }}"><i class="fa fa-gears"></i> Settings</a></li>
                     @endif
-                    <li><a href="javascript:;"><i class="fa fa-question-circle"></i> Help</a></li>
                     <li><a href="{{ URL::to('/logout') }}"><i class="fa fa-sign-out"></i> Log Out</a></li>
                 </ul>
             </li>
-            <li role="presentation" class="dropdown">
+            {{-- <li role="presentation" class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-envelope-o"></i>
                 <span class="badge bg-green">0</span>
@@ -47,7 +46,7 @@
                         </div>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
     </nav>
     </div>

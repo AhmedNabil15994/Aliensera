@@ -437,6 +437,8 @@
     'UsersControllers@create' => 'add-user',
     'UsersControllers@delete' => 'delete-user',
     'UsersControllers@restore' => 'restore-user',
+    'UsersControllers@getProfile' => 'update-profile',
+    'UsersControllers@updateProfile' => 'update-profile',
     'GroupsControllers@index' => 'list-groups',
     'GroupsControllers@edit' => 'edit-group',
     'GroupsControllers@update' => 'edit-group',
@@ -492,6 +494,9 @@
     'VariablesControllers@add' => 'add-variable',
     'VariablesControllers@create' => 'add-variable',
     'VariablesControllers@delete' => 'delete-variable',
+    'RequestControllers@index' => 'list-student-requests',
+    'RequestControllers@update' => 'edit-student-request',
+    'RequestControllers@delete' => 'delete-student-request',
   ),
   'queue' => 
   array (

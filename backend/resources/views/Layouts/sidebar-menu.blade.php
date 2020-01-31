@@ -9,12 +9,12 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="{{ asset('assets/images/avatar.png') }}" alt="..." class="img-circle profile_img">
+                <img src="{{ App\Models\User::getData(App\Models\User::getOne(USER_ID))->image }}" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>{{ FULL_NAME }} <i class="label bg-green online">{{ trans('dashboard.online') }}</i></h2>
-                <span>{{ GROUP_NAME }}</span>
+                <h2>{{ ucwords(FULL_NAME) }} <i class="label bg-green online">{{ trans('dashboard.online') }}</i></h2>
+                <span>{{ ucwords(GROUP_NAME) }}</span>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -46,6 +46,16 @@
                             @endif
                             @if(\Helper::checkRules('list-lessons'))
                                 <li><a href="{{ URL::to('/lessons') }}">Lessons {!! App\Models\Lesson::getCount() ? "<span class='badge bg-green'>".App\Models\Lesson::getCount()."</span>" : '' !!}</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if(\Helper::checkRules('list-student-requests'))
+                    <li><a><i class="fa fa-info-circle"></i> Student Requests<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            @if(\Helper::checkRules('list-student-requests'))
+                                <li><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
                             @endif
                         </ul>
                     </li>

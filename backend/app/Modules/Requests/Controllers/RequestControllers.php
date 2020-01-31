@@ -1,0 +1,52 @@
+<?php namespace App\Http\Controllers;
+
+use App\Models\StudentRequest;
+use App\Models\Course;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Vimeo\Laravel\Facades\Vimeo;
+
+class RequestControllers extends Controller {
+
+    use \TraitsFunc;
+
+    public function index() {
+        $dataList = StudentRequest::dataList();
+        $dataList['courses'] = Course::dataList()['data'];
+        $dataList['instructors'] = User::getUsersByType(2);
+        $dataList['students'] = User::getUsersByType(3);
+        return view('Requests.Views.index')
+            ->with('data', (Object) $dataList);
+    }
+
+
+    public function update($id,$status) {
+        $id = (int) $id;
+
+        $requestObj = StudentRequest::getOne($id);
+        if($requestObj == null) {
+            return Redirect('404');
+        }
+
+        if(!in_array($status, [0,1])){
+            return Redirect('404');
+        }
+
+        $requestObj->status = $status;
+        $requestObj->updated_by = USER_ID;
+        $requestObj->updated_at = DATE_TIME;
+        $requestObj->save();
+
+        \Session::flash('success', "Alert! Update Successfully");
+        return \Redirect::back()->withInput();
+    }
+
+    public function delete($id) {
+        $id = (int) $id;
+        $requestObj = StudentRequest::getOne($id);
+        return \Helper::globalDelete($requestObj);
+    }
+
+}

@@ -9,7 +9,6 @@
         <title>AlienSera | @yield('title')</title>
         @include('Layouts.head')
         @yield('otherhead')
-        @include('Partials.notf_messages')
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -28,6 +27,7 @@
         </div>
 
         @include('Layouts.footer')
-
+        @include('Partials.notf_messages')
+        
     </body>
 </html>

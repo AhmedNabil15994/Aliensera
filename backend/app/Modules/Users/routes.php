@@ -14,9 +14,9 @@ Route::group(['prefix' => '/users'] , function () {
     Route::get('restore/{id}', 'UsersControllers@restore');
 });
 
-//Users Online
-Route::get('usersOnlineCount/{group}', 'UsersControllers@getCountUsersOnline');
-Route::get('usersOnline/{group}', 'UsersControllers@getUsersOnline');
+//Profile
+Route::get('/profile', 'UsersControllers@getProfile');
+Route::post('/updateProfile', 'UsersControllers@updateProfile');
 
 /*----------------------------------------------------------
 Groups

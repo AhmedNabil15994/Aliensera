@@ -72,7 +72,7 @@ class User extends Model{
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
         $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
         $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
-        $data->image = self::getPhotoPath($source->id, $source->image);
+        $data->image = self::getPhotoPath($source->id, $source->Profile->image);
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
