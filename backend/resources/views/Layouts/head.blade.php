@@ -39,6 +39,13 @@
             border: 1px solid #DDD;
             border-radius: 50%;
         }
+        .child_menu li a span.badge{
+            width: 20px;
+            height: 20px;
+            padding: 3px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
         .imagesHolder figure {
             float: left;
             width: 250px;

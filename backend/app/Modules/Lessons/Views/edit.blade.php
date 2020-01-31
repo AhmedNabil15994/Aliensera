@@ -165,11 +165,136 @@
             </div>
         </form>
         <hr>
-        @if($data->data->status == 1 || IS_ADMIN == true)
+        @if( $data->data->course_status == 3 && ($data->data->status == 1 || IS_ADMIN == true))
         <div class="col-xs-12">
             <div class="row" >
                 <div class="col-xs-12">
                     <div class="row">
+                        @if(\Helper::checkRules('add-lesson-question'))
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Lesson Quiz Questions</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Question</label>
+                                                <input type="text" class="form-control" placeholder="Enter Question" name="question">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Answer A</label>
+                                                <input type="text" class="form-control" placeholder="Enter Answer A" name="answer_a">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Answer B</label>
+                                                <input type="text" class="form-control" placeholder="Enter Answer B" name="answer_b">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Answer C</label>
+                                                <input type="text" class="form-control" placeholder="Enter Answer C" name="answer_c">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Answer D</label>
+                                                <input type="text" class="form-control" placeholder="Enter Answer D" name="answer_d">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Correct Answer</label>
+                                                <select class="form-control" name="correct_answer">
+                                                    <option value="">Select Correct Answer</option>
+                                                    <option value="a">Answer A</option>
+                                                    <option value="b">Answer B</option>
+                                                    <option value="c">Answer C</option>
+                                                    <option value="d">Answer D</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group text-right">
+                                                <button class="btn btn-sm btn-warning clear-question"><i class="fa fa-refresh"></i></button>
+                                                <button class="btn btn-sm btn-success add-question"><i class="fa fa-plus"></i> Add</button>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>List Questions <span>Total:</span><span class="total_questions"> {{ count((array)$data->data->questions) }}</span></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content x_content_questions">
+                                    @if(!empty((array)$data->data->questions))
+                                    <div class="quiz">
+                                        <div class="row">
+                                            <div class="col-xs-1">No#</div>
+                                            <div class="col-xs-2">Question</div>
+                                            <div class="col-xs-2">Answer A</div>
+                                            <div class="col-xs-2">Answer B</div>
+                                            <div class="col-xs-2">Answer C</div>
+                                            <div class="col-xs-2">Answer D</div>
+                                            <div class="col-xs-1 text-center">Action</div>
+                                        </div>
+                                        @foreach($data->data->questions as $key => $question)
+                                        <div class="row results" id="questions{{ $question->id }}">
+                                            <div class="col-xs-1">{{ $key+1 }}</div>
+                                            <div class="col-xs-2">{{ $question->question }}</div>
+                                            <div class="col-xs-2">{!! $question->answer_a !!}</div>
+                                            <div class="col-xs-2">{!! $question->answer_b !!}</div>
+                                            <div class="col-xs-2">{!! $question->answer_c !!}</div>
+                                            <div class="col-xs-2">{!! $question->answer_d !!}</div>
+                                            <div class="col-xs-1 text-center">
+                                                @if(\Helper::checkRules('delete-lesson-question'))
+                                                <button class="btn btn-danger btn-xs" onclick="deleteQuestion({{ $question->id }})"><i class="fa fa-trash"></i></button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @else
+                                    <div class="empty">
+                                        No Quizes Available
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>        
+                                                <div class="embed-responsive embed-responsive-16by9">
+                                                    <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
                         @if(\Helper::checkRules('add-lesson-video'))
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
@@ -292,144 +417,6 @@
             </div>
         </div>
         <hr>
-        <div class="col-xs-12">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>Lesson Quiz Questions</h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Question</label>
-                                                <input type="text" class="form-control" placeholder="Enter Question" name="question">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Answer A</label>
-                                                <input type="text" class="form-control" placeholder="Enter Answer A" name="answer_a">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Answer B</label>
-                                                <input type="text" class="form-control" placeholder="Enter Answer B" name="answer_b">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Answer C</label>
-                                                <input type="text" class="form-control" placeholder="Enter Answer C" name="answer_c">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Answer D</label>
-                                                <input type="text" class="form-control" placeholder="Enter Answer D" name="answer_d">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Correct Answer</label>
-                                                <select class="form-control" name="correct_answer">
-                                                    <option value="">Select Correct Answer</option>
-                                                    <option value="a">Answer A</option>
-                                                    <option value="b">Answer B</option>
-                                                    <option value="c">Answer C</option>
-                                                    <option value="d">Answer D</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group text-right">
-                                                <button class="btn btn-sm btn-warning clear-question"><i class="fa fa-refresh"></i></button>
-                                                @if(\Helper::checkRules('add-lesson-question'))
-                                                <button class="btn btn-sm btn-success add-question"><i class="fa fa-plus"></i> Add</button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>    
-                                </div>
-                            </div>
-                        </div>
-                        @if(\Helper::checkRules('list-lesson-questions'))
-                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>List Questions <span>Total:</span><span class="total_questions"> {{ count((array)$data->data->questions) }}</span></h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content x_content_questions">
-                                    @if(!empty((array)$data->data->questions))
-                                    <div class="quiz">
-                                        <div class="row">
-                                            <div class="col-xs-1">No#</div>
-                                            <div class="col-xs-2">Question</div>
-                                            <div class="col-xs-2">Answer A</div>
-                                            <div class="col-xs-2">Answer B</div>
-                                            <div class="col-xs-2">Answer C</div>
-                                            <div class="col-xs-2">Answer D</div>
-                                            <div class="col-xs-1 text-center">Action</div>
-                                        </div>
-                                        @foreach($data->data->questions as $key => $question)
-                                        <div class="row results" id="questions{{ $question->id }}">
-                                            <div class="col-xs-1">{{ $key+1 }}</div>
-                                            <div class="col-xs-2">{{ $question->question }}</div>
-                                            <div class="col-xs-2">{!! $question->answer_a !!}</div>
-                                            <div class="col-xs-2">{!! $question->answer_b !!}</div>
-                                            <div class="col-xs-2">{!! $question->answer_c !!}</div>
-                                            <div class="col-xs-2">{!! $question->answer_d !!}</div>
-                                            <div class="col-xs-1 text-center">
-                                                @if(\Helper::checkRules('delete-lesson-question'))
-                                                <button class="btn btn-danger btn-xs" onclick="deleteQuestion({{ $question->id }})"><i class="fa fa-trash"></i></button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                    @else
-                                    <div class="empty">
-                                        No Quizes Available
-                                    </div>
-                                    @endif
-                                </div>
-                                <div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>        
-                                                <div class="embed-responsive embed-responsive-16by9">
-                                                    <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-        @elseif($data->data->status == 0 && IS_ADMIN == false)
-        <div class="col-xs-12">
-        Lesson Is In Active.
-        </div>
         @endif
     </div>
 </div>

@@ -57,7 +57,7 @@
                         <div class="col-md-6">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 @if(\Helper::checkRules('add-lesson'))
-                                    <a href="{{'/lessons/add'}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
+                                    <a href="{{URL::to('/lessons/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </ul>
@@ -83,7 +83,7 @@
                                 <td width="3%">{{ $value->id }}</td>
                                 <td>{{ $value->title }}</td>
                                 <td>{{ $value->course }}</td>
-                                <td>{{ $value->status == 1 ? 'Active' : 'In Active' }}</td>
+                                <td>{{ $value->status == 1 ? 'Active' : ($value->status == 0 ? 'In Active' : 'Instructor Sent Request') }}</td>
                                 <td width="150px" align="center">
                                     @if(\Helper::checkRules('edit-lesson'))
                                         <a href="{{ URL::to('/lessons/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>

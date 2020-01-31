@@ -27,83 +27,87 @@ function deleteLesson($id) {
 }
 
 var previewNode = document.querySelector("#template");
-previewNode.id = "";
-var previewTemplate = previewNode.parentNode.innerHTML;
-previewNode.parentNode.removeChild(previewNode);
+if(previewNode){
+    previewNode.id = "";
+    var previewTemplate = previewNode.parentNode.innerHTML;
+    previewNode.parentNode.removeChild(previewNode);
 
-var url = window.location.href;
-if(url.indexOf("#") != -1){
-    url = url.replace('#','');
-}
-var myURL = url+'/uploadVideo';
-
-var myDropzone = new Dropzone(document.body, {
-  url: myURL,
-  method: 'post',
-  thumbnailWidth: 80,
-  thumbnailHeight: 80,
-  parallelUploads: 20,
-  previewTemplate: previewTemplate,
-  acceptedFiles: '.3gp,.3g2,.avi,.uvh,.uvm,.uvu,.uvp,.uvs,.uaa,.fvt,.f4v,.flv,.fli,.h261,.h263,.h264,.jpgv,.m4v,.asf,.pyv,.wm,.wmx,.wmv,.wvx,.mj2,.mxu,.mpeg,.mp4,.ogv,.webm,.qt,.movie,.viv,.wav,.avi,.mkv',
-  autoQueue: false,
-  previewsContainer: "#previews",
-  clickable: ".fileinput-button"
-});
-
-myDropzone.on("addedfile", function(file) {
-  file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
-});
-
-myDropzone.on("totaluploadprogress", function(progress) {
-  document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
-});
-
-myDropzone.on("sending", function(file) {
-  document.querySelector("#total-progress").style.opacity = "1";
-  file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
-});
-
-myDropzone.on("queuecomplete", function(progress) {
-  document.querySelector("#total-progress").style.opacity = "0";
-});
-
-myDropzone.on("complete", function(file) {
-    myDropzone.removeFile(file);
-});
-
-document.querySelector("#actions .start").onclick = function() {
-  myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-};
-document.querySelector("#actions .cancel").onclick = function() {
-  myDropzone.removeAllFiles(true);
-};
-
-myDropzone.on("success", function( file, result ) {
-    if(result.status.status == 1){
-        var count = parseInt($('span.total_videos').html());
-        var newCount = count + 1;
-        var videoString = '<div class="row results" id="results'+result.data.id+'">'+
-                            '<div class="col-xs-1">'+ newCount +'</div>'+
-                            '<div class="col-xs-5">'+ result.data.title +'</div>'+
-                            '<div class="col-xs-2 text-center">'+ result.data.duration +'</div>'+
-                            '<div class="col-xs-2 text-center">'+ result.data.size +'</div>'+
-                            '<div class="col-xs-2 text-center">'+ 
-                                '<button class="btn btn-default btn-xs" data-link="'+result.data.link+'"><i class="fa fa-play"></i></button>'+
-                                '<a href="/videos/'+result.data.id+'/comments" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>'+
-                                '<button class="btn btn-danger btn-xs" onclick="deleteLecture('+result.data.id+')"><i class="fa fa-trash"></i></button>'+
-                            '</div>'+
-                          '</div>';
-        if(result.count > 1){
-            $('.playlist').append(videoString);
-            $('span.total_videos').html(newCount);
-        }else if(result.count == 1){
-            location.reload();
-        }                       
-        successNotification(result.status.message);
-    }else{
-        alert(result.status.message);
+    var url = window.location.href;
+    if(url.indexOf("#") != -1){
+        url = url.replace('#','');
     }
-});
+    var myURL = url+'/uploadVideo';
+
+    var myDropzone = new Dropzone(document.body, {
+      url: myURL,
+      method: 'post',
+      thumbnailWidth: 80,
+      thumbnailHeight: 80,
+      parallelUploads: 20,
+      previewTemplate: previewTemplate,
+      acceptedFiles: '.3gp,.3g2,.avi,.uvh,.uvm,.uvu,.uvp,.uvs,.uaa,.fvt,.f4v,.flv,.fli,.h261,.h263,.h264,.jpgv,.m4v,.asf,.pyv,.wm,.wmx,.wmv,.wvx,.mj2,.mxu,.mpeg,.mp4,.ogv,.webm,.qt,.movie,.viv,.wav,.avi,.mkv',
+      autoQueue: false,
+      previewsContainer: "#previews",
+      clickable: ".fileinput-button"
+    });
+
+    myDropzone.on("addedfile", function(file) {
+      file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+    });
+
+    myDropzone.on("totaluploadprogress", function(progress) {
+      document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+    });
+
+    myDropzone.on("sending", function(file) {
+      document.querySelector("#total-progress").style.opacity = "1";
+      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+    });
+
+    myDropzone.on("queuecomplete", function(progress) {
+      document.querySelector("#total-progress").style.opacity = "0";
+    });
+
+    myDropzone.on("complete", function(file) {
+        myDropzone.removeFile(file);
+    });
+
+    document.querySelector("#actions .start").onclick = function() {
+      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+    };
+    document.querySelector("#actions .cancel").onclick = function() {
+      myDropzone.removeAllFiles(true);
+    };
+
+    myDropzone.on("success", function( file, result ) {
+        if(result.status.status == 1){
+            var count = parseInt($('span.total_videos').html());
+            var newCount = count + 1;
+            var videoString = '<div class="row results" id="results'+result.data.id+'">'+
+                                '<div class="col-xs-1">'+ newCount +'</div>'+
+                                '<div class="col-xs-5">'+ result.data.title +'</div>'+
+                                '<div class="col-xs-2 text-center">'+ result.data.duration +'</div>'+
+                                '<div class="col-xs-2 text-center">'+ result.data.size +'</div>'+
+                                '<div class="col-xs-2 text-center">'+ 
+                                    '<button class="btn btn-default btn-xs" data-link="'+result.data.link+'"><i class="fa fa-play"></i></button>'+
+                                    '<a href="/videos/'+result.data.id+'/comments" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>'+
+                                    '<button class="btn btn-danger btn-xs" onclick="deleteLecture('+result.data.id+')"><i class="fa fa-trash"></i></button>'+
+                                '</div>'+
+                              '</div>';
+            if(result.count > 1){
+                $('.playlist').append(videoString);
+                $('span.total_videos').html(newCount);
+            }else if(result.count == 1){
+                location.reload();
+            }                       
+            successNotification(result.status.message);
+        }else{
+            alert(result.status.message);
+        }
+    });
+}
+
+
 
 $(document).on('click','.row.results .btn.btn-default.btn-xs',function(){
     var link = $(this).attr('data-link');

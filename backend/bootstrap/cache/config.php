@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'IMAGE_BASE' => 'http://backend.aliensera.loc/uploads/',
+    'IMAGE_BASE' => 'http://backend.aliensera.loc/',
     'name' => 'AlienSera',
     'env' => 'local',
     'debug' => true,

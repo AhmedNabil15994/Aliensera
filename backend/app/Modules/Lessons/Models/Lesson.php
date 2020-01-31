@@ -82,11 +82,23 @@ class Lesson extends Model{
         $data->title = $source->title;
         $data->course_id = $source->course_id;
         $data->course = $source->Course->title;
+        $data->course_status = $source->Course->status;
         $data->description = $source->description;
         $data->videos = LessonVideo::dataList($source->id);
         $data->questions = LessonQuestion::dataList($source->id);
         $data->status = $source->status;
         return $data;
+    }
+
+    static function getCount(){
+        if(IS_ADMIN){
+            $count = self::NotDeleted()->where('status',2)->count();
+        }else{
+            $count = self::NotDeleted()->whereHas('Course',function($courseQuery){
+                $courseQuery->where('instructor_id',USER_ID)->where('status',1);
+            })->where('status',2)->count();
+        }
+        return $count;
     }
 
 }

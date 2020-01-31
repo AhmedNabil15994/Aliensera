@@ -7,12 +7,13 @@ class ImagesHelper {
 
     static function GetImagePath($strAction, $id, $filename) {
 
-        $default = URL::to('/assets/images/not-available.jpg');
+        $default = asset('/assets/images/not-available.jpg');
 
         if($filename == '') {
             return $default;
         }
 
+        // $path = Config::get('app.IMAGE_BASE').'public/';
         $path = Config::get('app.IMAGE_BASE');
 
         $checkFile = public_path() . '/uploads';
@@ -20,19 +21,19 @@ class ImagesHelper {
 
         switch ($strAction) {
             case "users":
-                $fullPath = $path . '/users/' . $id . '/' . $filename;
+                $fullPath = $path . 'uploads' . '/users/' . $id . '/' . $filename;
                 $checkFile = $checkFile . '/users/' . $id . '/' . $filename;
-                return is_file($checkFile) ? URL::to($fullPath) : $default;
+                return is_file($checkFile) ? $fullPath : $default;
                 break;
             case "courses":
-                $fullPath = $path . '/courses/' . $id . '/' . $filename;
+                $fullPath = $path . 'uploads' . '/courses/' . $id . '/' . $filename;
                 $checkFile = $checkFile . '/courses/' . $id . '/' . $filename;
-                return is_file($checkFile) ? URL::to($fullPath) : $default;
+                return is_file($checkFile) ? $fullPath : $default;
                 break;
             case "lessons":
-                $fullPath = $path . '/lessons/' . $id . '/' . $filename;
+                $fullPath = $path . 'uploads' . '/lessons/' . $id . '/' . $filename;
                 $checkFile = $checkFile . '/lessons/' . $id . '/' . $filename;
-                return is_file($checkFile) ? URL::to($fullPath) : $default;
+                return is_file($checkFile) ? $fullPath : $default;
                 break;
         }
 

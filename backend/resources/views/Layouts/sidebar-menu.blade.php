@@ -42,10 +42,10 @@
                     <li><a><i class="fa fa-certificate"></i> Courses<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-courses'))
-                                <li><a href="{{ URL::to('/courses') }}">Courses</a></li>
+                                <li><a href="{{ URL::to('/courses') }}">Courses {!! App\Models\Course::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
                             @endif
                             @if(\Helper::checkRules('list-lessons'))
-                                <li><a href="{{ URL::to('/lessons') }}">Lessons</a></li>
+                                <li><a href="{{ URL::to('/lessons') }}">Lessons {!! App\Models\Lesson::getCount() ? "<span class='badge bg-green'>".App\Models\Lesson::getCount()."</span>" : '' !!}</a></li>
                             @endif
                         </ul>
                     </li>
@@ -86,7 +86,7 @@
 
         <!-- /menu footer buttons -->
         <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings" href="{{ URL::to('settings') }}">
+            <a data-toggle="tooltip" data-placement="top" title="Settings" href="{{ IS_ADMIN == true ?  URL::to('/variables') : '#' }}">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
             </a>
             <a data-toggle="tooltip" data-placement="top" title="Profile" href="#">

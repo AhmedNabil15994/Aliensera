@@ -75,7 +75,7 @@
                         <div class="col-md-6">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 @if(\Helper::checkRules('add-user'))
-                                    <a href="{{'/users/add'}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
+                                    <a href="{{URL::to('/users/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </ul>
