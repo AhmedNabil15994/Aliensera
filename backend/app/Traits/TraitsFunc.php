@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\UserProfile;
+use App\Models\Profile;
 use App\Models\Users;
 use App\Models\ApiAuth;
 
@@ -35,7 +35,7 @@ trait TraitsFunc
     }
 
     public function Creator(){
-        return $this->belongsTo(UserProfile::class, 'created_by', 'id')
+        return $this->belongsTo(Profile::class, 'created_by', 'id')
             ->withDefault(function ($user) {
                 $user->display_name = '';
                 $user->first_name = '';
@@ -44,7 +44,7 @@ trait TraitsFunc
     }
 
     public function Updater(){
-        return $this->belongsTo(UserProfile::class, 'updated_by', 'id')
+        return $this->belongsTo(Profile::class, 'updated_by', 'id')
             ->withDefault(function ($user) {
                 $user->display_name = '';
                 $user->first_name = '';

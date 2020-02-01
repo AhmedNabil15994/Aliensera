@@ -37,11 +37,12 @@
       19 => 'Illuminate\\Translation\\TranslationServiceProvider',
       20 => 'Illuminate\\Validation\\ValidationServiceProvider',
       21 => 'Illuminate\\View\\ViewServiceProvider',
-      22 => 'App\\Providers\\AppServiceProvider',
-      23 => 'App\\Providers\\SettingsServiceProvider',
-      24 => 'App\\Providers\\AuthServiceProvider',
-      25 => 'App\\Providers\\EventServiceProvider',
-      26 => 'App\\Providers\\RouteServiceProvider',
+      22 => 'Watson\\Active\\ActiveServiceProvider',
+      23 => 'App\\Providers\\AppServiceProvider',
+      24 => 'App\\Providers\\SettingsServiceProvider',
+      25 => 'App\\Providers\\AuthServiceProvider',
+      26 => 'App\\Providers\\EventServiceProvider',
+      27 => 'App\\Providers\\RouteServiceProvider',
     ),
     'aliases' => 
     array (
@@ -79,6 +80,7 @@
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Input' => 'Illuminate\\Support\\Facades\\Input',
+      'Active' => 'Watson\\Active\\Facades\\Active',
     ),
   ),
   'auth' => 
@@ -497,6 +499,7 @@
     'RequestControllers@index' => 'list-student-requests',
     'RequestControllers@update' => 'edit-student-request',
     'RequestControllers@delete' => 'delete-student-request',
+    'CourseStudentControllers@index' => 'list-course-students',
   ),
   'queue' => 
   array (
@@ -622,6 +625,10 @@
   'debug-server' => 
   array (
     'host' => 'tcp://127.0.0.1:9912',
+  ),
+  'active' => 
+  array (
+    'class' => 'active',
   ),
   'trustedproxy' => 
   array (

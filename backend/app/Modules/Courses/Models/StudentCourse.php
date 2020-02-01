@@ -26,12 +26,12 @@ class StudentCourse extends Model{
         $source = self::NotDeleted()->where('id', $id);
             
         if(IS_ADMIN == false){
-            $source->where('instructor_id',USER_ID);
+            $source->where('instructor_id',USER_ID)->where('status',1);
         }
         return $source->first();
     }
 
-    static function dataList($course_id=null,$creator=null,$student=null) {
+    static function dataList($course_id=null,$creator=null,$student=null,$paginate=false) {
         $input = \Input::all();
         $source = self::NotDeleted()->where('status',1);
 
@@ -45,11 +45,22 @@ class StudentCourse extends Model{
             $source->where('student_id', $student);
         } 
 
+        if(isset($input['student_id']) && !empty($input['student_id'])){
+            $source->where('student_id', $input['student_id']);
+        }
+
+        if(isset($input['course_id']) && !empty($input['course_id'])){
+            $source->where('course_id', $input['course_id']);
+        }
+
         if(IS_ADMIN == false){
             $source->where('instructor_id', $creator);
         }
 
         $source->orderBy('id','DESC');
+        if($paginate){
+            return self::generateObjWithPagination($source);
+        }
         return self::generateObj($source);
     }
 
@@ -86,6 +97,19 @@ class StudentCourse extends Model{
         return (object) $list;
     }
 
+    static function generateObjWithPagination($source){
+        $sourceArr = $source->paginate(PAGINATION);
+        $list = [];
+        foreach($sourceArr as $key => $value) {
+            $list[$key] = new \stdClass();
+            $list[$key] = self::getData($value);
+        }
+        
+        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        $data['data'] = $list;
+        return (object) $data;
+    }
+
     static function generateObj2($source,$type=null){
         $list = [];
         foreach($source as $key => $value) {
@@ -108,6 +132,7 @@ class StudentCourse extends Model{
         $data->student_id = $source->student_id;
         $data->instructor_id = $source->instructor_id;
         $data->course_title = $source->Course != null ? $source->Course->title : '';
+        $data->myCourse = $source->Course != null ? Course::getData($source->Course) : [];
         $data->instructor = $source->Instructor != null ? $source->Instructor->name : '';
         $data->student = $source->Student != null ? $source->Student->name : '';
         $data->status = $source->status;

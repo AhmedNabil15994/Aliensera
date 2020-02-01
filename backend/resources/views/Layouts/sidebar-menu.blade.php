@@ -23,67 +23,79 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu">
-                    <li><a href="{{ URL::to('/') }}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li class="{{ Active(URL::to('/')) }}"><a href="{{ URL::to('/') }}"><i class="fa fa-home"></i> Dashboard</a></li>
 
                     @if(\Helper::checkRules('list-users,list-groups'))
-                    <li><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/users*')) }} {{ Active(URL::to('/groups*')) }}"><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-users'))
-                                <li><a href="{{ URL::to('/users') }}">Users</a></li>
+                                <li class="{{ Active(URL::to('/users*')) }}"><a href="{{ URL::to('/users') }}">Users</a></li>
                             @endif
                             @if(\Helper::checkRules('list-groups'))
-                                <li><a href="{{ URL::to('/groups') }}">Groups</a></li>
+                                <li class="{{ Active(URL::to('/groups*')) }}"><a href="{{ URL::to('/groups') }}">Groups</a></li>
                             @endif
                         </ul>
                     </li>
                     @endif
 
                     @if(\Helper::checkRules('list-courses,list-lessons'))
-                    <li><a><i class="fa fa-certificate"></i> Courses<span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/courses*')) }} {{ Active(URL::to('/lessons*')) }}"><a><i class="fa fa-certificate"></i> Courses<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-courses'))
-                                <li><a href="{{ URL::to('/courses') }}">Courses {!! App\Models\Course::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
+                                <li class="{{ Active(URL::to('/courses*')) }}"><a href="{{ URL::to('/courses') }}">Courses {!! App\Models\Course::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
                             @endif
                             @if(\Helper::checkRules('list-lessons'))
-                                <li><a href="{{ URL::to('/lessons') }}">Lessons {!! App\Models\Lesson::getCount() ? "<span class='badge bg-green'>".App\Models\Lesson::getCount()."</span>" : '' !!}</a></li>
+                                <li class="{{ Active(URL::to('/lessons*')) }}"><a href="{{ URL::to('/lessons') }}">Lessons {!! App\Models\Lesson::getCount() ? "<span class='badge bg-green'>".App\Models\Lesson::getCount()."</span>" : '' !!}</a></li>
                             @endif
                         </ul>
                     </li>
                     @endif
 
+                    @if(!IS_ADMIN)
+                    @if(\Helper::checkRules('list-course-students'))
+                    <li class="{{ Active(URL::to('/courseStudents')) }} {{ Active(URL::to('/users/view*')) }}"><a><i class="fa fa-info-circle"></i>Students Courses<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            @if(\Helper::checkRules('list-course-students'))
+                                <li class="{{ Active(URL::to('/courseStudents')) }} {{ Active(URL::to('/users/view*')) }}"><a href="{{ URL::to('/courseStudents') }}">Students Courses</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                    @endif
+
                     @if(\Helper::checkRules('list-student-requests'))
-                    <li><a><i class="fa fa-info-circle"></i> Student Requests<span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/requests*')) }}"><a><i class="fa fa-info-circle"></i> Student Requests<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-student-requests'))
-                                <li><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
+                                <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
                             @endif
                         </ul>
                     </li>
                     @endif
 
                     @if(\Helper::checkRules('list-universities,list-faculties'))
-                    <li><a><i class="fa fa-building"></i> University & Faculty<span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/universities*')) }} {{ Active(URL::to('/faculties*')) }} {{ Active(URL::to('/fields')) }}"><a><i class="fa fa-building"></i> University & Faculty<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-universities'))
-                                <li><a href="{{ URL::to('/universities') }}">University </a></li>
+                                <li class="{{ Active(URL::to('/universities*')) }}"><a href="{{ URL::to('/universities') }}">University </a></li>
                             @endif
 
                             @if(\Helper::checkRules('list-faculties'))
-                                <li><a href="{{ URL::to('/faculties') }}">Faculty </a></li>
+                                <li class="{{ Active(URL::to('/faculties*')) }}"><a href="{{ URL::to('/faculties') }}">Faculty </a></li>
                             @endif
 
                             @if(\Helper::checkRules('list-fields'))
-                                <li><a href="{{ URL::to('/fields') }}">Fields </a></li>
+                                <li class="{{ Active(URL::to('/fields*')) }}"><a href="{{ URL::to('/fields') }}">Fields </a></li>
                             @endif
                         </ul>
                     </li>
                     @endif
 
                     @if(\Helper::checkRules('list-variables'))
-                    <li><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/variables*')) }}"><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-variables'))
-                                <li><a href="{{ URL::to('/variables') }}">Variables</a></li>
+                                <li class="{{ Active(URL::to('/variables*')) }}"><a href="{{ URL::to('/variables') }}">Variables</a></li>
                             @endif
                         </ul>
                     </li>

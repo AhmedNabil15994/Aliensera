@@ -10,7 +10,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <div align="right">
                                 <button type="submit" class="btn btn-primary" style="width:110px;"><i class="fa fa fa-search"></i> Search ..</button>
-                                @if(Input::has('title') || Input::has('instructor_id') || Input::has('status') || Input::has('course_type') || Input::has('university_id') || Input::has('faculty') | Input::has('status') )
+                                @if(Input::has('title') || Input::has('instructor_id') || Input::has('status') || Input::has('course_type') || Input::has('university_id') || Input::has('faculty') || Input::has('status') )
                                     <a href="{{ URL::to('/courses') }}" type="submit" class="btn btn-danger" style="color: black;"><i class="fa fa fa-refresh"></i></a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

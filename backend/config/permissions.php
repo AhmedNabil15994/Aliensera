@@ -85,4 +85,7 @@ return [
     'RequestControllers@update' => 'edit-student-request',
     'RequestControllers@delete' => 'delete-student-request',
 
+    'CourseStudentControllers@index' => 'list-course-students',
+
+
 ];

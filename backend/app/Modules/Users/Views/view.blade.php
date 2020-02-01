@@ -73,7 +73,7 @@
                 <div class="x_title">
                     <h2>{{ $data->data->group }}: <small>{{ $data->data->name }}</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>

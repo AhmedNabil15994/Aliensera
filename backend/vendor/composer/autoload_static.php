@@ -34,6 +34,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '0d8253363903f0ac7b0978dcde4e28a0' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/helpers.php',
+        '86ade239cbe8025aa999b5c6eb117f17' => __DIR__ . '/..' . '/watson/active/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -53,6 +54,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         array (
             'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
+            'Watson\\Active\\' => 14,
         ),
         'V' => 
         array (
@@ -192,6 +194,10 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Watson\\Active\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/watson/active/src',
         ),
         'Vimeo\\' => 
         array (
@@ -477,6 +483,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\CourseStudentControllers' => __DIR__ . '/../..' . '/app/Modules/CourseStudents/Controllers/CourseStudentControllers.php',
         'App\\Http\\Controllers\\CoursesControllers' => __DIR__ . '/../..' . '/app/Modules/Courses/Controllers/CoursesControllers.php',
         'App\\Http\\Controllers\\DashboardControllers' => __DIR__ . '/../..' . '/app/Modules/Dashboard/Controllers/DashboardControllers.php',
         'App\\Http\\Controllers\\FacultyControllers' => __DIR__ . '/../..' . '/app/Modules/Faculty/Controllers/FacultyControllers.php',
@@ -4258,6 +4265,10 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'Vimeo\\Exceptions\\VimeoUploadException' => __DIR__ . '/..' . '/vimeo/vimeo-api/src/Vimeo/Exceptions/VimeoUploadException.php',
         'Vimeo\\Vimeo' => __DIR__ . '/..' . '/vimeo/vimeo-api/src/Vimeo/Vimeo.php',
         'Vimeos' => __DIR__ . '/../..' . '/app/Helper/Vimeos.php',
+        'Watson\\Active\\Active' => __DIR__ . '/..' . '/watson/active/src/Active.php',
+        'Watson\\Active\\ActiveServiceProvider' => __DIR__ . '/..' . '/watson/active/src/ActiveServiceProvider.php',
+        'Watson\\Active\\Facades\\Active' => __DIR__ . '/..' . '/watson/active/src/Facades/Active.php',
+        'Watson\\Active\\Route' => __DIR__ . '/..' . '/watson/active/src/Route.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',

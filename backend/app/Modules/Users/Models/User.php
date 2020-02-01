@@ -50,6 +50,12 @@ class User extends Model{
         })->orderBy('id','DESC')->get();
     }
 
+    static function getInstructorStudents($ids){
+        return self::NotDeleted()->where('is_active',1)->whereIn('id',$ids)->with('Profile')->whereHas('Profile',function($queryProfile){
+            $queryProfile->where('group_id',3);
+        })->orderBy('id','DESC')->get();
+    }
+
     static function generateObj($source){
         $sourceArr = $source->paginate(PAGINATION);
 
@@ -181,9 +187,6 @@ class User extends Model{
         $userObj->name = $input['first_name'].' '.$input['last_name'];
         $userObj->is_active = isset($input['active']) ? 1 : 0;
         $userObj->password = \Hash::make($input['password']);
-        if(isset($input['permissions'])){
-            $userObj->extra_rules = serialize($input['permissions']);
-        }
         $userObj->save();
 
         self::saveProfile($userObj);
@@ -198,7 +201,9 @@ class User extends Model{
         if($profileObj == null){
             $profileObj = new Profile();
         }
-
+        if(isset($input['permissions'])){
+            $profileObj->extra_rules = serialize($input['permissions']);
+        }
         $profileObj->user_id = $userObj->id;
         $profileObj->first_name = $input['first_name'];
         $profileObj->last_name = $input['last_name'];
