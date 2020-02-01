@@ -56,7 +56,8 @@ class RouteServiceProvider extends ServiceProvider
                 
             require app_path('Modules/Auth/routes.php');
             require app_path('Modules/Home/routes.php');
-            
+            require app_path('Modules/Faculty/routes.php');
+            require app_path('Modules/University/routes.php');
         });
     }
 
@@ -71,8 +72,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware(['api'])->namespace($this->namespace)
              ->group(function () {
-             require app_path('Modules/Users/routes.php');
-             require app_path('Modules/Product/routes.php');
+                require app_path('Modules/Users/routes.php');
         });
     }
 }

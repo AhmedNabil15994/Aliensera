@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'IMAGE_BASE' => 'https://img.sayrat.com',
-    //'IMAGE_BASE' => 'http://engine.free-sale.loc',
+    // 'IMAGE_BASE' => env('IMAGE_BASE', 'http://aliensera.com/engine/'),
+    'IMAGE_BASE' => env('IMAGE_BASE', 'http://engine.aliensera.loc/'),
 
 
     'name' => env('APP_NAME', 'Laravel'),

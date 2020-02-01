@@ -34,13 +34,8 @@
                                 <div class="row" >
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>University</label>
-                                            <select class="form-control" name="university_id">
-                                                <option value="">Select An University..</option>
-                                                @foreach($data->universities as $university)
-                                                <option value="{{ $university->id }}" {{ $data->data->university_id == $university->id ? 'selected': '' }}>{{ $university->title }}</option>
-                                                @endforeach
-                                            </select>
+                                            <label>Number Of Years</label>
+                                            <input type="number" min="1" class="form-control" placeholder="Enter # Years" name="number_of_years" value="{{ $data->data->years }}">
                                         </div>
                                     </div>
                                 </div>
@@ -50,6 +45,21 @@
                                     <label>Active</label>
                                     <div class="checkbox">
                                         <input type="checkbox" class="flat" name="status" {{ $data->data->status == 1 ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row" >
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>University</label>
+                                            <select class="form-control" name="university_id">
+                                                <option value="">Select An University..</option>
+                                                @foreach($data->universities as $university)
+                                                <option value="{{ $university->id }}" {{ $data->data->university_id == $university->id ? 'selected': '' }}>{{ $university->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

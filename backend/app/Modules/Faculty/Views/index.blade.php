@@ -73,6 +73,7 @@
                             <th>ID</th>
                             <th>Title</th>
                             <th>Description</th>
+                            <th># Of Years</th>
                             <th>University</th>
                             <th>Status</th>
                             <th style="padding-left: 50px">Actions</th>
@@ -84,6 +85,7 @@
                                 <td width="3%">{{ $value->id }}</td>
                                 <td>{{ $value->title }}</td>
                                 <td>{{ $value->description }}</td>
+                                <td>{{ $value->years }}</td>
                                 <td>{{ $value->university }}</td>
                                 <td>{{ $value->status == 1 ? 'Active' : 'In Active' }}</td>
                                 <td width="150px" align="center">
@@ -99,7 +101,8 @@
                         @if($data->pagination->total_count == 0)
                             <tr>
                                 <td></td>
-                                <td colspan="5">No Data Found</td>
+                                <td colspan="6">No Data Found</td>
+                                <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>

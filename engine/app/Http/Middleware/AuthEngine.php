@@ -2,7 +2,7 @@
 
 use App\Models\ApiAuth;
 use App\Models\ApiKeys;
-use App\Models\Users;
+use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Session;
 
@@ -34,7 +34,12 @@ class AuthEngine
         }
 
         // Update logins date realtime
-        $userObj = Users::getOne(USER_ID);
+        $userObj = User::getOne(USER_ID);
+        if ($userObj != null) {
+            $userObj->last_login = DATE_TIME;
+            $userObj->save();
+        }
+
         define('APP_TOKEN', $apiAuthToken);
         return $next($request);
     }

@@ -64,6 +64,7 @@ class FacultyControllers extends Controller {
 
         $facultyObj->title = $input['title'];
         $facultyObj->description = $input['description'];
+        $facultyObj->number_of_years = $input['number_of_years'];
         $facultyObj->university_id = $input['university_id'];
         $facultyObj->status = isset($input['status']) ? 1 : 0;
         $facultyObj->updated_by = USER_ID;
@@ -91,6 +92,7 @@ class FacultyControllers extends Controller {
         $facultyObj = new Faculty;
         $facultyObj->title = $input['title'];
         $facultyObj->description = $input['description'];
+        $facultyObj->number_of_years = $input['number_of_years'];
         $facultyObj->university_id = $input['university_id'];
         $facultyObj->status = isset($input['status']) ? 1 : 0;
         $facultyObj->created_by = USER_ID;

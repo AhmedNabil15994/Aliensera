@@ -60,6 +60,7 @@ class Faculty extends Model{
         $data->id = $source->id;
         $data->title = $source->title;
         $data->description = $source->description;
+        $data->years = $source->number_of_years;
         $data->university_id = $source->university_id;
         $data->university = $source->University != null ? $source->University->title : '';
         $data->status = $source->status;
