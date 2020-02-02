@@ -175,6 +175,7 @@ class Course extends Model{
         $data->field = $source->Field != null ? $source->Field->title : '';
         $data->field_id = $source->field_id;
         $data->price = $source->price;
+        $data->year = $source->year;
         $data->valid_until = $source->valid_until;
         $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
         $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;

@@ -117,6 +117,18 @@ class CoursesControllers extends Controller {
             if($facultyObj == null) {
                 return Redirect('404');
             }
+
+            if(isset($input['year']) && !empty($input['year']) ){
+                if($input['year'] < 1){
+                    \Session::flash('error', 'Year Must Be Greater than or equal to 1');
+                    return redirect()->back()->withInput();
+                }
+                if ($input['year'] > 0 && $input['year'] > $facultyObj->number_of_years) {
+                    \Session::flash('error', "Year Must Be Less than or equal to ".$facultyObj->number_of_years);
+                    return redirect()->back()->withInput();
+                }
+            }    
+
         }
 
         $courseObj->title = $input['title'];
@@ -130,9 +142,11 @@ class CoursesControllers extends Controller {
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
+            $courseObj->year = $input['year'];
         }else{
             $courseObj->university_id = null;
             $courseObj->faculty_id = null;
+            $courseObj->year = null;
         }
         $courseObj->updated_by = USER_ID;
         $courseObj->updated_at = DATE_TIME;
@@ -195,6 +209,17 @@ class CoursesControllers extends Controller {
             if($facultyObj == null) {
                 return Redirect('404');
             }
+
+            if(isset($input['year']) && !empty($input['year']) ){
+                if($input['year'] < 1){
+                    \Session::flash('error', 'Year Must Be Greater than or equal to 1');
+                    return redirect()->back()->withInput();
+                }
+                if ($input['year'] > 0 && $input['year'] > $facultyObj->number_of_years) {
+                    \Session::flash('error', "Year Must Be Less than or equal to ".$facultyObj->number_of_years);
+                    return redirect()->back()->withInput();
+                }
+            }    
         }
 
         $courseObj = new Course;
@@ -209,6 +234,7 @@ class CoursesControllers extends Controller {
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
+            $courseObj->year = $input['year'];
         }
         $courseObj->created_by = USER_ID;
         $courseObj->created_at = DATE_TIME;
