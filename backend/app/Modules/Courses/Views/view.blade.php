@@ -247,7 +247,7 @@
                                                             <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                                             <div class="col-xs-2 text-center">
-                                                                <button class="btn btn-default btn-xs" data-link="{{ $video->video }}"><i class="fa fa-play"></i></button>
+                                                                <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i></button>
                                                                 <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>
                                                                 @if(\Helper::checkRules('delete-lesson-video'))
                                                                 <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
