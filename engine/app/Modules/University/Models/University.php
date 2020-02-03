@@ -12,8 +12,8 @@ class University extends Model {
 
  	
  	static function getOne($id) {
-        return self::NotDeleted()
-            ->find($id);
+        return self::NotDeleted()->where('status',1)
+            ->where('id',$id)->first();
     }
 
     static function dataList() {

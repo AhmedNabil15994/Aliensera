@@ -2,35 +2,29 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Faculty extends Model {
+class Field extends Model {
 
-    protected $table = 'faculties';
+    protected $table = 'course_fields';
     protected $primary_key = 'id';
     public $timestamps = false;
     
     use \TraitsFunc;
 
-    function University() {
-        return self::belongsTo('App\Models\University', 'university_id', 'id');
-    }
-
+ 	
  	static function getOne($id) {
- 		return self::NotDeleted()->where('status',1)
+        return self::NotDeleted()->where('status',1)
             ->where('id',$id)->first();
- 	}
+    }
 
     static function dataList() {
         $input = \Input::all();
-        
         $source = self::NotDeleted()->where('status',1);
-
+        
         if (isset($input['title']) && $input['title'] != '') {
             $source->where('title', 'LIKE', '%' . $input['title'] . '%')
                     ->orWhere('description', 'LIKE', '%' . $input['title'] . '%');
         }
-        if (isset($input['university_id']) && $input['university_id'] != '') {
-            $source->where('university_id', $input['university_id']);
-        }
+        
         return self::generateObj($source);
     }
 
@@ -46,15 +40,14 @@ class Faculty extends Model {
 
     static function getData($source,$view=null) {
         $input = \Input::all();
-        $facultyObj = new \stdClass();
-        $facultyObj->id = $source->id;
-        $facultyObj->title = $source->title;
-        $facultyObj->description = $source->description;
-        $facultyObj->status = $source->status;
-        $facultyObj->years = $source->number_of_years;
-        $facultyObj->university = $source->University->title;
-        $facultyObj->university_id = $source->university_id;
-        return $facultyObj;
+        
+        $universityObj = new \stdClass();
+        $universityObj->id = $source->id;
+        $universityObj->title = $source->title;
+        $universityObj->description = $source->description;
+        $universityObj->status = $source->status;
+        return $universityObj;
     }
+
 
  }

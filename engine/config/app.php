@@ -13,8 +13,8 @@ return [
     |
     */
 
-    // 'IMAGE_BASE' => env('IMAGE_BASE', 'http://aliensera.com/engine/'),
-    'IMAGE_BASE' => env('IMAGE_BASE', 'http://engine.aliensera.loc/'),
+    // 'IMAGE_BASE' => env('IMAGE_BASE', 'http://aliensera.com/backend/'),
+    'IMAGE_BASE' => env('IMAGE_BASE', 'http://backend.aliensera.loc/'),
 
 
     'name' => env('APP_NAME', 'Laravel'),

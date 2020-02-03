@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'IMAGE_BASE' => 'http://engine.aliensera.loc/',
+    'IMAGE_BASE' => 'http://backend.aliensera.loc/',
     'name' => 'Laravel',
     'debug_blacklist' => 
     array (

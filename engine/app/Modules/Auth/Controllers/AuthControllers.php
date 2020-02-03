@@ -44,7 +44,10 @@ class AuthController extends Controller {
         $email = $input['email'];
         $userObj = User::getLoginUser($email);
         if ($userObj == null) {
-            return \TraitsFunc::ErrorMessage("Sorry this email not found, Or your email not active", 400);
+            $userObj = User::getUserByUsername($email);
+            if($userObj == null){
+                return \TraitsFunc::ErrorMessage("Sorry this email/username not found, Or your email/username not active", 400);
+            }
         }
 
         $checkPassword = Hash::check($input['password'], $userObj->password);
@@ -117,6 +120,7 @@ class AuthController extends Controller {
         $dataObj->faculty_id = (int) $profile->faculty_id;
         $dataObj->faculty = $profile->Faculty ? $profile->Faculty->title : null;
         $dataObj->year = $profile->year;
+        $dataObj->username = $profile->username;
 
         return $dataObj;
     }
@@ -210,6 +214,8 @@ class AuthController extends Controller {
         $userObj->created_at = $dateTime;
         $userObj->save();
 
+        $slug = 'alien';
+        $username = User::generateUsername($slug, $userObj->id);
         $userObj->created_by = $userObj->id;
         $userObj->save();
 
@@ -226,6 +232,7 @@ class AuthController extends Controller {
         $profileObj->university_id = $input['university_id'];
         $profileObj->faculty_id = $input['faculty_id'];
         $profileObj->year = $input['year'];
+        $profileObj->username = $username;
         $profileObj->save();
 
         $apiKeyId = ApiKeys::checkApiKey()->id;
@@ -268,6 +275,7 @@ class AuthController extends Controller {
         $dataObj->faculty_id = (int) $profileObj->city_id;
         $dataObj->faculty = $profileObj->Faculty ? $profileObj->Faculty->title : null;
         $dataObj->year = $profileObj->year;
+        $dataObj->username = $profileObj->username;
         
         $statusObj['data'] = new \stdClass();
         $statusObj['data'] = $dataObj;

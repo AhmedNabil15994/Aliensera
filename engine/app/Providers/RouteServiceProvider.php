@@ -55,9 +55,9 @@ class RouteServiceProvider extends ServiceProvider
             ->group(function () {
                 
             require app_path('Modules/Auth/routes.php');
-            require app_path('Modules/Home/routes.php');
             require app_path('Modules/Faculty/routes.php');
             require app_path('Modules/University/routes.php');
+            require app_path('Modules/Field/routes.php');
         });
     }
 
@@ -72,7 +72,13 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware(['api'])->namespace($this->namespace)
              ->group(function () {
-                require app_path('Modules/Users/routes.php');
+                require app_path('Modules/User/routes.php');
+                require app_path('Modules/Home/routes.php');
+                require app_path('Modules/Course/routes.php');
+                require app_path('Modules/Favourites/routes.php');
+                require app_path('Modules/Cart/routes.php');
+                require app_path('Modules/Feedback/routes.php');
+
         });
     }
 }
