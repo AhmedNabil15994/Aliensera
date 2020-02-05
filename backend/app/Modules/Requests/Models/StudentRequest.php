@@ -6,7 +6,7 @@ class StudentRequest extends Model{
 
     use \TraitsFunc;
 
-    protected $table = 'student_requests';
+    protected $table = 'students_courses';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
