@@ -67,7 +67,7 @@
                     <li class="{{ Active(URL::to('/requests*')) }}"><a><i class="fa fa-info-circle"></i> Student Requests<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-student-requests'))
-                                <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\Course::getCount()."</span>" :'' !!}</a></li>
+                                <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\StudentRequest::getCount()."</span>" :'' !!}</a></li>
                             @endif
                         </ul>
                     </li>
