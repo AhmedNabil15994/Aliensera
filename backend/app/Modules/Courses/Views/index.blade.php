@@ -132,6 +132,7 @@
                             <th>Field</th>
                             <th>Price</th>
                             <th>Valid Until</th>
+                            <th>Active Students</th>
                             <th>Status</th>
                             <th style="padding-left: 50px">Actions</th>
                         </tr>
@@ -148,7 +149,8 @@
                                 <td>{{ $value->faculty }}</td>
                                 <td>{{ $value->field }}</td>
                                 <td>{{ $value->price }} $</td>
-                                <td>{{ $value->valid_until }}</td>
+                                <td width="10%">{{ $value->valid_until }}</td>
+                                <td>{{ $value->studentCount }}</td>
                                 <td>{!! $value->statusLabel !!}</td>
                                 <td width="150px" align="center">
                                     @if(\Helper::checkRules('edit-course'))
@@ -169,7 +171,8 @@
                         @if($data->pagination->total_count == 0)
                             <tr>
                                 <td></td>
-                                <td colspan="11">No Data Found</td>
+                                <td colspan="12">No Data Found</td>
+                                <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
