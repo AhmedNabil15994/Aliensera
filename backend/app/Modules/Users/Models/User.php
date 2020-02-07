@@ -72,13 +72,28 @@ class User extends Model{
         return $data;
     }
 
+    static function selectImage($source){
+        
+        if($source->Profile->image != null){
+            return self::getPhotoPath($source->id, $source->Profile->image);
+        }else{
+            if($source->facebook_img != null){
+                return $source->facebook_img;
+            }
+
+            if($source->google_img != null){
+                return $source->google_img;
+            }
+        }
+    }
+
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
         $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
         $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
-        $data->image = self::getPhotoPath($source->id, $source->Profile->image);
+        $data->image = self::selectImage($source);
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
