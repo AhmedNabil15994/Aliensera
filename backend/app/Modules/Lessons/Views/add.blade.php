@@ -51,7 +51,17 @@
                                     </div>
                                 </div>
                                 @endif
-                                <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Valid Until</label>
+                                                <input type="text" class="form-control datepicker" placeholder="Enter Date" name="valid_until" value="{{ old('valid_until') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="row" >
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -83,4 +93,8 @@
             </form>
         </div>
     </div>
+@stop()
+
+@section('script')
+    <script src="{{ asset('assets/components/lessons.js')}}"></script>
 @stop()

@@ -84,6 +84,7 @@ class Lesson extends Model{
         $data->course = $source->Course->title;
         $data->course_status = $source->Course->status;
         $data->description = $source->description;
+        $data->valid_until = $source->valid_until;
         $data->videos = LessonVideo::dataList($source->id);
         $data->questions = LessonQuestion::dataList($source->id);
         $data->status = $source->status;

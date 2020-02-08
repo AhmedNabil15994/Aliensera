@@ -209,6 +209,10 @@ $('.clear-question').on('click',function(){
     clearAll();
 });
 
+$('input[name="valid_until"]').datetimepicker({
+    format: 'YYYY-MM-DD',
+});
+
 function deleteQuestion(question_id) {
     swal({
         title: "Are you sure?",

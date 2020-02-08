@@ -67,6 +67,7 @@ class LessonControllers extends Controller {
 
         $universityObj->title = $input['title'];
         $universityObj->description = $input['description'];
+        $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         $universityObj->status = isset($input['status']) ? 1 : 0;
         $universityObj->updated_by = USER_ID;
         $universityObj->updated_at = DATE_TIME;
@@ -94,6 +95,7 @@ class LessonControllers extends Controller {
         $universityObj->title = $input['title'];
         $universityObj->description = $input['description'];
         $universityObj->course_id = $input['course_id'];
+        $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         $universityObj->status = IS_ADMIN ? (isset($input['status']) ? 1 : 0) : 2 ;
         $universityObj->created_by = USER_ID;
         $universityObj->created_at = DATE_TIME;
