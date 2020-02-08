@@ -114,7 +114,7 @@ class LessonControllers extends Controller {
     public function getDuration($filePath){
         $getID3 = new \getID3;
         $file = $getID3->analyze($filePath);
-        $duration = date('s', $file['playtime_seconds']);
+        $duration = $file['playtime_seconds'];
         return [$duration,$file['filesize']];
     }
 
