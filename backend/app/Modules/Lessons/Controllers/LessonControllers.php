@@ -224,12 +224,30 @@ class LessonControllers extends Controller {
         return $statusObj;
     }
 
+    public function changeStatus($video_id){
+        $videoObj = LessonVideo::getOne($video_id);
+        if($videoObj == null) {
+            return Redirect('404');
+        }
+
+        if($videoObj->free == 1){
+            $videoObj->free = 0;
+            $videoObj->save();
+        }else{
+            $videoObj->free = 1;
+            $videoObj->save(); 
+        }
+
+        \Session::flash('success', "Alert! Updated Successfully");
+        return redirect()->back();
+    }   
+
     public function comments($video_id){
         $videoObj = LessonVideo::getOne($video_id);
         if($videoObj == null) {
             return Redirect('404');
         }
-        // dd(LessonVideo::getData($videoObj));
+
         $dataList['data'] = LessonVideo::getData($videoObj);
         $dataList['count'] = VideoComment::NotDeleted()->where('status',1)->where('video_id',$video_id)->count();
         return view('Lessons.Views.comments')->with('data', (Object) $dataList);

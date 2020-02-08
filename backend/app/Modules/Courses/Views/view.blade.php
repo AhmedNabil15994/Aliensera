@@ -235,23 +235,26 @@
                                                     <div class="playlist">
                                                         <div class="row">
                                                             <div class="col-xs-1">No#</div>
-                                                            <div class="col-xs-5">Lecture</div>
+                                                            <div class="col-xs-3">Lecture</div>
                                                             <div class="col-xs-2 text-center">Duration</div>
                                                             <div class="col-xs-2 text-center">Size</div>
+                                                            <div class="col-xs-2 text-center">Free</div>
                                                             <div class="col-xs-2 text-center">Action</div>
                                                         </div>
                                                         @foreach($lesson->videos as $keyr => $video)
                                                         <div class="row results" id="results{{ $video->id }}">
                                                             <div class="col-xs-1">{{ $keyr+1 }}</div>
-                                                            <div class="col-xs-5">{{ $video->title }}</div>
+                                                            <div class="col-xs-3">{{ $video->title }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->size }}</div>
+                                                            <div class="col-xs-2 text-center">{{ $video->free }}</div>
                                                             <div class="col-xs-2 text-center">
                                                                 <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i></button>
                                                                 <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>
                                                                 @if(\Helper::checkRules('delete-lesson-video'))
                                                                 <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
                                                                 @endif
+                                                                <a href="{{ URL::to('/videos/'.$video->id.'/changeStatus') }}" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>
                                                             </div>
                                                         </div>
                                                         @endforeach

@@ -18,6 +18,7 @@ Route::group(['prefix' => '/lessons'] , function () {
 
 Route::group(['prefix' => '/videos'] ,function(){
     Route::get('/{id}/comments', 'LessonControllers@comments');
+    Route::get('/{id}/changeStatus', 'LessonControllers@changeStatus');
     Route::post('/{id}/comments/addComment', 'LessonControllers@addComment');
     Route::get('/removeComment/{id}', 'LessonControllers@removeComment');
 });

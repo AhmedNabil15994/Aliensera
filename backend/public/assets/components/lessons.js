@@ -85,13 +85,15 @@ if(previewNode){
             var newCount = count + 1;
             var videoString = '<div class="row results" id="results'+result.data.id+'">'+
                                 '<div class="col-xs-1">'+ newCount +'</div>'+
-                                '<div class="col-xs-5">'+ result.data.title +'</div>'+
+                                '<div class="col-xs-3">'+ result.data.title +'</div>'+
                                 '<div class="col-xs-2 text-center">'+ result.data.duration +'</div>'+
                                 '<div class="col-xs-2 text-center">'+ result.data.size +'</div>'+
+                                '<div class="col-xs-2 text-center">'+ result.data.free +'</div>'+
                                 '<div class="col-xs-2 text-center">'+ 
                                     '<button class="btn btn-default btn-xs" data-link="'+result.data.link+'"><i class="fa fa-play"></i></button>'+
                                     '<a href="/videos/'+result.data.id+'/comments" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>'+
                                     '<button class="btn btn-danger btn-xs" onclick="deleteLecture('+result.data.id+')"><i class="fa fa-trash"></i></button>'+
+                                    '<a href="/videos/'+result.data.id+'/changeStatus" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>'+
                                 '</div>'+
                               '</div>';
             if(result.count > 1){
