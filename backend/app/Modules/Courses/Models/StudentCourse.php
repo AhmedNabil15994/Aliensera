@@ -135,6 +135,7 @@ class StudentCourse extends Model{
         $data->myCourse = $source->Course != null ? Course::getData($source->Course) : [];
         $data->instructor = $source->Instructor != null ? $source->Instructor->name : '';
         $data->student = $source->Student != null ? $source->Student->name : '';
+        $data->student_image = $source->Student != null ? User::getData($source->Student)->image : '';
         $data->status = $source->status;
         $data->creator = $source->Creator->name;
         $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();

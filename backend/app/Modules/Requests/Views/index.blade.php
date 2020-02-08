@@ -1,5 +1,23 @@
 @extends('Layouts.master')
-@section('title', 'Lessons')
+@section('title', 'Requests')
+@section('otherhead')
+<style type="text/css" media="screen">
+    td p{
+        color: #777;
+    }
+    td img{
+        display: inline-block;
+        float: left;
+    }
+    div.course-data{
+        float: left;
+        display: inline;
+        width: calc(100% - 60px);
+        margin-left: 5px;
+        margin-top: 5px;
+    }
+</style>
+@endsection
 @section('content')
 <div class="row">
         <form method="get" action="{{ URL::current() }}">
@@ -43,6 +61,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                @if(IS_ADMIN)
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <label>Instructor</label>
@@ -54,6 +73,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="col-xs-6">
                                     <div class="form-group">
                                         <label>Status</label>
@@ -97,19 +117,45 @@
                             <th>ID</th>
                             <th>Student</th>
                             <th>Course</th>
+                            @if(IS_ADMIN)
                             <th>Instructor</th>
+                            @endif
                             <th>Status</th>
-                            <th style="padding-left: 50px">Actions</th>
+                            @if(IS_ADMIN)
+                            <th style="padding-left: 50px">Actions</th>                            
+                            @endif
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($data->data as $value)
                             <tr id="tableRaw{{ $value->id }}">
                                 <td width="3%">{{ $value->id }}</td>
-                                <td>{{ $value->student->name }}</td>
-                                <td>{{ $value->course->title }}</td>
-                                <td>{{ $value->instructor->name }}</td>
+                                <td>
+                                    <img src="{{ $value->student->image }}" alt="">
+                                    <div class="course-data">
+                                        <a href="{{ URL::to('/users/view/'.$value->student_id) }}" target="_blank">{{ $value->student->name }}</a>
+                                        <p>Student</p>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <img src="{{ $value->course->image }}" alt="">
+                                    <div class="course-data">
+                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course->title }}</a>
+                                        <p>{{ $value->course->description }}</p>
+                                    </div>
+                                </td>
+                                @if(IS_ADMIN)
+                                <td>
+                                    <img src="{{ $value->instructor->image }}" alt="">
+                                    <div class="course-data">
+                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor->name }}</a>
+                                        <p>Instructor</p>
+                                    </div>
+                                </td>
+                                @endif
                                 <td>{{ $value->status == 1 ? 'Active' : ($value->status == 0 ? 'In Active' : 'Student Sent Request') }}</td>
+                                @if(IS_ADMIN)
                                 <td width="150px" align="center">
                                     @if(\Helper::checkRules('edit-student-request'))
                                         <a href="{{ URL::to('/requests/update/' . $value->id . '/1') }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Accept </a>
@@ -119,14 +165,19 @@
                                         <a onclick="deleteRequest('{{ $value->id }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                                     @endif
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                         @if($data->pagination->total_count == 0)
                             <tr>
                                 <td></td>
+                                @if(IS_ADMIN)
                                 <td colspan="5">No Data Found</td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
+                                @else
+                                <td colspan="3">No Data Found</td>
+                                @endif
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                             </tr>    

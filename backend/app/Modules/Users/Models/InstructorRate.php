@@ -2,16 +2,20 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class CourseFeedback extends Model{
+class InstructorRate extends Model{
 
     use \TraitsFunc;
 
-    protected $table = 'course_feedback';
+    protected $table = 'instructor_rates';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
     public function Creator(){
         return $this->belongsTo('App\Models\User','created_by','id');
+    }
+
+    public function Instructor(){
+        return $this->belongsTo('App\Models\User','instructor_id','id');
     }
 
     public function Course(){
@@ -22,29 +26,22 @@ class CourseFeedback extends Model{
         $source = self::NotDeleted()
             ->where('id', $id);
             
-        if(IS_ADMIN == false){
-            $source->whereHas('Course',function($courseQuery) {
-                $courseQuery->where('instructor_id',USER_ID);
-            });
-        }
         return $source->first();
     }
 
-    static function dataList($course_id=null,$creator=null) {
+    static function dataList($instructor_id=null,$creator=null) {
         $input = \Input::all();
         $source = self::NotDeleted()->where('status',1);
 
-        if (isset($course_id) && $course_id != null ) {
-            $source->where('course_id', $course_id);
+        if (isset($instructor_id) && $instructor_id != null ) {
+            $source->where('instructor_id', $instructor_id);
         } 
         if (isset($creator) && $creator != null ) {
             $source->where('created_by', $creator);
         } 
 
         if(IS_ADMIN == false){
-            $source->whereHas('Course',function($courseQuery) {
-                $courseQuery->where('instructor_id',USER_ID);
-            });
+            $source->where('instructor_id',USER_ID);
         }
 
         $source->orderBy('id','DESC');
@@ -64,12 +61,11 @@ class CourseFeedback extends Model{
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
-        $data->course_id = $source->course_id;
-        $data->course_title = $source->Course != null ? $source->Course->title : '';
-        $data->content = $source->content; 
-        $data->status = $source->status;
         $data->rate = $source->rate;
         $data->image = User::getData($source->Creator)->image;
+        $data->instructor_id = $source->instructor_id;
+        $data->instructor = $source->Instructor->name;
+        $data->student_id = $source->created_by;
         $data->creator = $source->Creator->name;
         $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
         return $data;

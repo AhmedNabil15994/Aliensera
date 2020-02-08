@@ -102,11 +102,17 @@
                         @foreach($data->data->data as $value)
                             <tr id="tableRaw{{ $value->id }}">
                                 <td width="3%">{{ $value->myCourse->id }}</td>
-                                <td>{{ $value->student }}</td>
+                                <td>
+                                    <img src="{{ $value->student_image }}" alt="">
+                                    <div class="course-data">
+                                        <a href="{{ URL::to('/users/view/'.$value->student_id) }}" target="_blank">{{ $value->student }}</a><br>
+                                        <p>Student</p>
+                                    </div>
+                                </td>
                                 <td>
                                     <img src="{{ $value->myCourse->image }}"> 
                                     <div class="course-data">
-                                        {{ $value->myCourse->title }}<br>
+                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->myCourse->title }}</a><br>
                                         <p>{{ $value->myCourse->description }}</p>
                                     </div>
                                     <div class="clearfix"></div>

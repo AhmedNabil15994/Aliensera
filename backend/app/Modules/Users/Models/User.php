@@ -16,6 +16,10 @@ class User extends Model{
         return $this->hasOne('App\Models\Profile', 'user_id');
     }
 
+    function InstructorRate(){
+        return $this->hasMany('App\Models\InstructorRate', 'instructor_id');
+    }
+
     static function getPhotoPath($id, $photo) {
         return \ImagesHelper::GetImagePath('users', $id, $photo);
     }
@@ -109,6 +113,13 @@ class User extends Model{
         $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
         $data->active = $source->is_active == 1 ? "Yes" : "No";
         $data->is_active = $source->is_active;
+        if($source->Profile->group_id == 2){
+            $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
+            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
+            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
+            $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
+            $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
+        }
         $data->deleted_by = $source->deleted_by;
         return $data;
     }

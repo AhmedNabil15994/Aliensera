@@ -39,6 +39,17 @@
             border: 1px solid #DDD;
             border-radius: 50%;
         }
+        td a,h4.heading a{
+            color: unset;
+        }
+        td a {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        ul.paginationer{
+            float: right;
+            margin-top: -25px;
+        }
         .child_menu li a span.badge{
             width: 20px;
             height: 20px;

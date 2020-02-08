@@ -5,7 +5,9 @@ use App\Models\Course;
 use App\Models\University;
 use App\Models\Field;
 use App\Models\Faculty;
+use App\Models\InstructorRate;
 use App\Models\CourseFeedback;
+use App\Models\StudentScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -297,6 +299,12 @@ class CoursesControllers extends Controller {
     public function deleteReview($id) {
         $id = (int) $id;
         $courseObj = CourseFeedback::getOne($id);
+        return \Helper::globalDelete($courseObj);
+    }
+
+    public function deleteRate($id) {
+        $id = (int) $id;
+        $courseObj = InstructorRate::getOne($id);
         return \Helper::globalDelete($courseObj);
     }
 

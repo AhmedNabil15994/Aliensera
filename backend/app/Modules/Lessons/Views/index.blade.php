@@ -82,7 +82,7 @@
                             <tr id="tableRaw{{ $value->id }}">
                                 <td width="3%">{{ $value->id }}</td>
                                 <td>{{ $value->title }}</td>
-                                <td>{{ $value->course }}</td>
+                                <td><a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course }}</a></td>
                                 <td>{{ $value->status == 1 ? 'Active' : ($value->status == 0 ? 'In Active' : 'Instructor Sent Request') }}</td>
                                 <td width="150px" align="center">
                                     @if(\Helper::checkRules('edit-lesson'))

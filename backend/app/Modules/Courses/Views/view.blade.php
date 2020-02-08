@@ -136,6 +136,31 @@
         width: 100%;
         height: 100%;
     }
+    div.rowitem{
+        padding: 10px;
+        border: 1px solid #DDD;
+        margin: 0;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    div.rowitem div{
+        font-size: 18px;
+    }
+    i.fa-question-circle{
+        color: #337ab7;
+    }
+    i.fa-check-circle{
+        color: #26B99A;
+    }
+    i.fa-times-circle{
+        color: #d9534f;
+    }
+    i.fa-spinner{
+        color: #5bc0de;
+    }
+    i.fa-user{
+        color: #26B99A;
+    }
 </style>
 @endsection
 @section('content')
@@ -219,6 +244,7 @@
                                 <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Lectures</a></li>
                                 <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Quizes</a></li>
                                 <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Reviews</a></li>
+                                <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">Views Average</a></li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -310,6 +336,16 @@
                                                         </div>
                                                         @endforeach
                                                     </div>
+
+                                                    @foreach($lesson->studentScores as $score)
+                                                    <div class="row rowitem">
+                                                        <div class="col-xs-4"><i class="fa fa-user"></i><a href="{{ URL::to('/users/view/'.$score->student_id) }}" target="_blank"> {{ $score->student }}</a> </div>
+                                                        <div class="col-xs-2"><i class="fa fa-question-circle"></i> {{ $score->all }}</div>
+                                                        <div class="col-xs-2"><i class="fa fa-check-circle"></i> {{ $score->right }}</div>
+                                                        <div class="col-xs-2"><i class="fa fa-times-circle"></i> {{ $score->wrong }}</div>
+                                                        <div class="col-xs-2"><i class="fa fa-spinner"></i> {{ $score->score }}</div>
+                                                    </div>
+                                                    @endforeach
                                                     @else
                                                     <div class="empty">
                                                         No Quizes Available
@@ -362,6 +398,25 @@
                                                 @endif
                                             </ul>
                                         </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                                    <div class="col-xs-12 feedback">
+                                        @foreach($data->data->rates as $rateKey => $rateValue)
+                                        <div class="row">
+                                            <div class="col-xs-1">
+                                                {{ ($rateKey+1) * 10 }}%
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-success" data-transitiongoal="{{ ($rateKey+1) * 10 }}" aria-valuenow="{{ ($rateKey+1) * 10 }}" style="width: {{ ($rateKey+1) * 10 }}%;"></div> 
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                {{ $rateValue }} Students
+                                            </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

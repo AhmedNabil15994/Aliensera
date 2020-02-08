@@ -34,6 +34,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\StudentCourse', 'course_id','id');
     }
 
+    function StudentDuration(){
+        return $this->hasMany('App\Models\StudentVideoDuration', 'course_id','id');
+    }
+
     function Lesson(){
         return $this->hasMany('App\Models\Lesson', 'course_id','id');
     }
@@ -64,6 +68,19 @@ class Course extends Model{
     static function getOneD($id) {
         return self::where('id', $id)
             ->first();
+    }
+
+    static function getRates($course){
+        $mainDuration = $course->Video()->NotDeleted()->sum('duration');
+        $mainViews = [0,0,0,0,0,0,0,0,0,0];
+        $views = $course->StudentDuration()->groupBy('student_id')->get();
+        foreach ($views as $value) {
+            $student_duration = $value->where('student_id',$value->student_id)->sum('see_duration');
+            $rate = round( ($student_duration / $mainDuration) * 100 ,2);
+            $index = floor($rate / 10);
+            $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+        }
+        return $mainViews;
     }
 
     static function dataList($instructor_id=null,$student_id=null) {
@@ -98,7 +115,9 @@ class Course extends Model{
         } 
 
         if ($student_id != null) {
-            $source->whereHas('StudentCourse',function($query) use ($student_id){
+            $source->with(['StudentDuration'=>function($withQuery) use ($student_id){
+                $withQuery->where('student_id',$student_id);
+            }])->whereHas('StudentCourse',function($query) use ($student_id){
                 $query->NotDeleted()->where('student_id',$student_id)->where('status',1);
             });
         } 
@@ -161,6 +180,9 @@ class Course extends Model{
 
     static function getData($source) {
         $data = new  \stdClass();
+        if($source->StudentDuration != null){
+            $data->seeDuration = self::getDuration($source->StudentDuration->sum('see_duration'));
+        }
         $data->id = $source->id;
         $data->title = $source->title;
         $data->description = $source->description;
@@ -188,6 +210,7 @@ class Course extends Model{
         $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
         $data->image = self::getPhotoPath($source->id, $source->image);
+        $data->rates = self::getRates($source);
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);

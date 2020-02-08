@@ -13,7 +13,11 @@ class RequestControllers extends Controller {
     use \TraitsFunc;
 
     public function index() {
-        $dataList = StudentRequest::dataList();
+        if(IS_ADMIN){
+            $dataList = StudentRequest::dataList();
+        }else{
+            $dataList = StudentRequest::dataList(USER_ID);
+        }
         $dataList['courses'] = Course::dataList()['data'];
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['students'] = User::getUsersByType(3);

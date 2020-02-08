@@ -40,7 +40,7 @@ class AuthEngine
         define('LAST_NAME', Session::get('last_name'));
         define('FULL_NAME', Session::get('full_name'));
         define('GROUP_NAME', Session::get('group_name'));
-        define('PAGINATION', \App\Models\Variable::getVar('pagination'));
+        define('PAGINATION', \App\Models\Variable::getVar('PAGINATION'));
         // Update login date realtime
         $userObj = User::getOne(USER_ID);
         if ($userObj != null) {

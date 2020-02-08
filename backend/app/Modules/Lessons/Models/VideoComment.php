@@ -89,7 +89,7 @@ class VideoComment extends Model{
         $data->status = $source->status;
         $data->reply_on = $source->reply_on;
         $data->replies = $source->reply_on == 0 ? self::dataList($source->video_id,$source->id) : [];
-        $data->image = asset('assets/images/avatar.png');
+        $data->image = User::getData($source->Creator)->image;
         $data->creator = $source->Creator->name .' '. self::getCreator($source->created_by,$source->Course->instructor_id);
         $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
         return $data;

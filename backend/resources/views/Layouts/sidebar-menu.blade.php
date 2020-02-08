@@ -51,19 +51,20 @@
                     </li>
                     @endif
 
-                    @if(!IS_ADMIN)
-                    @if(\Helper::checkRules('list-course-students'))
-                    <li class="{{ Active(URL::to('/courseStudents')) }} {{ Active(URL::to('/users/view*')) }}"><a><i class="fa fa-info-circle"></i>Students Courses<span class="fa fa-chevron-down"></span></a>
+                    @if(\Helper::checkRules('list-course-students') && !IS_ADMIN)
+                    <li class="{{ Active(URL::to('/courseStudents')) }} {{ Active(URL::to('/users/view*')) }} {{ Active(URL::to('/requests*')) }} {{ Active(URL::to('/coures/view*')) }}"><a><i class="fa fa-info-circle"></i>Students<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-course-students'))
                                 <li class="{{ Active(URL::to('/courseStudents')) }} {{ Active(URL::to('/users/view*')) }}"><a href="{{ URL::to('/courseStudents') }}">Students Courses</a></li>
                             @endif
+                            @if(\Helper::checkRules('list-student-requests'))
+                                <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\StudentRequest::getCount()."</span>" :'' !!}</a></li>
+                            @endif
                         </ul>
                     </li>
                     @endif
-                    @endif
 
-                    @if(\Helper::checkRules('list-student-requests'))
+                    @if(\Helper::checkRules('list-student-requests') && IS_ADMIN)
                     <li class="{{ Active(URL::to('/requests*')) }}"><a><i class="fa fa-info-circle"></i> Student Requests<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-student-requests'))

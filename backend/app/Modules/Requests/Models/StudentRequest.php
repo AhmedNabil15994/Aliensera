@@ -26,7 +26,7 @@ class StudentRequest extends Model{
         return $source->first();
     }
 
-    static function dataList() {
+    static function dataList($instructor_id=null) {
         $input = \Input::all();
 
         $source = self::NotDeleted()->whereHas('Student',function($studentQuery){
@@ -51,6 +51,10 @@ class StudentRequest extends Model{
 
         if (isset($input['status']) && !empty($input['status'])) {
             $source->where('status', $input['status']);
+        } 
+
+        if (isset($instructor_id) && !empty($instructor_id)) {
+            $source->where('instructor_id', $instructor_id);
         } 
 
         return self::generateObj($source);

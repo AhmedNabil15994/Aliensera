@@ -5,7 +5,9 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\Course;
 use App\Models\CourseFeedback;
+use App\Models\InstructorRate;
 use App\Models\StudentCourse;
+use App\Models\StudentScore;
 use App\Models\VideoComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -97,7 +99,7 @@ class UsersControllers extends Controller {
             ->whereHas('Profile', function() {})
             ->find($id);
 
-        if($userObj == null) {
+        if($userObj == null || $id == 1) {
             return Redirect('404');
         }
 
@@ -127,7 +129,7 @@ class UsersControllers extends Controller {
             ->whereHas('Profile', function() {})
             ->find($id);
 
-        if($userObj == null) {
+        if($userObj == null || $id == 1) {
             return Redirect('404');
         }
 
@@ -142,9 +144,12 @@ class UsersControllers extends Controller {
 
         if($profileObj->group_id == 2){
             $data['courses'] = Course::dataList($userObj->id)['data'];
+            $data['rates'] = InstructorRate::dataList($userObj->id);
         }elseif($profileObj->group_id == 3){
             $data['courses'] = Course::dataList(null,$userObj->id)['data'];
             $data['reviews'] = CourseFeedback::dataList(null,$userObj->id);
+            $data['rates'] = InstructorRate::dataList(null,$userObj->id);
+            $data['scores'] = StudentScore::dataList($id);
         }
         return view('Users.Views.view')->with('data', (object) $data);
     }
@@ -153,7 +158,7 @@ class UsersControllers extends Controller {
         $id = (int) $id;
 
         $userObj = User::getOne($id);
-        if($userObj == null) {
+        if($userObj == null  || $id == 1) {
             return Redirect('404');
         }
 
@@ -260,7 +265,7 @@ class UsersControllers extends Controller {
         $id = (int) USER_ID;
 
         $userObj = User::getOne($id);
-        if($userObj == null) {
+        if($userObj == null  || $id == 1) {
             return Redirect('404');
         }
 

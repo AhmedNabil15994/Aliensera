@@ -12,6 +12,7 @@ Route::group(['prefix' => '/courses'] , function () {
     Route::post('create', 'CoursesControllers@create');
     Route::get('delete/{id}', 'CoursesControllers@delete');
     Route::get('deleteReview/{id}', 'CoursesControllers@deleteReview');
+    Route::get('deleteRate/{id}', 'CoursesControllers@deleteRate');
     Route::get('restore/{id}', 'CoursesControllers@restore');
     Route::get('/images/delete/{id}', 'CoursesControllers@imageDelete');
 
