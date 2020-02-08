@@ -84,6 +84,10 @@ class User extends Model{
             if($source->google_img != null){
                 return $source->google_img;
             }
+
+            if($source->google_img==null && $source->facebook_img ==null){
+                return asset('/assets/images/avatar.png');
+            }
         }
     }
 

@@ -187,7 +187,7 @@ class Course extends Model{
         $data->rateSum = $source->Feedback != null ? $source->Feedback()->NotDeleted()->sum('rate') :0;
         $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
-        $data->image = $source->image != null ? self::getPhotoPath($source->id, $source->image) : '';
+        $data->image = self::getPhotoPath($source->id, $source->image);
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
