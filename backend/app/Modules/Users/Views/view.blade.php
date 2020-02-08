@@ -405,7 +405,7 @@
                                                         @foreach($value->lessons as $lessonKey => $lessonValue)
                                                         <tr>
                                                             <td>
-                                                                <a href="{{ URL::to('/coures/view/'.$value->course_id) }}" target="_blank">{{ $value->course }}</a>
+                                                                <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course }}</a>
                                                             </td>
                                                             <td>
                                                                 <a href="{{ URL::to('/lessons/edit/'.$lessonValue->lesson_id) }}" target="_blank">{{ $lessonValue->lesson }}</a>
