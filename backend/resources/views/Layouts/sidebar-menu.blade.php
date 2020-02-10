@@ -92,11 +92,15 @@
                     </li>
                     @endif
 
-                    @if(\Helper::checkRules('list-variables'))
-                    <li class="{{ Active(URL::to('/variables*')) }}"><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                    @if(\Helper::checkRules('list-variables,list-pages'))
+                    <li class="{{ Active(URL::to('/variables*')) }} {{ Active(URL::to('/pages*')) }}"><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if(\Helper::checkRules('list-variables'))
                                 <li class="{{ Active(URL::to('/variables*')) }}"><a href="{{ URL::to('/variables') }}">Variables</a></li>
+                            @endif
+
+                            @if(\Helper::checkRules('list-pages'))
+                                <li class="{{ Active(URL::to('/pages*')) }}"><a href="{{ URL::to('/pages') }}">Pages</a></li>
                             @endif
                         </ul>
                     </li>

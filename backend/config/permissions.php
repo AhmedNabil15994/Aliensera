@@ -80,6 +80,13 @@ return [
     'VariablesControllers@add' => 'add-variable',
     'VariablesControllers@create' => 'add-variable',
     'VariablesControllers@delete' => 'delete-variable',
+
+    'PagesControllers@index' => 'list-pages',
+    'PagesControllers@edit' => 'edit-page',
+    'PagesControllers@update' => 'edit-page',
+    'PagesControllers@add' => 'add-page',
+    'PagesControllers@create' => 'add-page',
+    'PagesControllers@delete' => 'delete-page',
     
     'RequestControllers@index' => 'list-student-requests',
     'RequestControllers@update' => 'edit-student-request',
