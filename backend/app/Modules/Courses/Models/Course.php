@@ -76,9 +76,11 @@ class Course extends Model{
         $views = $course->StudentDuration()->groupBy('student_id')->get();
         foreach ($views as $value) {
             $student_duration = $value->where('student_id',$value->student_id)->sum('see_duration');
-            $rate = round( ($student_duration / $mainDuration) * 100 ,2);
-            $index = floor($rate / 10);
-            $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+            if($mainDuration != 0){
+                $rate = round( ($student_duration / $mainDuration) * 100 ,2);
+                $index = floor($rate / 10);
+                $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+            }
         }
         return $mainViews;
     }
