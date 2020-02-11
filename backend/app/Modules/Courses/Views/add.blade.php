@@ -145,6 +145,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>What Student Learn</label>
+                                                <textarea class="form-control" placeholder="What Student Learn" name="what_learn">{{ old('what_learn') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Requirements</label>
+                                                <textarea class="form-control" placeholder="Enter Requirements" name="requirements">{{ old('requirements') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="row" >
                                         <div class="col-md-12">

@@ -140,6 +140,8 @@ class CoursesControllers extends Controller {
         $courseObj->course_type = $input['course_type'];
         $courseObj->field_id = $input['field_id'];
         $courseObj->price = $input['price'];
+        $courseObj->what_learn = $input['what_learn'];
+        $courseObj->requirements = $input['requirements'];
         $courseObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
@@ -232,6 +234,8 @@ class CoursesControllers extends Controller {
         $courseObj->status = $input['status'];
         $courseObj->course_type = $input['course_type'];
         $courseObj->price = $input['price'];
+        $courseObj->what_learn = $input['what_learn'];
+        $courseObj->requirements = $input['requirements'];
         $courseObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];

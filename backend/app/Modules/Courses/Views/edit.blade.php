@@ -150,7 +150,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Year</label>
-                                            <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ $data->data->year }}">
+                                            <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ $data->data->year }}" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
                                         </div>
                                     </div>
                                 </div>
@@ -165,6 +165,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>What Student Learn</label>
+                                                <textarea class="form-control" placeholder="What Student Learn" name="what_learn">{{ $data->data->what_learn }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Requirements</label>
+                                                <textarea class="form-control" placeholder="Enter Requirements" name="requirements">{{ $data->data->requirements }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <div class="col-md-12">
                                 <div class="row" >
                                     <div class="col-md-12">
