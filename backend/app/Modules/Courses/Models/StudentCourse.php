@@ -171,4 +171,28 @@ class StudentCourse extends Model{
         return $data;
     }
 
+    static function getRevenue(){
+        $source = self::NotDeleted()->where('paid',1)->whereHas('Course',function($courseQuery){
+            $courseQuery->where('status',3);
+        })->whereHas('Instructor',function($instructorQuery){
+            $instructorQuery->where('is_active',1);
+        })->whereHas('Student',function($studentQuery){
+            $studentQuery->where('is_active',1);
+        });
+        if(IS_ADMIN == false){
+            $source->where('instructor_id',USER_ID);
+        }
+
+        $dataList = $source->get();
+        $total = 0;
+        foreach ($dataList as $value) {
+            $price = Course::getData($value->Course)->price;
+            $count = self::NotDeleted()->where('paid',1)->where('course_id',$value->course_id)->count();
+            $all = $price * $count;
+            $total+= $all;
+        }
+
+        return round($total ,2);
+    }
+
 }

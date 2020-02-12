@@ -81,22 +81,22 @@
               </div>
               <div class="tiles">
                 <div class="col-md-4 tile">
-                  <span>Total Sessions</span>
-                  <h2>231,809</h2>
+                  <span>Total Students Sessions</span>
+                  <h3>{{ $data->allStudentSessions }}</h3>
                   <span class="sparkline11 graph" style="height: 160px;">
                        <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                   </span>
                 </div>
                 <div class="col-md-4 tile">
                   <span>Total Revenue</span>
-                  <h2>$231,809</h2>
+                  <h3>$ {{ $data->allRevenue }}</h3>
                   <span class="sparkline22 graph" style="height: 160px;">
                         <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                   </span>
                 </div>
                 <div class="col-md-4 tile">
-                  <span>Total Sessions</span>
-                  <h2>231,809</h2>
+                  <span>Total Views Duration</span>
+                  <h3>{{ $data->allDuration }}</h3>
                   <span class="sparkline11 graph" style="height: 160px;">
                          <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                   </span>
@@ -186,6 +186,34 @@
           </div>
         </div>
       </div>
+      @if(IS_ADMIN== false)
+      <div class="col-md-4">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Top Seen Courses</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li  class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            @foreach($data->topSeenCourses as $course)
+            <article class="media event">
+              <a class="pull-left date" href="{{ URL::to('/courses/view/'.$course->course->id) }}">
+                <img src="{{ $course->course->image }}" alt="">
+              </a>
+              <div class="media-body">
+                <a class="title" href="{{ URL::to('/courses/view/'.$course->course->id) }}">{{ $course->course->title }}</a>
+                <p>{{ substr($course->course->description, 0, 60) }}...</p>
+                <p>Instructor: {{ $course->course->instructor }}</p>
+                <p>{{ $course->count }} Students</p>
+              </div>
+            </article>
+            @endforeach
+          </div>
+        </div>
+      </div>
+      @endif
     </div>
 
   </div>

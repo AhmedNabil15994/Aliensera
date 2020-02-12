@@ -40,6 +40,7 @@ return array(
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Models\\ApiAuth' => $baseDir . '/app/Modules/Dashboard/Models/ApiAuth.php',
     'App\\Models\\Course' => $baseDir . '/app/Modules/Courses/Models/Course.php',
     'App\\Models\\CourseFeedback' => $baseDir . '/app/Modules/Courses/Models/CourseFeedback.php',
     'App\\Models\\Faculty' => $baseDir . '/app/Modules/Faculty/Models/Faculty.php',

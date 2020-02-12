@@ -505,6 +505,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\ApiAuth' => __DIR__ . '/../..' . '/app/Modules/Dashboard/Models/ApiAuth.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Modules/Courses/Models/Course.php',
         'App\\Models\\CourseFeedback' => __DIR__ . '/../..' . '/app/Modules/Courses/Models/CourseFeedback.php',
         'App\\Models\\Faculty' => __DIR__ . '/../..' . '/app/Modules/Faculty/Models/Faculty.php',
