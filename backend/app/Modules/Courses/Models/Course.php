@@ -79,9 +79,11 @@ class Course extends Model{
             if($mainDuration != 0){
                 $rate = round( ($student_duration / $mainDuration) * 100 ,2);
                 $index = floor($rate / 10);
-                if($index < 10){
-                    $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+                if($index >= 10){
+                    $index = 10;
                 }
+                $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+
             }
         }
         return $mainViews;
