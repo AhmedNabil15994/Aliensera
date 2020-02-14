@@ -13,6 +13,7 @@
         "james-heinrich/getid3": "^1.9",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "pusher/pusher-php-server": "^4.1",
         "vimeo/vimeo-api": "^2.0",
         "watson/active": "v3.0"
     },

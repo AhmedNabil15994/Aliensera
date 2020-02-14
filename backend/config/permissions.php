@@ -4,6 +4,10 @@
 return [
 
     'DashboardControllers@Dashboard' => 'general',
+    'ChatControllers@index' => 'general',
+    'ChatControllers@getOne' => 'general',
+    'ChatControllers@newMessage' => 'general',
+    'ChatControllers@chatWith' => 'general',
     'AuthControllers@login' => 'login',
     'AuthControllers@doLogin' => 'doLogin',
     'AuthControllers@logout' => 'logout',

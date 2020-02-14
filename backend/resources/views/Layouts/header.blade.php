@@ -14,6 +14,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="{{ URL::to('/profile') }}"><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a href="{{ URL::to('/messages') }}"><i class="fa fa-envelope"></i> Messages</a></li>
                     @if(IS_ADMIN)
                     <li><a href="{{ URL::to('/variables') }}"><i class="fa fa-gears"></i> Settings</a></li>
                     @endif

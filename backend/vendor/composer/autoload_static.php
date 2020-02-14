@@ -32,6 +32,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '0d8253363903f0ac7b0978dcde4e28a0' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/helpers.php',
         '86ade239cbe8025aa999b5c6eb117f17' => __DIR__ . '/..' . '/watson/active/src/helpers.php',
@@ -93,6 +94,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         ),
         'P' => 
         array (
+            'Pusher\\' => 7,
             'Psy\\' => 4,
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
@@ -291,6 +293,10 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
         ),
+        'Pusher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pusher/pusher-php-server/src',
+        ),
         'Psy\\' => 
         array (
             0 => __DIR__ . '/..' . '/psy/psysh/src',
@@ -482,6 +488,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
+        'App\\Http\\Controllers\\ChatControllers' => __DIR__ . '/../..' . '/app/Modules/Chat/Controllers/ChatControllers.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CourseStudentControllers' => __DIR__ . '/../..' . '/app/Modules/CourseStudents/Controllers/CourseStudentControllers.php',
         'App\\Http\\Controllers\\CoursesControllers' => __DIR__ . '/../..' . '/app/Modules/Courses/Controllers/CoursesControllers.php',
@@ -506,6 +513,8 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\ApiAuth' => __DIR__ . '/../..' . '/app/Modules/Dashboard/Models/ApiAuth.php',
+        'App\\Models\\Chat' => __DIR__ . '/../..' . '/app/Modules/Chat/Models/Chat.php',
+        'App\\Models\\ChatHead' => __DIR__ . '/../..' . '/app/Modules/Chat/Models/ChatHead.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Modules/Courses/Models/Course.php',
         'App\\Models\\CourseFeedback' => __DIR__ . '/../..' . '/app/Modules/Courses/Models/CourseFeedback.php',
         'App\\Models\\Faculty' => __DIR__ . '/../..' . '/app/Modules/Faculty/Models/Faculty.php',
@@ -3400,6 +3409,11 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'Psy\\VersionUpdater\\GitHubChecker' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/GitHubChecker.php',
         'Psy\\VersionUpdater\\IntervalChecker' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/IntervalChecker.php',
         'Psy\\VersionUpdater\\NoopChecker' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/NoopChecker.php',
+        'Pusher\\Pusher' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/Pusher.php',
+        'Pusher\\PusherCrypto' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/PusherCrypto.php',
+        'Pusher\\PusherException' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/PusherException.php',
+        'Pusher\\PusherInstance' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/PusherInstance.php',
+        'Pusher\\Webhook' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/Webhook.php',
         'Ramsey\\Uuid\\BinaryUtils' => __DIR__ . '/..' . '/ramsey/uuid/src/BinaryUtils.php',
         'Ramsey\\Uuid\\Builder\\DefaultUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DefaultUuidBuilder.php',
         'Ramsey\\Uuid\\Builder\\DegradedUuidBuilder' => __DIR__ . '/..' . '/ramsey/uuid/src/Builder/DegradedUuidBuilder.php',

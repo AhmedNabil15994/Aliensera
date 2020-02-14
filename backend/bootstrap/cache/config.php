@@ -41,8 +41,9 @@
       23 => 'App\\Providers\\AppServiceProvider',
       24 => 'App\\Providers\\SettingsServiceProvider',
       25 => 'App\\Providers\\AuthServiceProvider',
-      26 => 'App\\Providers\\EventServiceProvider',
-      27 => 'App\\Providers\\RouteServiceProvider',
+      26 => 'App\\Providers\\BroadcastServiceProvider',
+      27 => 'App\\Providers\\EventServiceProvider',
+      28 => 'App\\Providers\\RouteServiceProvider',
     ),
     'aliases' => 
     array (
@@ -123,7 +124,6 @@
   ),
   'broadcasting' => 
   array (
-    'default' => 'log',
     'connections' => 
     array (
       'pusher' => 
@@ -134,22 +134,10 @@
         'app_id' => '',
         'options' => 
         array (
-          'cluster' => 'mt1',
+          'cluster' => 'eu',
           'encrypted' => true,
+          'useTLS' => true,
         ),
-      ),
-      'redis' => 
-      array (
-        'driver' => 'redis',
-        'connection' => 'default',
-      ),
-      'log' => 
-      array (
-        'driver' => 'log',
-      ),
-      'null' => 
-      array (
-        'driver' => 'null',
       ),
     ),
   ),
@@ -428,6 +416,10 @@
   'permissions' => 
   array (
     'DashboardControllers@Dashboard' => 'general',
+    'ChatControllers@index' => 'general',
+    'ChatControllers@getOne' => 'general',
+    'ChatControllers@newMessage' => 'general',
+    'ChatControllers@chatWith' => 'general',
     'AuthControllers@login' => 'login',
     'AuthControllers@doLogin' => 'doLogin',
     'AuthControllers@logout' => 'logout',
