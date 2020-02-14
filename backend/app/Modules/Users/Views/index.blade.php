@@ -114,8 +114,10 @@
                                     @if(\Helper::checkRules('edit-user'))
                                         <a href="{{ URL::to('/users/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                                     @endif
-                                    <a href="{{ URL::to('/messages/with/' . $value->id) }}" class="btn btn-dark btn-xs"><i class="fa fa-comments"></i> Say Hello </a>
+
                                     @if($value->group_id != 1)
+                                        <a href="{{ URL::to('/messages/with/' . $value->id) }}" class="btn btn-dark btn-xs"><i class="fa fa-comments"></i> Say Hello </a>
+
                                         @if(\Helper::checkRules('view-user'))
                                             <a href="{{ URL::to('/users/view/' . $value->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i> View </a>
                                         @endif
