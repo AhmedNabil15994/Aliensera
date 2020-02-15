@@ -50,7 +50,6 @@ class RequestControllers extends Controller {
         }elseif($status == 1){
             $msg = "Your Request For Joining ".$requestObj->Course->title." Is Accepted";
         }
-        dd($msg);
         $tokens = Devices::getDevicesBy($requestObj->student_id);
         $this->sendNotification($tokens,$id,$msg);
 
