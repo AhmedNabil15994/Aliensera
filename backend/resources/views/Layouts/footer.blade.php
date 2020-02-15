@@ -47,6 +47,7 @@
     <script  src="{{ asset('assets/vendors/Flot/jquery.flot.time.js')}}"></script>
     <script  src="{{ asset('assets/vendors/Flot/jquery.flot.stack.js')}}"></script>
     <script  src="{{ asset('assets/vendors/Flot/jquery.flot.resize.js')}}"></script>
+    <script  src="{{ asset('assets/vendors/Flot/jquery.flot.categories.js')}}"></script>
     <!-- Flot plugins -->
     <script  src="{{ asset('assets/vendors/flot.orderbars/js/jquery.flot.orderBars.js')}}"></script>
     <script  src="{{ asset('assets/vendors/flot-spline/js/jquery.flot.spline.min.js')}}"></script>

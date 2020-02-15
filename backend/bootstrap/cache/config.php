@@ -416,6 +416,7 @@
   'permissions' => 
   array (
     'DashboardControllers@Dashboard' => 'general',
+    'DashboardControllers@getChartData' => 'general',
     'ChatControllers@index' => 'general',
     'ChatControllers@getOne' => 'general',
     'ChatControllers@newMessage' => 'general',

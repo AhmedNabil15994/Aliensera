@@ -16,6 +16,44 @@ class DashboardControllers extends Controller {
 
     use \TraitsFunc;
 
+    public function getChartData(){
+        $input = \Input::all();
+        $start = $input['from'];
+        $end = $input['to'];
+
+        $datediff = strtotime($end) - strtotime($start);
+        $daysCount = round($datediff / (60 * 60 * 24));
+        $datesArray = [];
+        $datesArray[0] = $start;
+        for($i=1;$i<$daysCount;$i++){
+            $datesArray[$i] = date('Y-m-d',strtotime($start.'+'.$i."day") );
+        }
+        $datesArray[$daysCount] = $end;
+        $chartData = [];
+        $dataCount = count($datesArray);
+        for($i=0;$i<$dataCount;$i++){
+            if(IS_ADMIN == true){
+                $activeStudents = User::where('is_active')->whereHas('Profile',function($profileQuery){
+                    $profileQuery->where('group_id',3);
+                })->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$dataCount){
+                    if($i < $dataCount-1){
+                        $whereQuery->where('created_at','<',$datesArray[$i+1]);
+                    }
+                })->count();
+            }else{
+                $students = StudentCourse::where('instructor_id',USER_ID)->where('status',1)->pluck('student_id');
+                $activeStudents = User::where('is_active')->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$dataCount){
+                    if($i < $dataCount-1){
+                        $whereQuery->where('created_at','<',$datesArray[$i+1]);
+                    }
+                })->count();
+
+            }
+            $chartData[$i] = [$datesArray[$i] , $activeStudents];
+        }
+        return $chartData;
+    }
+
     public function Dashboard() {
     	if(IS_ADMIN == true){
             $dataList['allStudents'] = User::getUsersByType(3)->count();
@@ -45,6 +83,37 @@ class DashboardControllers extends Controller {
             $dataList['topStudents'] = StudentCourse::getTopStudents(5);
             $dataList['topSeenCourses'] = StudentVideoDuration::getTopSeenCourses(5);
         }    	
+
+        $now = date('Y-m-d');
+        $datesArray = [];
+        $datesArray[0] = $now;
+        for($i=1;$i<10;$i++){
+            $datesArray[$i] = date('Y-m-d',strtotime('-'.$i."week") );
+        }
+        $chartData = [];
+        $datesArray = array_reverse($datesArray);
+        for($i=0;$i<count($datesArray);$i++){
+            if(IS_ADMIN == true){
+                $activeStudents = User::where('is_active')->whereHas('Profile',function($profileQuery){
+                    $profileQuery->where('group_id',3);
+                })->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                    if($i < 9){
+                        $whereQuery->where('created_at','<',$datesArray[$i+1]);
+                    }
+                })->count();
+            }else{
+                $students = StudentCourse::where('instructor_id',USER_ID)->where('status',1)->pluck('student_id');
+                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                    if($i < 9){
+                        $whereQuery->where('created_at','<',$datesArray[$i+1]);
+                    }
+                })->count();
+            }
+            $chartData[$i] = [$datesArray[$i] , $activeStudents];
+        }
+
+        $dataList['chartData'] = $chartData;
+        
         return view('Dashboard.Views.dashboard')->with('data', (Object) $dataList);
     }
 
