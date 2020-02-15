@@ -3,6 +3,7 @@
 use App\Models\StudentRequest;
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Devices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -43,8 +44,25 @@ class RequestControllers extends Controller {
         $requestObj->updated_at = DATE_TIME;
         $requestObj->save();
 
+        $msg = '';
+        if($status == 0){
+            $msg = "Your Request For Joining ".$requestObj->Course->title." Is Refused";
+        }elseif($status == 1){
+            $msg = "Your Request For Joining ".$requestObj->Course->title." Is Accepted";
+        }
+        dd($msg);
+        $tokens = Devices::getDevicesBy($requestObj->student_id);
+        $this->sendNotification($tokens,$id,$msg);
+
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
+    }
+
+    public function sendNotification($tokens,$id,$msg){
+        $fireBase = new \FireBase();
+        $metaData = ['id' => $id, 'title' => "Course Join Request Reply", 'body' => $msg,];
+        $fireBase->send_android_notification($tokens,$metaData);
+        return true;
     }
 
     public function delete($id) {
