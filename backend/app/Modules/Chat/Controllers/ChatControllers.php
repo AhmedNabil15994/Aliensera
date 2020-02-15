@@ -75,7 +75,7 @@ class ChatControllers extends Controller {
         $messageObj->sender_name = $senderObj->name;
         $messageObj->receiver_image = $receiverObj->image;
         $messageObj->receiver_name = $receiverObj->name;
-        $messageObj->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($messageObj->created_at))->diffForHumans();
+        $messageObj->created_at = \Helper::formatDateForDisplay($messageObj->created_at,true);
 
         $PUSHER_APP_ID = Variable::getVar('PUSHER_APP_ID');
         $PUSHER_APP_KEY = Variable::getVar('PUSHER_APP_KEY');
@@ -139,7 +139,7 @@ class ChatControllers extends Controller {
         $messageObj->sender_name = $senderObj->name;
         $messageObj->receiver_image = $receiverObj->image;
         $messageObj->receiver_name = $receiverObj->name;
-        $messageObj->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($messageObj->created_at))->diffForHumans();
+        $messageObj->created_at = \Helper::formatDateForDisplay($messageObj->created_at,true);
 
         $PUSHER_APP_ID = Variable::getVar('PUSHER_APP_ID');
         $PUSHER_APP_KEY = Variable::getVar('PUSHER_APP_KEY');
