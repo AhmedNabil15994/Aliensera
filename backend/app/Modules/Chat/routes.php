@@ -8,4 +8,5 @@ Route::group(['prefix' => '/messages'] , function () {
     Route::get('/{id}', 'ChatControllers@getOne');
     Route::get('/with/{id}', 'ChatControllers@chatWith');
     Route::post('/{id}/newMessage', 'ChatControllers@newMessage');
+	Route::post('/uploadAttachment', 'ChatControllers@uploadAttachment');
 });

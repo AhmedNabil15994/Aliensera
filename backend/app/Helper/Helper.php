@@ -17,8 +17,8 @@ class Helper
             return '';
         }
 
-        $time = $withTime == true ? " H:i:s" : '';
-        $format = "d F, Y" . $time;
+        $time = $withTime == true ? " H:i" : '';
+        $format = "d M, Y" . $time;
         return date($format, strtotime($date));
 //        return self::setClientTimeZone($date, $format);
     }

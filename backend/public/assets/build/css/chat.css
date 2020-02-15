@@ -409,11 +409,12 @@ p{
   position: absolute;
   left: 0;
   margin: -3px;
-  width: 15px;
-  height: 15px;
+  padding: 3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid #2c3e50;
-  background: #95a5a6;
+  /*background: #95a5a6;*/
 }
 #frame #sidepanel #contacts ul li.contact .wrap span.online {
   background: #2ecc71;

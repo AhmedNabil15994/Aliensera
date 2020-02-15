@@ -8,6 +8,7 @@ return [
     'ChatControllers@getOne' => 'general',
     'ChatControllers@newMessage' => 'general',
     'ChatControllers@chatWith' => 'general',
+    'ChatControllers@uploadAttachment' => 'general',
     'AuthControllers@login' => 'login',
     'AuthControllers@doLogin' => 'doLogin',
     'AuthControllers@logout' => 'logout',

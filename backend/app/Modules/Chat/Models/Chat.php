@@ -36,11 +36,24 @@ class Chat extends Model{
         $data->id = $source->id;
         $data->message_type = $source->message_type;
         $data->message = $source->message;
+        $data->file_url = $source->file_url;
         $data->width = $source->img_width;
         $data->height = $source->img_height;
         $data->read = $source->read;
         $data->created_by = $source->created_by;
-        $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
+        $data->created_at = \Helper::formatDateForDisplay($source->created_at,true);
         return $data;
+    }
+
+    static function getUnreadCount($sender_id,$receiver_id,$chat_head_id){
+        $created_by = '';
+        if($sender_id == USER_ID){
+            $created_by = $receiver_id;
+        }else{
+            $created_by = $sender_id;
+        }
+
+        $count = Chat::NotDeleted()->where('read',0)->where('chat_head_id',$chat_head_id)->where('created_by',$created_by)->count();
+        return $count;
     }
 }

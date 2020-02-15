@@ -29,35 +29,22 @@
                             <ul>
                               @foreach($data->messages as $message)
                               @if($message->sender_id == USER_ID)
-                              <li class="contact" data-area="{{ $message->id }}">
-                                <div class="wrap">
-                                  <span class="contact-status online"></span>
-                                  <img src="{{ $message->receiver_image }}">
-                                  <div class="meta">
-                                    <p class="name">{{ $message->receiver }}</p>
-                                    <p class="preview">
-                                      @if(!empty($message->messages))
-                                      @php 
-                                      $extra = '';
-                                      @endphp
-                                      @if($message->messages[0]->created_by == USER_ID)
-                                      @php 
-                                      $extra = 'You: ';
-                                      @endphp
-                                      @endif
-                                      {{ $extra.$message->messages[0]->message }}
-                                      @endif
-                                    </p>
-                                  </div>
-                                </div>
-                              </li>
+                              @php 
+                              $image = $message->receiver_image; 
+                              $name = $message->receiver; 
+                              @endphp
                               @else
+                              @php 
+                              $image = $message->sender_image; 
+                              $name = $message->sender; 
+                              @endphp
+                              @endif
                               <li class="contact" data-area="{{ $message->id }}">
                                 <div class="wrap">
-                                  <span class="contact-status online"></span>
-                                  <img src="{{ $message->sender_image }}">
+                                  <span class="contact-status label label-xs label-danger">{{ $message->unreadCount != 0 ? $message->unreadCount : '' }}</span>
+                                  <img src="{{ $image }}">
                                   <div class="meta">
-                                    <p class="name">{{ $message->sender }}</p>
+                                    <p class="name">{{ $name }}</p>
                                     <p class="preview">
                                       @if(!empty($message->messages))
                                       @php 
@@ -65,16 +52,15 @@
                                       @endphp
                                       @if($message->messages[0]->created_by == USER_ID)
                                       @php 
-                                      $extra = 'You: ';
+                                      $extra = '<span>You: </span>';
                                       @endphp
                                       @endif
-                                      {{ $extra.$message->messages[0]->message }}
+                                      {!! $extra.$message->messages[0]->message !!}
                                       @endif
                                     </p>
                                   </div>
                                 </div>
                               </li>
-                              @endif
                               @endforeach
                             </ul>
                         </div>
@@ -137,8 +123,27 @@
       $('#contacts ul').prepend(myElem); 
     }
 
-    $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p>' + data.msg.message + '</p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
-    $('li.contact .wrap .meta .preview').html(data.msg.message);
+    if($('li.contact[data-area="'+data.msg.chat_head_id+'"]').hasClass('active')){
+
+      if(data.msg.message_type == 0){
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p>' + data.msg.message + '</p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+      }else if(data.msg.message_type == 1){
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><i class="fa fa-paperclip"></i> ' + data.msg.message + '</a></p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+      }else if(data.msg.message_type == 2){
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><img src="'+data.msg.file_url+'"> </a></p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+      }
+
+    }
+
+    $('li.contact[data-area="'+data.msg.chat_head_id+'"] .wrap .meta .preview').html(data.msg.message);
+    var unread = $('li.contact[data-area="'+data.msg.chat_head_id+'"] .wrap span.contact-status.label-danger').html();
+    if(!unread){
+      unread+=1; 
+    }else{
+      unread = parseInt(unread);
+      unread = Math.round(unread+1);
+    }
+    $('li.contact[data-area="'+data.msg.chat_head_id+'"] .wrap span.contact-status.label-danger').html(unread);
     $(".messages").animate({ scrollTop: 20000000 }, "slow");
   });
 </script>
@@ -160,7 +165,9 @@
                     }else{
                       image = data.messages.receiver_image;
                     }
-                    $('<li class="replies"><div class="row"><img src="'+image+'" alt="" /><p>' + item.message + '</p></div><span class="pull-right">'+item.created_at+'</span></li>').appendTo($('.messages ul'));
+                    var liClass = 'replies';
+                    var spanPull = 'right';
+
                   }else{
                     var image = '';
                     if(item.created_by == data.messages.receiver_id){
@@ -168,13 +175,26 @@
                     }else{
                       image = data.messages.sender_image;
                     }
-                    $('<li class="sent"><div class="row"><img src="'+image+'" alt="" /><p>' + item.message + '</p></div><span class="pull-left">'+item.created_at+'</span></li>').appendTo($('.messages ul'));
+                    var liClass = 'sent';
+                    var spanPull = 'left';
                   }
+
+                 if(item.message_type == 0){
+                    $('<li class="'+liClass+'"><div class="row"><img src="'+image+'" alt="" /><p>' + item.message + '</p></div><span class="pull-'+spanPull+'">'+item.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }else if(item.message_type == 1){
+                    $('<li class="'+liClass+'"><div class="row"><img src="'+image+'" alt="" /><p><a target="_blank" href="'+item.file_url+'"><i class="fa fa-paperclip"></i> ' + item.message + '</a></p></div><span class="pull-'+spanPull+'">'+item.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }else if(item.message_type == 2){
+                    $('<li class="'+liClass+'"><div class="row"><img src="'+image+'" alt="" /><p><a target="_blank" href="'+item.file_url+'"><img src="'+item.file_url+'"> </a></p></div><span class="pull-'+spanPull+'">'+item.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }
+
+
                 });
             })
             $('.chat-loader').addClass('hidden');
             $('.main-content-msg.hidden').removeClass('hidden');
             $(".messages").animate({ scrollTop: 20000000 }, "slow");
+            $('li.contact.active .wrap span.contact-status.label-danger').empty();
+
         }, 1500);
 
       }
@@ -202,14 +222,14 @@
             
             var url =  "/messages/:key/newMessage".replace(':key',window.key);
             $formData = new FormData();
-            if(fileType == 0){
-              $formData.append('message', message);
-            }else if (fileType == 1) {
-              $formData.append('message', urlFile);
+            if(fileType != 0){
+              $formData.append('file_url', urlFile);
             }
             $formData.append('img_height', imageH);
             $formData.append('img_width', imageW);
             $formData.append('message_type', fileType);
+            $formData.append('message', message);
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -223,14 +243,58 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                  $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p>' + data.messages.message + '</p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                  if(fileType == 0){
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p>' + data.messages.message + '</p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }else if(fileType == 1){
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><i class="fa fa-paperclip"></i> ' + message + '</a></p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }else if(fileType == 2){
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><img src="'+urlFile+'"> </a></p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                  }
+                  $('li.contact.active .wrap span.contact-status.label-danger').empty();
                   $(".messages").animate({ scrollTop: 20000000 }, "slow");
                 },        
             });
 
             $('.message-input input').val(null);
             $('.contact.active .preview').html('<span>You: </span>' + message);
-        };
+      };
+
+      $(document).on('click','.attachment',function(){
+          $('#attachment').click();
+      });
+
+      $("#attachment").change(function (){
+          var $file = document.getElementById('attachment');
+          $formData = new FormData();
+          if ($file.files.length > 0) {
+              for (var i = 0; i < $file.files.length; i++) {
+                  $formData.append('attachment', $file.files[i]);
+              }
+          }
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          $.ajax({
+              url: "/messages/uploadAttachment",
+              type: 'POST',
+              data: $formData ,
+              dataType: 'json',
+              contentType: false,
+              processData: false,
+              success: function (data) {
+                  if(data[2] == 'image'){
+                      newMessage(data[0],data[1],data[3],data[4],2)
+                  }else{
+                      newMessage(data[0],data[1],data[3],data[4],1)
+                  }
+              },        
+              error: function(data){
+                  console.log('error');
+              }
+          });
+      });
 
       $('.submit').click(function() {
           newMessage($(".message-input input").val(),'',0,0,0);

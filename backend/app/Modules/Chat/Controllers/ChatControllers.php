@@ -60,6 +60,7 @@ class ChatControllers extends Controller {
         $messageObj->chat_head_id = $chatHeadObj->id;
         $messageObj->message_type = 0;
         $messageObj->message = 'Hello';
+        $messageObj->file_url = null;
         $messageObj->img_width = 0;
         $messageObj->img_height = 0;
         $messageObj->read = 0;
@@ -112,10 +113,16 @@ class ChatControllers extends Controller {
 
         $input = \Input::all();
 
+        $file_url = null;
+        if($input['message_type'] != 0){
+            $file_url = $input['file_url'];
+        }   
+
         $messageObj = new Chat;
         $messageObj->chat_head_id = $id;
         $messageObj->message_type = $input['message_type'];
         $messageObj->message = $input['message'];
+        $messageObj->file_url = $file_url;
         $messageObj->img_width = $input['img_width'];
         $messageObj->img_height = $input['img_height'];
         $messageObj->read = 0;
@@ -125,6 +132,8 @@ class ChatControllers extends Controller {
 
         $senderObj = User::getData(User::getOne(USER_ID));
         $receiverObj = User::getData(User::getOne($chatHeadObj->receiver_id));
+
+        Chat::where('chat_head_id',$id)->where('created_by','!=',USER_ID)->where('read',0)->update(['read'=>1]);
 
         $messageObj->sender_image = $senderObj->image;
         $messageObj->sender_name = $senderObj->name;
@@ -161,6 +170,26 @@ class ChatControllers extends Controller {
         $statusObj['messages'] = $messageObj;
         $statusObj['status'] = \TraitsFunc::SuccessResponse("Load Data Success");
         return \Response::json((object) $statusObj);
+    }
+
+    public function uploadAttachment(Request $request){
+        if ($request->hasFile('attachment')) {
+            $image = $request->file('attachment');
+            $fileName = \ImagesHelper::UploadChatAttachment('chat', $image);
+            if($image == false || $fileName == false){
+                return 'error';
+            }
+            $url = asset('uploads/chat/'.$fileName[0]);
+
+            $imageW = -1;
+            $imageH = -1;
+            if($fileName[2] == 'image'){
+                $info = getimagesize($url);
+                $imageW = $info[0];
+                $imageH = $info[1];
+            }
+            return [$fileName[1],$url,$fileName[2],$imageW,$imageH];
+        }
     }
 
 }

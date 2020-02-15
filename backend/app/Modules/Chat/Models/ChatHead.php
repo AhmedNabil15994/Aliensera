@@ -59,6 +59,7 @@ class ChatHead extends Model{
         $data->receiver_id = $source->receiver_id;
         $data->receiver = $source->Receiver->name;
         $data->receiver_image = User::getData($source->Receiver)->image;
+        $data->unreadCount = Chat::getUnreadCount($source->sender_id,$source->receiver_id,$source->id);
         $data->messages = Chat::dataList($source->id,$orderBy);
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
         return $data;

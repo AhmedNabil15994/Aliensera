@@ -155,6 +155,64 @@ class ImagesHelper {
         // return false;
     }
 
+    static function uploadChatAttachment($strAction, $fieldInput, $customPath = '', $inputFile = false) {
+
+        if ($fieldInput == '') {
+            return false;
+        }
+        $fileType = '';
+        if (is_object($fieldInput)) {
+            $fileObj = $fieldInput;
+        } else {
+            if (!Input::hasFile($fieldInput)) {
+                return false;
+            }
+            $fileObj = Input::file($fieldInput);
+        }
+
+
+        if ($fileObj->getClientSize() >= 200000000000) {
+            return false;
+        }
+        $extension = $fieldInput->getClientOriginalExtension(); // getting image extension
+
+        if (!in_array('.'.$extension, ['.pdf','.png','.jpg','.jpeg'])) {
+            return false;
+        }
+
+        if($extension == 'png' || $extension == 'jpg' || $extension == 'jpeg' ){
+            $fileType = 'image';
+        }else{
+            $fileType = 'file';
+        }
+        
+        $rand = rand() . date("YmdhisA");
+        $fileName = 'aliensera' . '-' . $rand.'.'.$extension;
+        $directory = '';
+
+        $path = public_path() . '/uploads/';
+        $path = str_replace('frontend', 'engine', $path);
+
+        if ($strAction == 'chat') {
+            $directory = $path . 'chat/';
+        }
+
+        $fileName_full = $fileObj->getClientOriginalName();
+        if ($directory == '') {
+            return false;
+        }
+
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        if ($fileObj->move($directory, $fileName)){
+            return [$fileName,str_replace('.'.$extension, "", $fileName_full),$fileType];
+        }
+
+        return false;
+    }
+
     static function deleteDirectory($dir) {
         system('rm -r ' . escapeshellarg($dir), $retval);
         return $retval == 0; // UNIX commands return zero on success
