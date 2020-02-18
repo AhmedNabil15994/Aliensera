@@ -181,8 +181,8 @@ class ChatControllers extends Controller {
             }
             $url = asset('uploads/chat/'.$fileName[0]);
 
-            $imageW = -1;
-            $imageH = -1;
+            $imageW = 0;
+            $imageH = 0;
             if($fileName[2] == 'image'){
                 $info = getimagesize($url);
                 $imageW = $info[0];
