@@ -41,7 +41,7 @@ class Chat extends Model{
         $data->height = $source->img_height;
         $data->read = $source->read;
         $data->created_by = $source->created_by;
-        $data->created_at = \Helper::formatDateForDisplay($source->created_at,true);
+        $data->created_at = \Helper::formatDateForDisplay(date('Y-m-d H:i:s',$source->created_at),true);
         return $data;
     }
 

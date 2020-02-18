@@ -52,7 +52,7 @@ class ChatControllers extends Controller {
             $chatHeadObj = new ChatHead;
             $chatHeadObj->sender_id = USER_ID;
             $chatHeadObj->receiver_id = $id;
-            $chatHeadObj->created_at = DATE_TIME;
+            $chatHeadObj->created_at = time();
             $chatHeadObj->save();
         }
 
@@ -64,7 +64,7 @@ class ChatControllers extends Controller {
         $messageObj->img_width = 0;
         $messageObj->img_height = 0;
         $messageObj->read = 0;
-        $messageObj->created_at = DATE_TIME;
+        $messageObj->created_at = time();
         $messageObj->created_by = USER_ID;
         $messageObj->save();
 
@@ -75,7 +75,7 @@ class ChatControllers extends Controller {
         $messageObj->sender_name = $senderObj->name;
         $messageObj->receiver_image = $receiverObj->image;
         $messageObj->receiver_name = $receiverObj->name;
-        $messageObj->created_at = \Helper::formatDateForDisplay($messageObj->created_at,true);
+        $messageObj->time = \Helper::formatDateForDisplay(date('Y-m-d H:i:s',$messageObj->created_at),true);
 
         $PUSHER_APP_ID = Variable::getVar('PUSHER_APP_ID');
         $PUSHER_APP_KEY = Variable::getVar('PUSHER_APP_KEY');
@@ -126,7 +126,7 @@ class ChatControllers extends Controller {
         $messageObj->img_width = $input['img_width'];
         $messageObj->img_height = $input['img_height'];
         $messageObj->read = 0;
-        $messageObj->created_at = DATE_TIME;
+        $messageObj->created_at = time();
         $messageObj->created_by = USER_ID;
         $messageObj->save();
 
@@ -139,7 +139,7 @@ class ChatControllers extends Controller {
         $messageObj->sender_name = $senderObj->name;
         $messageObj->receiver_image = $receiverObj->image;
         $messageObj->receiver_name = $receiverObj->name;
-        $messageObj->created_at = \Helper::formatDateForDisplay($messageObj->created_at,true);
+        $messageObj->time = \Helper::formatDateForDisplay(date('Y-m-d H:i:s',$messageObj->created_at),true);
 
         $PUSHER_APP_ID = Variable::getVar('PUSHER_APP_ID');
         $PUSHER_APP_KEY = Variable::getVar('PUSHER_APP_KEY');

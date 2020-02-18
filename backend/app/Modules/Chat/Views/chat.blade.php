@@ -126,11 +126,11 @@
     if($('li.contact[data-area="'+data.msg.chat_head_id+'"]').hasClass('active')){
 
       if(data.msg.message_type == 0){
-        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p>' + data.msg.message + '</p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p>' + data.msg.message + '</p></div><span class="pull-left">'+data.msg.time+'</span></li>').appendTo($('.messages ul'));
       }else if(data.msg.message_type == 1){
-        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><i class="fa fa-paperclip"></i> ' + data.msg.message + '</a></p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><i class="fa fa-paperclip"></i> ' + data.msg.message + '</a></p></div><span class="pull-left">'+data.msg.time+'</span></li>').appendTo($('.messages ul'));
       }else if(data.msg.message_type == 2){
-        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><img src="'+data.msg.file_url+'"> </a></p></div><span class="pull-left">'+data.msg.created_at+'</span></li>').appendTo($('.messages ul'));
+        $('<li class="sent"><div class="row"><img src="'+data.msg.sender_image+'" alt="" /><p><a target="_blank" href="'+data.msg.file_url+'"><img src="'+data.msg.file_url+'"> </a></p></div><span class="pull-left">'+data.msg.time+'</span></li>').appendTo($('.messages ul'));
       }
 
     }
@@ -244,11 +244,11 @@
                 processData: false,
                 success: function (data) {
                   if(fileType == 0){
-                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p>' + data.messages.message + '</p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p>' + data.messages.message + '</p></div><span class="pull-right">'+data.messages.time+'</span></li>').appendTo($('.messages ul'));
                   }else if(fileType == 1){
-                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><i class="fa fa-paperclip"></i> ' + message + '</a></p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><i class="fa fa-paperclip"></i> ' + message + '</a></p></div><span class="pull-right">'+data.messages.time+'</span></li>').appendTo($('.messages ul'));
                   }else if(fileType == 2){
-                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><img src="'+urlFile+'"> </a></p></div><span class="pull-right">'+data.messages.created_at+'</span></li>').appendTo($('.messages ul'));
+                    $('<li class="replies"><div class="row"><img src="'+data.messages.sender_image+'" alt="" /><p><a target="_blank" href="'+urlFile+'"><img src="'+urlFile+'"> </a></p></div><span class="pull-right">'+data.messages.time+'</span></li>').appendTo($('.messages ul'));
                   }
                   $('li.contact.active .wrap span.contact-status.label-danger').empty();
                   $(".messages").animate({ scrollTop: 20000000 }, "slow");
