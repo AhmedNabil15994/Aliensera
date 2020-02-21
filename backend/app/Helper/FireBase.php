@@ -15,10 +15,8 @@ class FireBase {
         );    
 
         $fields = [
-            'registration_ids' => $tokens,
-            'priority' => 'high',
-            'content_available' => true,
-            'data' => $data,
+            'to' => $tokens,
+            'notification' => $data,
         ];
 
         $ch = curl_init();

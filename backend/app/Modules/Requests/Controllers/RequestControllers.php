@@ -55,15 +55,15 @@ class RequestControllers extends Controller {
             Favourites::where('student_id',$requestObj->student_id)->where('course_id',$requestObj->course_id)->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
         }
         $tokens = Devices::getDevicesBy($requestObj->student_id,true);
-        $this->sendNotification($tokens,$id,$msg);
+        $this->sendNotification($tokens[0],$msg);
 
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
     }
 
-    public function sendNotification($tokens,$id,$msg){
+    public function sendNotification($tokens,$msg){
         $fireBase = new \FireBase();
-        $metaData = ['id' => $id, 'title' => "Course Join Request Reply", 'body' => $msg,];
+        $metaData = ['title' => "Course Join Request Reply", 'body' => $msg,];
         $fireBase->send_android_notification($tokens,$metaData);
         return true;
     }
