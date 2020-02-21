@@ -1,9 +1,6 @@
 @extends('Layouts.master')
 @section('title', 'Chat')
 @section('otherhead')
-<meta name="robots" content="noindex">
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
 <link rel="stylesheet" type="text/css" href="{{ asset('/assets/build/css/chat.css') }}">
 @endsection
 @section('content')

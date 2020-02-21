@@ -182,6 +182,9 @@
                         </div>
                         <div class="product_gallery">
                             <h2></h2>
+                            <h3 class="prod_title">Description</h3>
+                            <p class="desc">{{ $data->data->description }}</p>
+                            <br />
                             <ul class="list-inline prod_size">
                                 <li class="label label-default label-xs">
                                     <span>
@@ -218,22 +221,30 @@
                     </div>
 
                     <div class="col-md-5 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
-                        <h3 class="prod_title">{{ $data->data->title }}</h3>
-                        <p class="desc">{{ $data->data->description }}</p>
-                        <br />
-
+                        <h3 class="prod_title">Requirements</h3>
+                        <p class="desc">{!! $data->data->requirements !!}</p>
+                        <br>
+                        <h3 class="prod_title">What Student Learn !?</h3>
+                        <p class="desc">{{ $data->data->what_learn }}</p>
+                        <br>
                         <div class="course_details">
-                            <h2>Course Details</h2>
-                            <p>Course Type : <span>{{ $data->data->courseType }}</span></p>
-                            @if($data->data->course_type == 2)
-                            <p>University : <span>{{ $data->data->university }}</span></p>
-                            <p>Faculty : <span>{{ $data->data->faculty }}</span></p>
-                            @endif
-                            <p>Field : <span>{{ $data->data->field }}</span></p>
-                            <p>Instructor : <span>{{ $data->data->instructor }}</span></p>
-                            <p>Price : <span class="price">{{ $data->data->price }} $</span></p>
-                            <p>Valid Until : <span>{{ $data->data->valid_until }}</span></p>
-                            <p>Status : <span>{!! $data->data->statusLabel !!}</span></p>
+                            <h3 class="prod_title">Course Details</h3>
+                            <div class="col-sm-6">
+                                <p>Course Type : <span>{{ $data->data->courseType }}</span></p>
+                                <p>Field : <span>{{ $data->data->field }}</span></p>
+                                <p>Instructor : <span>{{ $data->data->instructor }}</span></p>
+                                @if($data->data->course_type == 2)
+                                <p>University : <span>{{ $data->data->university }}</span></p>
+                                @endif
+                            </div>
+                            <div class="col-sm-6">
+                                <p>Price : <span class="price">{{ $data->data->price }} $</span></p>
+                                <p>Valid Until : <span>{{ $data->data->valid_until }}</span></p>
+                                <p>Status : <span>{!! $data->data->statusLabel !!}</span></p>
+                                @if($data->data->course_type == 2)
+                                <p>Faculty : <span>{{ $data->data->faculty }}</span></p>
+                                @endif
+                            </div>
                         </div>
                         <br />
                     </div>
