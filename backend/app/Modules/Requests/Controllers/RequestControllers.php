@@ -3,6 +3,8 @@
 use App\Models\StudentRequest;
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Cart;
+use App\Models\Favourites;
 use App\Models\Devices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -49,6 +51,8 @@ class RequestControllers extends Controller {
             $msg = "Your Request For Joining ".$requestObj->Course->title." Is Refused";
         }elseif($status == 1){
             $msg = "Your Request For Joining ".$requestObj->Course->title." Is Accepted";
+            Cart::where('student_id',$requestObj->student_id)->where('course_id',$requestObj->course_id)->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
+            Favourites::where('student_id',$requestObj->student_id)->where('course_id',$requestObj->course_id)->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
         }
         $tokens = Devices::getDevicesBy($requestObj->student_id);
         $this->sendNotification($tokens,$id,$msg);
