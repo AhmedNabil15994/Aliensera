@@ -1,7 +1,7 @@
     <!-- jQuery -->
     {{--<script  src="{{ asset('assets/vendors/jquery/dist/jquery.min.js')}}"></script>--}}
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 
     <!-- Bootstrap -->
     <script  src="{{ asset('assets/vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
