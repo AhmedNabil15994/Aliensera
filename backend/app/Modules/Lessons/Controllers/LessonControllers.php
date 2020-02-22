@@ -4,6 +4,8 @@ use App\Models\Lesson;
 use App\Models\LessonVideo;
 use App\Models\LessonQuestion;
 use App\Models\Course;
+use App\Models\StudentRequest;
+use App\Models\Devices;
 use App\Models\VideoComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -49,6 +51,13 @@ class LessonControllers extends Controller {
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
+    public function sendNotification($tokens,$msg){
+        $fireBase = new \FireBase();
+        $metaData = ['title' => "New Lesson", 'body' => $msg,];
+        $fireBase->send_android_notification($tokens,$metaData);
+        return true;
+    }
+
     public function update($id) {
         $id = (int) $id;
         $input = \Input::all();
@@ -58,6 +67,7 @@ class LessonControllers extends Controller {
             return Redirect('404');
         }
 
+        $oldStatus = $universityObj->status;
         $validate = $this->validateLesson($input);
         if($validate->fails()){
             \Session::flash('error', $validate->messages()->first());
@@ -72,6 +82,17 @@ class LessonControllers extends Controller {
         $universityObj->updated_by = USER_ID;
         $universityObj->updated_at = DATE_TIME;
         $universityObj->save();
+
+        $newStatus = $universityObj->status;
+        if($oldStatus == 0 && $newStatus == 1){
+            $msg = 'New Lesson Added To Course '.$universityObj->Course->title;
+            $users = StudentRequest::NotDeleted()->where('course_id',$universityObj->course_id)->where('status',1)->pluck('student_id');
+            $tokens = Devices::getDevicesBy($users);
+            $tokens = reset($tokens);
+            foreach ($tokens as $value) {
+                $this->sendNotification($value,$msg);
+            }
+        }
 
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
@@ -100,6 +121,16 @@ class LessonControllers extends Controller {
         $universityObj->created_by = USER_ID;
         $universityObj->created_at = DATE_TIME;
         $universityObj->save();
+
+        if($universityObj->status == 1){
+            $msg = 'New Lesson Added To Course '.$universityObj->Course->title;
+            $users = StudentRequest::NotDeleted()->where('course_id',$universityObj->course_id)->where('status',1)->pluck('student_id');
+            $tokens = Devices::getDevicesBy($users);
+            $tokens = reset($tokens);
+            foreach ($tokens as $value) {
+                $this->sendNotification($value,$msg);
+            }
+        }
 
         \Session::flash('success', "Alert! Create Successfully");
         return redirect()->to('lessons/edit/' . $universityObj->id);
