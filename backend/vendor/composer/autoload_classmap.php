@@ -27,6 +27,7 @@ return array(
     'App\\Http\\Controllers\\GroupsControllers' => $baseDir . '/app/Modules/Groups/Controllers/GroupsControllers.php',
     'App\\Http\\Controllers\\LessonControllers' => $baseDir . '/app/Modules/Lessons/Controllers/LessonControllers.php',
     'App\\Http\\Controllers\\PagesControllers' => $baseDir . '/app/Modules/Pages/Controllers/PagesControllers.php',
+    'App\\Http\\Controllers\\QuizScoresControllers' => $baseDir . '/app/Modules/QuizScores/Controllers/QuizScoresControllers.php',
     'App\\Http\\Controllers\\RequestControllers' => $baseDir . '/app/Modules/Requests/Controllers/RequestControllers.php',
     'App\\Http\\Controllers\\UniversityControllers' => $baseDir . '/app/Modules/University/Controllers/UniversityControllers.php',
     'App\\Http\\Controllers\\UsersControllers' => $baseDir . '/app/Modules/Users/Controllers/UsersControllers.php',

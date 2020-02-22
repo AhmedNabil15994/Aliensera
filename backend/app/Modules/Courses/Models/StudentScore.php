@@ -37,7 +37,7 @@ class StudentScore extends Model{
         return $source->first();
     }
 
-    static function dataList($student_id=null) {
+    static function dataList($student_id=null,$type=null) {
         $input = \Input::all();
         $source = self::where('id','!=',0);
 
@@ -45,12 +45,87 @@ class StudentScore extends Model{
             $source->where('student_id', $student_id);
         }
 
-        if(IS_ADMIN == false){
+        if(IS_ADMIN == false && $type == null){
             $source->where('instructor_id',USER_ID);
+        }
+
+        if(IS_ADMIN == false && $type == 1){
+            $student_id = null;
+            if (isset($input['course_id']) && $input['course_id'] != null ) {
+                $source->where('course_id', $input['course_id']);
+            }
+            if (isset($input['student_id']) && $input['student_id'] != null ) {
+                $student_id = $input['student_id'];
+                $source->where('student_id', $input['student_id']);
+            }
+            $source->where('instructor_id',USER_ID)->groupBy('lesson_id')->orderBy('id','DESC');
+            return self::generateObjWithPagination($source,$student_id);
         }
 
         $source->orderBy('id','DESC');
         return self::generateObj($source);
+    }
+
+    static function generateObjWithPagination($source,$student_id=null){
+        $sourceArr = $source->paginate(PAGINATION);
+
+        $list = [];
+        foreach($sourceArr as $key => $value) {
+            $list[$key] = new \stdClass();
+            $list[$key] = self::getDataForPagination($value,$student_id);
+        }
+
+        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        $data['data'] = $list;
+
+        return $data;
+    }
+
+    static function getDataForPagination($source,$student_id=null) {
+        $allQuestions = LessonQuestion::NotDeleted()->where('lesson_id',$source->lesson_id)->count();
+        $students = [];
+        $rights = 0;
+        $wrongs = 0;
+        $alls = 0;
+
+        if($student_id != null){
+            $collection = self::where('lesson_id',$source->lesson_id)->where('student_id',$student_id)->groupBy('student_id')->get();
+        }else{
+            $collection = self::where('lesson_id',$source->lesson_id)->groupBy('student_id')->get();
+        }
+        foreach ($collection as $key => $value) {
+            $allQuestion = self::where('lesson_id',$source->lesson_id)->where('student_id',$value->student_id)->count();
+            $studentRight = self::where('lesson_id',$source->lesson_id)->where('student_id',$value->student_id)->where('correct',1)->count();
+            $studentWrong = self::where('lesson_id',$source->lesson_id)->where('student_id',$value->student_id)->where('correct',0)->count();
+            $studentScore = round( ($studentRight / $allQuestion) * 100 ,2) .'%';
+            $score = new  \stdClass();
+            $score->all = $allQuestion;
+            $score->right = $studentRight;
+            $score->wrong = $studentWrong;
+            $score->score = $studentScore;
+            $score->student_id = $value->student_id;
+            $score->student = $value->Student != null ? $value->Student->name : '';
+            $students[$key] = $score;
+            $rights+= $studentRight;
+            $wrongs+= $studentWrong;
+            $alls+= $allQuestion;
+        }
+
+        $data = new  \stdClass();
+        $data->id = $source->id;
+        $data->students = (object) $students;
+        $data->course_id = $source->course_id;
+        $data->course = $source->Course != null ? $source->Course->title : '';
+        $data->lesson_id = $source->lesson_id;
+        $data->lesson = $source->Lesson != null ? $source->Lesson->title : '';
+        $data->instructor_id = $source->instructor_id;
+        $data->instructor = $source->Instructor != null ? $source->Instructor->name : '';
+        $data->all = $allQuestions;
+        $data->right = $rights;
+        $data->wrong = $wrongs;
+        $data->score = round( ($rights / $alls) * 100 ,2) .'%';
+        $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
+        return $data;
     }
 
     static function getByLesson($lesson_id){
@@ -122,6 +197,8 @@ class StudentScore extends Model{
         $data->course_id = $source->course_id;
         $data->course = $source->Course != null ? $source->Course->title : '';
         $data->lessons = self::getLessons($source->student_id,$source->course_id);
+        $data->lesson_id = $source->lesson_id;
+        $data->lesson = $source->Lesson != null ? $source->Lesson->title : '';
         $data->instructor_id = $source->instructor_id;
         $data->all = $allQuestion;
         $data->right = $studentRight;
@@ -144,6 +221,8 @@ class StudentScore extends Model{
         $data->id = $source->id;
         $data->course_id = $source->course_id;
         $data->course = $source->Course != null ? $source->Course->title : '';
+        $data->lesson_id = $source->lesson_id;
+        $data->lesson = $source->Lesson != null ? $source->Lesson->title : '';
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->Instructor != null ? $source->Instructor->name : '';
         $data->student_id = $source->student_id;

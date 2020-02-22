@@ -500,6 +500,7 @@
     'RequestControllers@update' => 'edit-student-request',
     'RequestControllers@delete' => 'delete-student-request',
     'CourseStudentControllers@index' => 'list-course-students',
+    'QuizScoresControllers@index' => 'list-quiz-scores',
   ),
   'queue' => 
   array (

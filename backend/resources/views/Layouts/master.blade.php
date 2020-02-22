@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AlienSera | @yield('title')</title>
         @include('Layouts.head')
+        @yield('styles')
         @yield('otherhead')
     </head>
     <body class="nav-md">

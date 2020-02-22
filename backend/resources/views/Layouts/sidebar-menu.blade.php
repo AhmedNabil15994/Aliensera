@@ -60,6 +60,9 @@
                             @if(\Helper::checkRules('list-student-requests'))
                                 <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\StudentRequest::getCount()."</span>" :'' !!}</a></li>
                             @endif
+                            @if(\Helper::checkRules('list-quiz-scores'))
+                                <li class="{{ Active(URL::to('/scores*')) }}"><a href="{{ URL::to('/scores') }}">Quizzes Scores</a></li>
+                            @endif
                         </ul>
                     </li>
                     @endif

@@ -1,4 +1,4 @@
-@section('otherhead')
+@section('styles')
 <style>
   ul.paginationer {
     text-align:center;
@@ -24,10 +24,10 @@
 </style>
 @endsection
 
-@if(isset($data->pagination))
+@if(isset($data->pagination) || isset($data->data->pagination))
 <?php
-$current_page = $data->pagination->current_page;
-$total_pages = $data->pagination->last_page;
+$current_page = isset($data->pagination->current_page) ? $data->pagination->current_page : $data->data->pagination->current_page;
+$total_pages = isset($data->pagination->last_page) ? $data->pagination->last_page : $data->data->pagination->last_page;
 $per_page = 10;
 $page = $current_page;
 

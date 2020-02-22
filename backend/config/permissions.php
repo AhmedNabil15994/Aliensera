@@ -100,5 +100,7 @@ return [
 
     'CourseStudentControllers@index' => 'list-course-students',
 
+    'QuizScoresControllers@index' => 'list-quiz-scores',
+
 
 ];
