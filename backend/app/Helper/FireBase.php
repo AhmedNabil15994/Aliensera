@@ -8,16 +8,24 @@ class FireBase {
     }
 
 
-    function send_android_notification($tokens,$data) {  
+    function send_android_notification($tokens,$data,$myData=null) {  
         $url = "https://fcm.googleapis.com/fcm/send";            
         $header = array("authorization: key=" . $this->key . "",
             "content-type: application/json"
         );    
 
-        $fields = [
-            'to' => $tokens,
-            'notification' => $data,
-        ];
+        if($myData != null){
+            $fields = [
+                'to' => $tokens,
+                'notification' => $data,
+                'data' => $myData,
+            ];
+        }else{
+            $fields = [
+                'to' => $tokens,
+                'notification' => $data,
+            ];
+        }
 
         $ch = curl_init();
         $timeout = 120;

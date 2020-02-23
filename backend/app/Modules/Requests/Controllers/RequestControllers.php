@@ -63,8 +63,9 @@ class RequestControllers extends Controller {
 
     public function sendNotification($tokens,$msg,$id){
         $fireBase = new \FireBase();
-        $metaData = ['title' => "Course Join Request Reply", 'body' => $msg,'type' => 1 , 'id' => $id ];
-        $fireBase->send_android_notification($tokens,$metaData);
+        $metaData = ['title' => "Course Join Request Reply", 'body' => $msg,];
+        $myData = ['type' => 1 , 'id' => $id];
+        $fireBase->send_android_notification($tokens,$metaData,$myData);
         return true;
     }
 

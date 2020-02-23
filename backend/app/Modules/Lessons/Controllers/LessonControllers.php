@@ -53,8 +53,9 @@ class LessonControllers extends Controller {
 
     public function sendNotification($tokens,$msg,$id){
         $fireBase = new \FireBase();
-        $metaData = ['title' => "New Lesson", 'body' => $msg, 'type' => 2 , 'id' => $id];
-        $fireBase->send_android_notification($tokens,$metaData);
+        $metaData = ['title' => "New Lesson", 'body' => $msg,];
+        $myData = ['type' => 2 , 'id' => $id];
+        $fireBase->send_android_notification($tokens,$metaData,$myData);
         return true;
     }
 
