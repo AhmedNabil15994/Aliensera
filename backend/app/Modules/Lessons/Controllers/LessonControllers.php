@@ -51,9 +51,9 @@ class LessonControllers extends Controller {
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
-    public function sendNotification($tokens,$msg){
+    public function sendNotification($tokens,$msg,$id){
         $fireBase = new \FireBase();
-        $metaData = ['title' => "New Lesson", 'body' => $msg,];
+        $metaData = ['title' => "New Lesson", 'body' => $msg, 'type' => 2 , 'id' => $id];
         $fireBase->send_android_notification($tokens,$metaData);
         return true;
     }
@@ -90,7 +90,7 @@ class LessonControllers extends Controller {
             $tokens = Devices::getDevicesBy($users);
             $tokens = reset($tokens);
             foreach ($tokens as $value) {
-                $this->sendNotification($value,$msg);
+                $this->sendNotification($value,$msg,$id);
             }
         }
 
@@ -128,7 +128,7 @@ class LessonControllers extends Controller {
             $tokens = Devices::getDevicesBy($users);
             $tokens = reset($tokens);
             foreach ($tokens as $value) {
-                $this->sendNotification($value,$msg);
+                $this->sendNotification($value,$msg,$universityObj->id);
             }
         }
 
