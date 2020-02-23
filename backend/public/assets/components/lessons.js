@@ -242,3 +242,38 @@ function deleteQuestion(question_id) {
         })
     });
 }
+
+function uploadAttachment(video_id) {
+    $('#fileUpload').click();
+    var url = "/videos/"+video_id+"/uploadAttachment";
+    if(url.indexOf("#") != -1){
+        url = url.replace('#','');
+    }
+    window.videoURL = url;
+}
+
+$('#fileUpload').on('change',function(){
+    var formData = new FormData();
+    var $file = document.getElementById('fileUpload');
+    if ($file.files.length > 0) {
+       for (var i = 0; i < $file.files.length; i++) {
+            formData.append('attachment', $file.files[i]);
+       }
+    }
+    $.ajax({
+        type:'POST',
+        url: window.videoURL,
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+            successNotification(data.status.message);
+            location.reload();
+        },
+        error: function(data){
+            errorNotification(data.status.message);
+            location.reload();
+        }
+    });
+})

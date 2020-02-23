@@ -291,7 +291,17 @@
                                                                 @if(\Helper::checkRules('delete-lesson-video'))
                                                                 <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
                                                                 @endif
+                                                                @if(\Helper::checkRules('change-video-status'))
                                                                 <a href="{{ URL::to('/videos/'.$video->id.'/changeStatus') }}" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>
+                                                                @endif
+                                                                @if(\Helper::checkRules('add-video-attachment'))
+                                                                @if($video->attachment == '')
+                                                                <input id="fileUpload" class="hidden" name="attachment" type="file">
+                                                                <button class="btn btn-info btn-xs" onclick="uploadAttachment({{ $video->id }})"><i class="fa fa-file"></i> Upload PDF</button>
+                                                                @else
+                                                                <a class="btn btn-info btn-xs" href="{{ $video->attachment }}" target="_blank"><i class="fa fa-file"></i> Download PDF</a>
+                                                                @endif
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         @endforeach
@@ -442,4 +452,5 @@
 @stop()
 @section('script')
 <script src="{{ asset('assets/components/courses.js')}}"></script>
+<script src="{{ asset('assets/components/lessons.js')}}"></script>
 @stop()

@@ -14,6 +14,10 @@ class LessonVideo extends Model{
         return \ImagesHelper::GetImagePath('lessons', $id, $video);
     }
 
+    static function getVideoAttachment($id, $attachment) {
+        return \ImagesHelper::GetImagePath('videos', $id, $attachment);
+    }
+
     public function Lesson(){
         return $this->belongsTo('App\Models\Lesson','lesson_id','id');
     }
@@ -107,6 +111,7 @@ class LessonVideo extends Model{
         $data->video_id = $source->video_id; 
         $data->link = "https://player.vimeo.com/video/".$source->video_id;
         $data->video = self::getVideoPath($source->lesson_id,$source->video) != null ? self::getVideoPath($source->lesson_id,$source->video) : [];
+        $data->attachment = $source->attachment != null ? self::getVideoAttachment($source->id,$source->attachment) : '';
         return $data;
     }
 

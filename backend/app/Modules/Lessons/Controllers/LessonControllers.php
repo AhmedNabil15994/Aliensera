@@ -185,6 +185,30 @@ class LessonControllers extends Controller {
         }       
     }
 
+    public function uploadAttachment(Request $request , $id) {
+        $lessonObj = LessonVideo::getOne($id);
+        if($lessonObj == null){
+            return \TraitsFunc::ErrorMessage('This Lesson Video Not Found !!', 400);
+        }
+
+        if ($request->hasFile('attachment')) {
+            $files = $request->file('attachment');
+            $fileName = \ImagesHelper::uploadImage('videos', $files, $id);
+            if($fileName == false){
+                return \TraitsFunc::ErrorMessage('Upload Attachment Failed !!', 400);
+            }
+
+            $lessonObj->attachment = $fileName;
+            $lessonObj->updated_by = USER_ID;
+            $lessonObj->updated_at = date('Y-m-d H:i:s');
+            $lessonObj->save();
+            \Session::flash('success', "Upload Attachment Success !!");
+            $statusObj['status'] = \TraitsFunc::SuccessResponse('Upload Attachment Success !!');
+            $statusObj['data'] = LessonVideo::getData($lessonObj);
+            return $statusObj;
+        }       
+    }
+
     public function removeVideo($video_id){
         $videoObj = LessonVideo::getOne($video_id);
         if($videoObj == null){
