@@ -219,7 +219,7 @@ class User extends Model{
         $data->myRate = InstructorRate::NotDeleted()->where('instructor_id',$source->id)->where('created_by',USER_ID)->first();
         if($source->Profile->group_id == 2){
             $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
-            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
+            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('course_id')->count() :0;
             $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
             $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
             $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
