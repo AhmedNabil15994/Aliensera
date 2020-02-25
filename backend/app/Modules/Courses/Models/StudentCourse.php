@@ -158,8 +158,8 @@ class StudentCourse extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->instructor = $source->Instructor != null ? User::getData($source->Instructor) : '';
-        $data->count = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->count('course_id');
-        $data->count2 = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->count('student_id');
+        $data->count = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->distinct()->count('course_id');
+        $data->count2 = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->distinct()->count('student_id');
         return $data;
     }
 
