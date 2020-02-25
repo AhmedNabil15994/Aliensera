@@ -69,7 +69,7 @@ class StudentCourse extends Model{
         if(IS_ADMIN == false){
             $source->where('instructor_id',USER_ID);
         }
-        $source = $source->where('status',1)->withCount('Student')->orderBy('student_count', 'desc')->groupBy('student_id')->take($count);
+        $source = $source->where('status',1)->withCount('Student')->orderBy('student_count', 'desc')->groupBy('student_id')->get(1);
         return self::generateObj2($source,'student');
     }
 
