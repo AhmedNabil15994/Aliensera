@@ -58,7 +58,7 @@ class StudentCourse extends Model{
     }
 
     static function getTopStudents($count){
-        $source = self::NotDeleted()->where('status',1)->withCount('Student')->orderBy('student_count', 'desc')->groupBy('student_id')->get($count);
+        $source = self::NotDeleted()->where('status',1)->withCount('Student')->orderBy('student_count', 'desc')->groupBy('student_id')->get()->take($count);
         return self::generateObj2($source,'student');
     }
 
@@ -67,12 +67,12 @@ class StudentCourse extends Model{
             if($instructor_id != null){
                 $myQuery->where('instructor_id',$instructor_id);
             }
-        })->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id')->get($count);
+        })->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id')->get()->take($count);
         return self::generateObj2($source,'myCourses');
     }
 
     static function getTopInstructors($count){
-        $source = self::NotDeleted()->where('status',1)->withCount('Instructor')->orderBy('instructor_count', 'desc')->groupBy('instructor_id')->get($count);
+        $source = self::NotDeleted()->where('status',1)->withCount('Instructor')->orderBy('instructor_count', 'desc')->groupBy('instructor_id')->get()->take($count);
         return self::generateObj2($source,'instructor');
     }
 
@@ -151,8 +151,8 @@ class StudentCourse extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->instructor = $source->Instructor != null ? User::getData($source->Instructor) : '';
-        $data->count = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->count('course_id');
-        $data->count2 = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->count('student_id');
+        $data->count = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->distinct()->count('course_id');
+        $data->count2 = self::where('instructor_id',$source->instructor_id)->where('status',1)->groupBy('instructor_id')->distinct()->count('student_id');
         return $data;
     }
 
