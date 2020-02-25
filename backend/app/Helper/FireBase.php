@@ -39,7 +39,6 @@ class FireBase {
         // Get URL content
         $result = curl_exec($ch);    
         // close handle to release resources
-        dd($result);
         curl_close($ch);
         return $result;
     }
