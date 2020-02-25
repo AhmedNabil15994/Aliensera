@@ -33,10 +33,9 @@ class DashboardControllers extends Controller {
         $dataCount = count($datesArray);
         for($i=0;$i<$dataCount;$i++){
             if(IS_ADMIN == true){
-                $activeStudents = User::where('is_active')->whereHas('Profile',function($profileQuery){
-                    $profileQuery->where('group_id',3);
-                })->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$dataCount){
-                    if($i < $dataCount-1){
+                $students = StudentCourse::where('status',1)->pluck('student_id');
+                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                    if($i < 9){
                         $whereQuery->where('created_at','<',$datesArray[$i+1]);
                     }
                 })->count();
@@ -94,9 +93,8 @@ class DashboardControllers extends Controller {
         $datesArray = array_reverse($datesArray);
         for($i=0;$i<count($datesArray);$i++){
             if(IS_ADMIN == true){
-                $activeStudents = User::where('is_active')->whereHas('Profile',function($profileQuery){
-                    $profileQuery->where('group_id',3);
-                })->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                $students = StudentCourse::where('status',1)->pluck('student_id');
+                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
                     if($i < 9){
                         $whereQuery->where('created_at','<',$datesArray[$i+1]);
                     }
