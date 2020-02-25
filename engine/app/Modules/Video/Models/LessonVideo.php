@@ -73,16 +73,14 @@ class LessonVideo extends Model{
             $hours = round($duration / 3600);
             $minutes = round(($duration % 3600) / 60);
             $result = $hours.' Hr '.$minutes.' Min';
-            return $result;
-        }elseif($duration < 3600 && $duration > 60){
+        }elseif($duration > 60){
             $minutes = round($duration / 60);
             $seconds = $duration % 60;
             $result = $minutes.' Min '.$seconds.' Sec';
-            return $result;
         }elseif($duration > 0 && $duration < 60){
             $result = $duration.' Sec';
-            return $result;
         }
+        return $result;
     }
 
     static function getSize($size){
