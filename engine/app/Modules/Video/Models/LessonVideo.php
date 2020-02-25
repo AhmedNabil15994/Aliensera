@@ -69,18 +69,18 @@ class LessonVideo extends Model{
 
     static function getDuration($duration){
         $result = '';
-        if($duration > 3600){
-            $hours = round($duration / 60);
-            $minutes = $duration % 60;
-            $result = $hours.' Hr '.$minutes.' Min';
-        }elseif($duration < 3600 && $duration > 60){
-            $minutes = round($duration / 60);
-            $seconds = $duration % 60;
-            $result = $minutes.' Min '.$seconds.' Sec';
-        }elseif($duration > 0 && $duration < 60){
-            $result = $duration.' Sec';
-        }
-        return $result;
+        // if($duration > 3600){
+        //     $hours = round($duration / 60);
+        //     $minutes = $duration % 60;
+        //     $result = $hours.' Hr '.$minutes.' Min';
+        // }elseif($duration < 3600 && $duration > 60){
+        //     $minutes = round($duration / 60);
+        //     $seconds = $duration % 60;
+        //     $result = $minutes.' Min '.$seconds.' Sec';
+        // }elseif($duration > 0 && $duration < 60){
+        //     $result = $duration.' Sec';
+        // }
+        return $duration;
     }
 
     static function getSize($size){
