@@ -190,15 +190,4 @@ $(function(){
     $('input[name="valid_until"]').datetimepicker({
         format: 'YYYY-MM-DD',
     });
-
-    $(document).on('click','.row.results .btn.btn-default.btn-xs',function(){
-        var link = $(this).attr('data-link');
-        $('#myModal iframe').attr('src',link);
-        $('#myModal').modal('toggle');
-    });
-
-    $('#myModal').on('hidden.bs.modal', function () {
-        $('#myModal iframe').attr('src','');
-    });
-
 });

@@ -453,4 +453,5 @@
 @section('script')
 <script src="{{ asset('assets/components/courses.js')}}"></script>
 <script src="{{ asset('assets/components/lessons.js')}}"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
 @stop()
