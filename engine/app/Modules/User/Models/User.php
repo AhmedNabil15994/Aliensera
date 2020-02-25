@@ -220,7 +220,7 @@ class User extends Model{
         if($source->Profile->group_id == 2){
             $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
             $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() :0;
-            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->groupBy('course_id')->count() :0;
+            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->distinct('course_id')->count() :0;
             $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
             $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
             if($flag != 1){
