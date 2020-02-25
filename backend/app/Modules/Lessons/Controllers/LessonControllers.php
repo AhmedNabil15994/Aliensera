@@ -20,11 +20,13 @@ class LessonControllers extends Controller {
         $rules = [
             'title' => 'required',
             'course_id' => 'required',
+            'valid_until' => 'required',
         ];
 
         $message = [
             'title.required' => "Sorry Title Required",
             'course_id.required' => "Sorry Course Required",
+            'valid_until.required' => "Sorry Valid Until Required",
         ];
 
         $validate = \Validator::make($input, $rules, $message);
@@ -77,7 +79,7 @@ class LessonControllers extends Controller {
 
 
         $universityObj->title = $input['title'];
-        $universityObj->description = $input['description'];
+        $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         $universityObj->status = isset($input['status']) ? 1 : 0;
         $universityObj->updated_by = USER_ID;
@@ -115,7 +117,7 @@ class LessonControllers extends Controller {
         
         $universityObj = new Lesson;
         $universityObj->title = $input['title'];
-        $universityObj->description = $input['description'];
+        $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->course_id = $input['course_id'];
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         $universityObj->status = IS_ADMIN ? (isset($input['status']) ? 1 : 0) : 2 ;
