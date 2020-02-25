@@ -78,12 +78,12 @@ class StudentCourse extends Model{
         if(IS_ADMIN == false){
             $source->where('instructor_id',USER_ID);
         }
-        $source = $source->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id')->get($count);
+        $source = $source->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id')->get()->take($count);
         return self::generateObj2($source,'course');
     }
 
     static function getTopInstructors($count){
-        $source = self::NotDeleted()->where('status',1)->withCount('Instructor')->orderBy('instructor_count', 'desc')->groupBy('instructor_id')->get($count);
+        $source = self::NotDeleted()->where('status',1)->withCount('Instructor')->orderBy('instructor_count', 'desc')->groupBy('instructor_id')->get()->take($count);
         return self::generateObj2($source,'instructor');
     }
 
