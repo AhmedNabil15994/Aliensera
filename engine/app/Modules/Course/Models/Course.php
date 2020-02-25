@@ -159,8 +159,8 @@ class Course extends Model{
     static function getDuration($duration){
         $result = '';
         if($duration > 3600){
-            $hours = round($duration / 60);
-            $minutes = $duration % 60;
+            $hours = round($duration / 3600);
+            $minutes = round(($duration % 3600) / 60);
             $result = $hours.' Hr '.$minutes.' Min';
         }elseif($duration > 60){
             $minutes = round($duration / 60);
