@@ -60,14 +60,6 @@ class VideoComment extends Model{
         return $list;
     }
 
-    static function getCreator($created_by,$instructor_id){
-        $result = '';
-        if($created_by == $instructor_id){
-            $result = '<span class="label bg-green online">Owner</span>';
-        }
-        return $result;
-    }
-
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
@@ -77,8 +69,8 @@ class VideoComment extends Model{
         $data->status = $source->status;
         $data->reply_on = $source->reply_on;
         $data->replies = $source->reply_on == 0 ? self::dataList($source->video_id,$source->id) : [];
-        $data->image = asset('assets/images/avatar.png');
-        $data->creator = $source->Creator->name .' '. self::getCreator($source->created_by,$source->Course->instructor_id);
+        $data->image = User::getData($source->Creator)->image;
+        $data->creator = $source->Creator->name;
         $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
         return $data;
     }

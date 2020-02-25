@@ -4,7 +4,7 @@ return [
 
 
     // 'IMAGE_BASE' => env('IMAGE_BASE', 'http://aliensera.com/backend/'),
-    'IMAGE_BASE' => env('IMAGE_BASE', 'https://backend.aliensera.com/'),
+    'IMAGE_BASE' => env('IMAGE_BASE', 'http://backend.aliensera.loc/'),
     /*
     |--------------------------------------------------------------------------
     | Application Name

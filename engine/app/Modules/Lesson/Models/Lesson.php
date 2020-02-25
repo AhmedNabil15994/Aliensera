@@ -65,17 +65,38 @@ class Lesson extends Model{
         return $data;
     }
 
+    static function getUserScore($id){
+
+        $allQuestion = LessonQuestion::NotDeleted()->where('lesson_id',$id)->count();
+        $studentRight = StudentScore::where('lesson_id',$id)->where('student_id',USER_ID)->where('correct',1)->count();
+        $studentWrong = StudentScore::where('lesson_id',$id)->where('student_id',USER_ID)->where('correct',0)->count();
+        $score = round( ($studentRight / $allQuestion) * 100 ,2) .'%';
+
+        $data = new \stdClass();
+        $data->allQuestion = $allQuestion;
+        $data->studentAnswers = StudentScore::where('lesson_id',$id)->where('student_id',USER_ID)->count();
+        $data->studentRightAnswers = $studentRight;
+        $data->studentWrongAnswers = $studentWrong;
+        $data->score = $score;
+        return $data;
+    }
+
     static function getData($source) {
+        $userCount = StudentScore::where('lesson_id',$source->id)->where('student_id',USER_ID)->count();
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
         $data->course_id = $source->course_id;
         $data->course = $source->Course->title;
-        $data->course_status = $source->Course->status;
         $data->description = $source->description;
+        $data->valid_until = $source->valid_until;
         $data->status = $source->status;
+        $data->free_videos =  LessonVideo::dataList($source->id,null,1);
         $data->videos =  LessonVideo::dataList($source->id);
         $data->questions =  LessonQuestion::dataList($source->id);
+        if($userCount > 0){
+            $data->myScore = self::getUserScore($source->id);
+        }
         return $data;
     }
 

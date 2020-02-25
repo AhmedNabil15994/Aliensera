@@ -10,7 +10,7 @@
 
             <br />
             <p>Many thanks,</p>
-            <p>Sayrat</p>
+            <p>Aliensera</p>
         </td>
     </tr>
     </tbody>

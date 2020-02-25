@@ -9,4 +9,6 @@ Route::group(['prefix' => '/feedback'] , function () {
 
     //inserting
     Route::post('/add', 'FeedbackController@add');
+    Route::post('/update/{id}', 'FeedbackController@update');
+    Route::post('/remove/{id}', 'FeedbackController@delete');
 });

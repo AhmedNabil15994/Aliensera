@@ -46,7 +46,7 @@ if(previewNode){
       parallelUploads: 20,
       previewTemplate: previewTemplate,
       maxFilesize: 2048,
-      timeout:3600000,
+      timeout:10800000,
       acceptedFiles: '.3gp,.3g2,.avi,.uvh,.uvm,.uvu,.uvp,.uvs,.uaa,.fvt,.f4v,.flv,.fli,.h261,.h263,.h264,.jpgv,.m4v,.asf,.pyv,.wm,.wmx,.wmv,.wvx,.mj2,.mxu,.mpeg,.mp4,.ogv,.webm,.qt,.movie,.viv,.wav,.avi,.mkv',
       autoQueue: false,
       previewsContainer: "#previews",

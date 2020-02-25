@@ -5,8 +5,7 @@ User Auth
 ----------------------------------------------------------*/
 Route::group(['prefix' => '/'] , function () {
     Route::post('login', 'AuthController@login');
-    Route::post('send-code', 'AuthController@sendCode');
-    Route::post('check-code', 'AuthController@checkCode');
+    Route::post('social', 'AuthController@social');
     Route::post('register', 'AuthController@register');
 
     Route::post('get-code', 'AuthController@getCode');

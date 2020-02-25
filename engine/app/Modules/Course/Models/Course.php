@@ -34,6 +34,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\StudentCourse', 'course_id','id');
     }
 
+    function StudentDuration(){
+        return $this->hasMany('App\Models\StudentVideoDuration', 'course_id','id');
+    }
+
     function Lesson(){
         return $this->hasMany('App\Models\Lesson', 'course_id','id');
     }
@@ -57,10 +61,15 @@ class Course extends Model{
         return $source->first();
     }
 
+    static function getRalated($field_id,$counter,$notId=null){
+        $source = self::NotDeleted()->with('Feedback')->where('status',3)->where('field_id',$field_id)->where('id','!=',$notId)->take($counter);
+        return self::generateObj($source);
+    }
+
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
 
-        $source = self::NotDeleted()->with('Feedback')->where('status',3);
+        $source = self::NotDeleted()->with('Feedback')->where('status',3)->where('valid_until','>=',date('Y-m-d'));
 
         if (isset($input['keyword']) && !empty($input['keyword'])) {
             $source->where('title', 'LIKE', '%' . $input['keyword'] . '%')
@@ -179,9 +188,18 @@ class Course extends Model{
         $data->field = $source->Field != null ? $source->Field->title : '';
         $data->field_id = $source->field_id;
         $data->price = $source->price;
+        $data->year = $source->year;
+        $data->what_learn = $source->what_learn;
+        $data->requirements = $source->requirements;
+        $data->durationBySeconds = $source->Video != null ? $source->Video()->NotDeleted()->sum('duration') : 0;
+        if($source->StudentDuration()->where('student_id',USER_ID) != null){
+            $data->seeDuration = $source->StudentDuration()->where('student_id',USER_ID)->sum('see_duration');
+        }
+        $data->isOwned = StudentCourse::checkOwned($source->id,USER_ID);
         $data->isFavourite = Favourites::checkFav($source->id,USER_ID);
         $data->isInCart = Cart::checkCart($source->id,USER_ID);
         $data->valid_until = $source->valid_until;
+        $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
         $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
         $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->count() : 0;
         $data->videosCount = $source->Video != null ? $source->Video()->NotDeleted()->count() : 0;
@@ -189,10 +207,10 @@ class Course extends Model{
         $data->rateCount = $source->Feedback != null ? $source->Feedback()->NotDeleted()->count() :0;
         $data->rateSum = $source->Feedback != null ? $source->Feedback()->NotDeleted()->sum('rate') :0;
         $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
+        $data->free_videos =  LessonVideo::dataList(null,$source->id,1);
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
         $data->image = $source->image != null ? self::getPhotoPath($source->id, $source->image) : '';
-        $data->instructor_id = $source->instructor_id;
-        $data->instructor = $source->instructor != null ? $source->instructor->name : '';
+        $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
         $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
         return $data;

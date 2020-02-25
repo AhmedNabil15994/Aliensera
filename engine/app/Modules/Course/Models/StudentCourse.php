@@ -164,4 +164,17 @@ class StudentCourse extends Model{
         return $data;
     }
 
+    static function checkOwned($course_id,$student_id){
+        $source = self::NotDeleted()
+                    ->where('student_id',$student_id)
+                    ->where('course_id',$course_id)
+                    ->where('status',1)
+                    ->first();
+        if($source != null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
 }

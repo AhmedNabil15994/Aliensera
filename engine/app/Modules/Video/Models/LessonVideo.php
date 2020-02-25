@@ -14,6 +14,10 @@ class LessonVideo extends Model{
         return \ImagesHelper::GetImagePath('lessons', $id, $video);
     }
 
+    static function getVideoAttachment($id, $attachment) {
+        return \ImagesHelper::GetImagePath('videos', $id, $attachment);
+    }
+
     public function Lesson(){
         return $this->belongsTo('App\Models\Lesson','lesson_id','id');
     }
@@ -33,12 +37,20 @@ class LessonVideo extends Model{
         return $source->first();
     }
 
-    static function dataList($lesson_id=null) {
+    static function dataList($lesson_id=null,$course_id=null,$free=null) {
         $input = \Input::all();
         $source = self::NotDeleted();
 
         if (isset($lesson_id) && !empty($lesson_id) ) {
             $source->where('lesson_id', $lesson_id);
+        } 
+
+        if (isset($course_id) && !empty($course_id) ) {
+            $source->where('course_id', $course_id);
+        } 
+
+        if (isset($free) && !empty($free) ) {
+            $source->where('free', $free);
         } 
 
         return self::generateObj($source);
@@ -91,9 +103,12 @@ class LessonVideo extends Model{
         $data->course = $source->Lesson->Course->title;
         $data->duration = self::getDuration($source->duration);
         $data->size = self::getSize($source->size);
+        $data->free = $source->free;
         $data->title = $source->title;
         $data->video_id = $source->video_id; 
         $data->link = "https://player.vimeo.com/video/".$source->video_id;
+        $data->attachment = $source->attachment != null ? self::getVideoAttachment($source->id,$source->attachment) : null;
+        $data->commentsCount = VideoComment::NotDeleted()->where('status',1)->where('video_id',$source->id)->count();
         $data->comments = VideoComment::dataList($source->id,null,'0');
         return $data;
     }

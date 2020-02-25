@@ -178,8 +178,8 @@ class Helper
 
         \Mail::send($emailData['template'], $emailData, function ($message) use ($emailData) {
 
-            $fromEmailAddress = 'engine@sayrat.com';
-            $fromDisplayName = 'Sayrat';
+            $fromEmailAddress = 'engine@aliensera.com';
+            $fromDisplayName = 'Aliensera';
 
             if(isset($emailData['fromEmailAddress'])){
                 $fromEmailAddress = $emailData['fromEmailAddress'];

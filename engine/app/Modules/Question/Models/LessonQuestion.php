@@ -52,6 +52,9 @@ class LessonQuestion extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->lesson_id = $source->lesson_id;
+        $data->lesson = $source->Lesson != null ? $source->Lesson->title : '';
+        $data->course_id = $source->course_id;
+        $data->course = $source->Course != null ? $source->Course->title : '';
         $data->question = $source->question;
         $data->answer_a = $source->answer_a;
         $data->answer_b = $source->answer_b;

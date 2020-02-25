@@ -491,12 +491,12 @@
     'port' => 465,
     'from' => 
     array (
-      'address' => 'engine@sayrat.com',
-      'name' => 'Sayrat Notification',
+      'address' => 'engine@aliensera.com',
+      'name' => 'Aliensera Notification',
     ),
     'encryption' => 'ssl',
-    'username' => 'sayrat.com@gmail.com',
-    'password' => 'cars!131313',
+    'username' => 'aliensera2020@gmail.com',
+    'password' => 'chdxjbirsappgobh',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'pretend' => false,
   ),

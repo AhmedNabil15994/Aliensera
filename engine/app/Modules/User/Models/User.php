@@ -115,13 +115,48 @@ class User extends Model{
         return $userObj;
     }
 
+    static function getLoginUserBySocialType($type,$id){
+        $userObj = self::NotDeleted()
+            ->with('Profile')
+            ->where('is_active', 1)
+            ->where(function($whereQuery) use ($type,$id){
+                if($type == 1){
+                    $whereQuery->where('facebook_id',$id);
+                }elseif($type == 2){
+                    $whereQuery->where('google_id',$id);
+                }elseif($type == 3){
+                    $whereQuery->where('twitter_id',$id);
+                }
+            })->first();
+
+        if($userObj == null || $userObj->Profile->group_id != 3) {
+            return false;
+        }
+        return $userObj;
+    }
+
+    static function selectImage($source){
+        
+        if($source->Profile->image != null){
+            return self::getPhotoPath($source->id, $source->Profile->image);
+        }else{
+            if($source->facebook_img != null){
+                return $source->facebook_img;
+            }
+
+            if($source->google_img != null){
+                return $source->google_img;
+            }
+        }
+    }
+
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
         $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
         $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
-        $data->image = self::getPhotoPath($source->id, $source->Profile->image);
+        $data->image = self::selectImage($source);
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
@@ -150,6 +185,13 @@ class User extends Model{
         return self::generateObj($source);
     }
 
+    static function getOneInstructor($id){
+        $source = self::NotDeleted()->where('id',$id)->where('is_active',1)->with('Profile')->whereHas('Profile',function($queryProfile){
+            $queryProfile->where('group_id',2);
+        })->first();
+        return $source;
+    }
+
     static function generateObj($sourceArr) {
         $list = [];
         $sourceArr = $sourceArr->paginate(PAGINATION);
@@ -162,7 +204,7 @@ class User extends Model{
         return $data;
     }
 
-    static function getInstructorData($source) {
+    static function getInstructorData($source,$flag=null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
@@ -174,13 +216,16 @@ class User extends Model{
         $data->address = $source->Profile != null ? $source->Profile->address: '';
         $data->email = $source->email;
         $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
+        $data->myRate = InstructorRate::NotDeleted()->where('instructor_id',$source->id)->where('created_by',USER_ID)->first();
         if($source->Profile->group_id == 2){
             $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
             $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
             $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
             $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
             $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
-            $data->topCourses = StudentCourse::getTopCourses(3,$source->id);
+            if($flag != 1){
+                $data->topCourses = StudentCourse::getTopCourses(3,$source->id);
+            }
         }
         return $data;
     }

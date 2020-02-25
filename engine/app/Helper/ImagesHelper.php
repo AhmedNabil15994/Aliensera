@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 class ImagesHelper {
 
-    static function GetImagePath($strAction, $id, $filename) {
+    static function GetImagePath($strAction, $id=null, $filename) {
         $path = Config::get('app.IMAGE_BASE');
         // $path = Config::get('app.IMAGE_BASE').'public/';
 
@@ -32,6 +32,16 @@ class ImagesHelper {
             case "lessons":
                 $fullPath = $path . 'uploads' . '/lessons/' . $id . '/' . $filename;
                 $checkFile = $checkFile . '/lessons/' . $id . '/' . $filename;
+                return is_file($checkFile) ? $fullPath : $default;
+                break;
+            case "videos":
+                $fullPath = $path . 'uploads' . '/videos/' . $id . '/' . $filename;
+                $checkFile = $checkFile . '/videos/' . $id . '/' . $filename;
+                return is_file($checkFile) ? $fullPath : $default;
+                break;                
+            case "chat":
+                $fullPath = $path . 'uploads' . '/chat/' . $filename;
+                $checkFile = $checkFile . '/chat/' . $filename;
                 return is_file($checkFile) ? $fullPath : $default;
                 break;
         }
@@ -103,12 +113,12 @@ class ImagesHelper {
         return false;
     }
 
-    static function uploadVideo($strAction, $fieldInput, $id, $customPath = '', $inputFile = false) {
+    static function uploadChatAttachment($strAction, $fieldInput, $customPath = '', $inputFile = false) {
 
         if ($fieldInput == '') {
             return false;
         }
-
+        $fileType = '';
         if (is_object($fieldInput)) {
             $fileObj = $fieldInput;
         } else {
@@ -124,17 +134,24 @@ class ImagesHelper {
         }
         $extension = $fieldInput->getClientOriginalExtension(); // getting image extension
 
-        if (!in_array('.'.$extension, ['.3gp','.3g2','.avi','.uvh','.uvm','.uvu','.uvp','.uvs','.uaa','.fvt','.f4v','.flv','.fli','.h261','.h263','.h264','.jpgv','.m4v','.asf','.pyv','.wm','.wmx','.wmv','.wvx','.mj2','.mxu','.mpeg','.mp4','.ogv','.webm','.qt','.movie','.viv','.wav','.avi','.mkv'])) {
+        if (!in_array('.'.$extension, ['.pdf','.png','.jpg','.jpeg'])) {
             return false;
         }
 
+        if($extension == 'png' || $extension == 'jpg' || $extension == 'jpeg' ){
+            $fileType = 2;
+        }else{
+            $fileType = 1;
+        }
+        
+        $rand = rand() . date("YmdhisA");
+        $fileName = 'aliensera' . '-' . $rand.'.'.$extension;
         $directory = '';
 
-        $path = public_path() . '/uploads/';
-        $path = str_replace('frontend', 'engine', $path);
+        $path = realpath(base_path().'/' . '../backend/public/uploads/');
 
-        if ($strAction == 'lessons') {
-            $directory = $path . 'lessons/' . $id;
+        if ($strAction == 'chat') {
+            $directory = $path . '/chat/';
         }
 
         $fileName_full = $fileObj->getClientOriginalName();
@@ -142,16 +159,18 @@ class ImagesHelper {
             return false;
         }
 
-        // if (!file_exists($directory)) {
-        //     mkdir($directory, 0777, true);
-        // }
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
 
-        // if ($fileObj->move($directory, $fileName_full)){
-        //     return [$fileName_full,str_replace('.'.$extension, "", $fileName_full)];
-        // }
-        return [$fileName_full,str_replace('.'.$extension, "", $fileName_full)];
-        // return false;
+        if ($fileObj->move($directory, $fileName)){
+            return [$fileName,str_replace('.'.$extension, "", $fileName_full),$fileType];
+        }
+
+        return false;
     }
+
+
 
     static function deleteDirectory($dir) {
         system('rm -r ' . escapeshellarg($dir), $retval);

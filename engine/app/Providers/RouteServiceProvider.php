@@ -58,6 +58,7 @@ class RouteServiceProvider extends ServiceProvider
             require app_path('Modules/Faculty/routes.php');
             require app_path('Modules/University/routes.php');
             require app_path('Modules/Field/routes.php');
+            require app_path('Modules/Page/routes.php');
         });
     }
 
@@ -75,9 +76,14 @@ class RouteServiceProvider extends ServiceProvider
                 require app_path('Modules/User/routes.php');
                 require app_path('Modules/Home/routes.php');
                 require app_path('Modules/Course/routes.php');
+                require app_path('Modules/Lesson/routes.php');
+                require app_path('Modules/Video/routes.php');
+                require app_path('Modules/Question/routes.php');
                 require app_path('Modules/Favourites/routes.php');
                 require app_path('Modules/Cart/routes.php');
+                require app_path('Modules/Chat/routes.php');
                 require app_path('Modules/Feedback/routes.php');
+                require app_path('Modules/InstructorRate/routes.php');
 
         });
     }

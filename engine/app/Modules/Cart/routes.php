@@ -9,4 +9,5 @@ Route::group(['prefix' => '/carts'] , function () {
 
     //inserting
     Route::post('/add', 'CartController@add');
+    Route::post('/confirmPayment', 'CartController@confirmPayment');
 });

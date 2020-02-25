@@ -17,4 +17,11 @@ class InstructorRate extends Model{
     public function Course(){
         return $this->belongsTo('App\Models\Course','course_id','id');
     }
+
+    static function getOne($id){
+        $source = self::NotDeleted()
+            ->where('id', $id);
+            
+        return $source->first();
+    }
 }

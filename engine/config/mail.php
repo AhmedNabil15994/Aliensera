@@ -59,8 +59,8 @@ return [
     */
 
     'from' => [
-        'address' => 'engine@sayrat.com',
-        'name' => 'Sayrat Notification'
+        'address' => 'engine@aliensera.com',
+        'name' => 'Aliensera Notification'
     ],
 
     /*
@@ -88,7 +88,7 @@ return [
     |
     */
 
-    'username' => 'sayrat.com@gmail.com',
+    'username' => 'aliensera2020@gmail.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'password' => 'cars!131313',
+    'password' => 'chdxjbirsappgobh',
 
     /*
     |--------------------------------------------------------------------------

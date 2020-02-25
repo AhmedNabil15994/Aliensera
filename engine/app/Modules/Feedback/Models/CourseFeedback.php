@@ -60,6 +60,22 @@ class CourseFeedback extends Model{
         return $list;
     }
 
+    static function getTotals($course_id){
+        $allFeedbacks = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->count(); 
+        $star1 = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->where('rate',1)->count();
+        $star2 = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->where('rate',2)->count();
+        $star3 = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->where('rate',3)->count();
+        $star4 = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->where('rate',4)->count();
+        $star5 = self::NotDeleted()->where('course_id',$course_id)->where('status',1)->where('rate',5)->count();
+        $data = new  \stdClass();
+        $data->star1 =  $allFeedbacks > 0 ? round( ($star1 / $allFeedbacks) * 100 ,2) . '%' : 0;
+        $data->star2 =  $allFeedbacks > 0 ? round( ($star2 / $allFeedbacks) * 100 ,2) . '%' : 0;
+        $data->star3 =  $allFeedbacks > 0 ? round( ($star3 / $allFeedbacks) * 100 ,2) . '%' : 0;
+        $data->star4 =  $allFeedbacks > 0 ? round( ($star4 / $allFeedbacks) * 100 ,2) . '%' : 0;
+        $data->star5 =  $allFeedbacks > 0 ? round( ($star5 / $allFeedbacks) * 100 ,2) . '%' : 0;
+        return $data;
+    }
+
     static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
@@ -68,7 +84,8 @@ class CourseFeedback extends Model{
         $data->content = $source->content; 
         $data->status = $source->status;
         $data->rate = $source->rate;
-        $data->image = asset('assets/images/avatar.png');
+        $data->totals = self::getTotals($source->course_id);
+        $data->image = User::getData($source->Creator)->image;
         $data->creator = $source->Creator->name;
         $data->created_at = \Carbon\Carbon::createFromTimeStamp(strtotime($source->created_at))->diffForHumans();
         return $data;

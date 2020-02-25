@@ -24,12 +24,12 @@ class UsersControllers extends Controller {
         $dataObj->name = $profileObj->display_name;
         $dataObj->phone = $profileObj->phone;
         $dataObj->email = $userObj->email;
-        $dataObj->university_id = $profileObj->university_id;
-        $dataObj->university = $profileObj->University->title;
-        $dataObj->faculty_id = $profileObj->faculty_id;
-        $dataObj->faculty = $profileObj->Faculty->title;
-        $dataObj->year = $profileObj->year;
-        $dataObj->gender = $profileObj->gender;
+        $dataObj->university_id = $profileObj->university_id != null ? $profileObj->university_id : '';
+        $dataObj->university = $profileObj->University != null ? $profileObj->University->title : '';
+        $dataObj->faculty_id = $profileObj->faculty_id != null ? $profileObj->faculty_id : '';
+        $dataObj->faculty = $profileObj->Faculty != null ? $profileObj->Faculty->title : '';
+        $dataObj->year = $profileObj->year != null ? $profileObj->year : '';
+        $dataObj->gender = $profileObj->gender != null ? $profileObj->gender : '';
         $dataObj->image = User::getPhotoPath(USER_ID,$profileObj->image);
 
         $statusObj['data'] = $dataObj;
@@ -116,7 +116,7 @@ class UsersControllers extends Controller {
                 return \TraitsFunc::ErrorMessage("Year Must Be Greater than 0", 400);
             }
 
-            if ($input['year'] > 0 && $input['year'] > $facultyObj->number_of_years) {
+            if ($input['year'] > 0 && isset($facultyObj) && $input['year'] > $facultyObj->number_of_years) {
                 return \TraitsFunc::ErrorMessage("Year Must Be Less than or equal to ".$facultyObj->number_of_years, 400);
             }
 
@@ -128,8 +128,7 @@ class UsersControllers extends Controller {
             $image = $request->file('image');
             $fileName = \ImagesHelper::UploadImage('users', $image, USER_ID);
             if($image == false || $fileName == false){
-                \Session::flash('error', "Upload Image Failed !!");
-                return redirect()->back();
+                return \TraitsFunc::ErrorMessage("Upload Image Failed !!", 400);
             }            
             $profileObj->image = $fileName;
             $profileObj->save();
@@ -142,6 +141,17 @@ class UsersControllers extends Controller {
     public function getInstructors(){
         $input = \Input::all();
         $statusObj = User::getInstructors();
+        $statusObj['status'] = \TraitsFunc::SuccessResponse();
+        return \Response::json((object) $statusObj);
+    }
+
+    public function getOneInstructor($id){
+        $input = \Input::all();
+        $userObj = User::getOneInstructor($id);
+        if($userObj == null){
+            return \TraitsFunc::ErrorMessage("This Instructor not found", 400);
+        }
+        $statusObj['data'] = User::getInstructorData($userObj);
         $statusObj['status'] = \TraitsFunc::SuccessResponse();
         return \Response::json((object) $statusObj);
     }
