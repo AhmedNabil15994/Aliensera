@@ -157,7 +157,7 @@ class StudentScore extends Model{
         $allQuestion = $sourceArr2->count();
         $studentRight = $sourceArr2->where('correct',1)->count();
         $studentWrong = $sourceArr2->where('correct',0)->count();
-        $score = round( ($studentRight / $allQuestion) * 100 ,2) .'%';
+        $score = $allQuestion > 0 ? round( ($studentRight / $allQuestion) * 100 ,2) .'%' : '0%';
         
         $scoreObj = new \stdClass();
         $scoreObj->allQuestion = $allQuestion;
