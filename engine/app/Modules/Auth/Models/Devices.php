@@ -39,9 +39,12 @@ class Devices extends Model{
     static function getDevicesBy($user_id,$byAll = false){
         return self::where('device_key','!=',"")->whereHas('APIAuth', function ($APIAuthQuery) use ($user_id,$byAll) {
             if ($byAll != false) {
-                $APIAuthQuery->where('user_id', $user_id);
+                $APIAuthQuery->where('user_id', $user_id)->where('auth_expire',1);
+            }else{
+                $APIAuthQuery->whereIn('user_id',$user_id)->where('auth_expire',1);
             }
         })
+        ->orderBy('id','DESC')
         ->groupby('device_key')
         ->pluck('device_key');
     }

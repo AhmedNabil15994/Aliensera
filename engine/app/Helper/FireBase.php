@@ -1,25 +1,31 @@
 <?php
-
+use App\Models\Variable;
 class FireBase {
     protected $fcmKey;
 
     function __construct() {
-        $this->key = "AAAApxE4wF8:APA91bEY1gQB84m1j1PCrNCODhTFB5vU9Vq2LIA_csPeg54P11B8FPZ_YSgnKF9NXI4w6VkOdD4NReIusHTG5FDIJ5_XeHtuNe-VvYEXY7JyUq3HeDPopD_zM1OW-gRx4qNjxeYi9V1r";
+        $this->key = Variable::getVar('FCM_KEY');
     }
 
 
-    function send_android_notification($tokens,$data) {  
+    function send_android_notification($tokens,$data,$myData=null) {  
         $url = "https://fcm.googleapis.com/fcm/send";            
         $header = array("authorization: key=" . $this->key . "",
             "content-type: application/json"
         );    
 
-        $fields = [
-            'registration_ids' => $tokens,
-            'priority' => 'high',
-            'content_available' => true,
-            'data' => $data,
-        ];
+        if($myData != null){
+            $fields = [
+                'to' => $tokens,
+                'notification' => $data,
+                'data' => $myData,
+            ];
+        }else{
+            $fields = [
+                'to' => $tokens,
+                'notification' => $data,
+            ];
+        }
 
         $ch = curl_init();
         $timeout = 120;

@@ -2,7 +2,9 @@
 
 use App\Models\LessonVideo;
 use App\Models\VideoComment;
+use App\Models\User;
 use App\Models\StudentVideoDuration;
+use App\Models\Devices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -117,6 +119,14 @@ class VideoControllers extends Controller {
         $commentObj->created_by = USER_ID;
         $commentObj->created_at = date('Y-m-d H:i:s');
         $commentObj->save();
+
+        $replier = User::getData(User::getOne(USER_ID));
+        $msg = $replier->name.' replied on your comment';
+        $tokens = Devices::getDevicesBy($commentObj->created_by,true);
+        $fireBase = new \FireBase();
+        $metaData = ['title' => "New Comment", 'body' => $msg,];
+        $myData = ['type' => 3 , 'id' => $commentObj->video_id];
+        $fireBase->send_android_notification($tokens[0],$metaData,$myData);
 
         $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Saved Successfully !!');
         return $statusObj;
