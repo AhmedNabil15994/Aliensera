@@ -79,6 +79,9 @@
     button i.fa-play{
         margin-left: 3px;
     }
+    a.editable{
+        color: inherit;
+    }
     .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
     .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 </style>
@@ -279,7 +282,7 @@
                                             @foreach($data->data->videos as $key => $video)
                                             <div class="row results" id="results{{ $video->id }}">
                                                 <div class="col-xs-1">{{ $key+1 }}</div>
-                                                <div class="col-xs-3">{{ $video->title }}</div>
+                                                <div class="col-xs-3"><a href="#" class="editable" data-area="{{ $video->id }}">{{ $video->title }}</a></div>
                                                 <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->free }}</div>

@@ -380,6 +380,36 @@ class LessonControllers extends Controller {
         return $statusObj;
     }
 
+    public function updateName($video_id){
+        $input = \Input::all();
+        $rules = [
+            'name' => 'required',
+        ];
+
+        $message = [
+            'name.required' => "Sorry Name Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+        if($validate->fails()){
+            return \TraitsFunc::ErrorMessage($validate->messages()->first(), 400);
+        }   
+
+        $videoObj = LessonVideo::getOne($video_id);
+        if($videoObj == null){
+            return \TraitsFunc::ErrorMessage('This Lesson Video Not Found !!', 400);
+        }
+
+        $videoObj->title = $input['name'];
+        $videoObj->updated_by = USER_ID;
+        $videoObj->updated_at = date('Y-m-d H:i:s');
+        $videoObj->save();
+
+        $statusObj['status'] = \TraitsFunc::SuccessResponse('Title Updated Successfully !!');
+        $statusObj['data'] = LessonVideo::getData($videoObj);
+        return $statusObj;
+    }
+
     public function removeComment($comment_id){
         $commentObj = VideoComment::getOne($comment_id);
         if($commentObj == null){

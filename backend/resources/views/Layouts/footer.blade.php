@@ -64,6 +64,8 @@
     <script src="{{ asset('assets/production/js/toastr.min.js')}}"></script>
     <!-- bootstrap-datetimepicker -->
     <script src="{{ asset('assets/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
     <!-- editor-->
     <script src="{{ asset('assets/plugins/summernote/dist/summernote.js') }}"></script>
     <script src="{{ asset('assets/js/lib/fancybox/jquery.fancybox.pack.js')}}"></script>

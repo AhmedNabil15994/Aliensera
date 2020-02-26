@@ -279,3 +279,23 @@ $('#fileUpload').on('change',function(){
         }
     });
 })
+
+$('a.editable').editable({
+    mode: 'inline',
+    success: function(response,newValue){
+        var url = "/videos/"+$(this).attr('data-area')+"/updateName";
+        if(url.indexOf("#") != -1){
+            url = url.replace('#','');
+        }
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:{
+                'name': newValue,
+            } ,
+            success: function (data) {
+                successNotification(data.status.message);
+            }
+        });
+    }
+});

@@ -16,6 +16,8 @@
     <link href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <!-- bootstrap-datetimepicker -->
     <link href="{{ asset('assets/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css')}}" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+
     <link rel="stylesheet" href="{{ asset('assets/production/css/toastr.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/sweetalert.css')}}">
 
