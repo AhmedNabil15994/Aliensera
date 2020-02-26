@@ -58,6 +58,12 @@ class CourseControllers extends Controller {
                 $enrollObj->status = 2;
                 $enrollObj->save();
             }
+
+            if($enrollObj->deleted_by != null){
+                $enrollObj->deleted_by = null;
+                $enrollObj->deleted_at = null;
+                $enrollObj->save();
+            }
         }
 
         $statusObj['status'] = \TraitsFunc::SuccessResponse("Your Request Had Been Sent");
