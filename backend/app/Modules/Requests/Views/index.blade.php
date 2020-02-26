@@ -138,7 +138,7 @@
                                     </div>
                                 </td>
 
-                                <td>
+                                <td width="50%">
                                     <img src="{{ $value->course->image }}" alt="">
                                     <div class="course-data">
                                         <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course->title }}</a>
