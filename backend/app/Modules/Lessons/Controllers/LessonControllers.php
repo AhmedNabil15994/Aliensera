@@ -356,15 +356,6 @@ class LessonControllers extends Controller {
                     return \TraitsFunc::ErrorMessage("You Can't Reply To Your Comment!!", 400);
                 }
             }
-
-
-            $replier = User::getData(User::getOne(USER_ID));
-            $msg = $replier->name.' replied on your comment';
-            $tokens = Devices::getDevicesBy($commentObj->created_by,true);
-            $fireBase = new \FireBase();
-            $metaData = ['title' => "New Comment", 'body' => $msg,];
-            $myData = ['type' => 3 , 'id' => $commentObj->video_id];
-            $fireBase->send_android_notification($tokens[0],$metaData,$myData);
         }
 
         $commentObj = new VideoComment;
@@ -376,6 +367,14 @@ class LessonControllers extends Controller {
         $commentObj->created_by = USER_ID;
         $commentObj->created_at = date('Y-m-d H:i:s');
         $commentObj->save();
+
+        $replier = User::getData(User::getOne(USER_ID));
+        $msg = $replier->name.' replied on your comment';
+        $tokens = Devices::getDevicesBy($commentObj->created_by,true);
+        $fireBase = new \FireBase();
+        $metaData = ['title' => "New Comment", 'body' => $msg,];
+        $myData = ['type' => 3 , 'id' => $commentObj->video_id];
+        $fireBase->send_android_notification($tokens[0],$metaData,$myData);
 
         $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Saved Successfully !!');
         $statusObj['data'] = VideoComment::getData($commentObj);
