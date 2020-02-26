@@ -195,7 +195,7 @@ class UsersControllers extends Controller {
             $profileObj->extra_rules = null;
             $profileObj->save();
         }
-
+        $userObj->name = $input['first_name'].' '.$input['last_name'];
         $userObj->is_active = isset($input['active']) ? 1 : 0;
         $userObj->save();
 

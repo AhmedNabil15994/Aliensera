@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\StudentRequest;
 use App\Models\Devices;
 use App\Models\VideoComment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -180,6 +181,19 @@ class LessonControllers extends Controller {
             $courseObj->created_by = USER_ID;
             $courseObj->created_at = date('Y-m-d H:i:s');
             $courseObj->save();
+
+            $msg = 'New Video Added To Course '.$lessonObj->Course->title;
+            $users = StudentRequest::NotDeleted()->where('course_id',$lessonObj->course_id)->where('status',1)->pluck('student_id');
+            $tokens = Devices::getDevicesBy($users);
+            $tokens = reset($tokens);
+            $fireBase = new \FireBase();
+            $metaData = ['title' => "New Video", 'body' => $msg,];
+            $myData = ['type' => 3 , 'id' => $courseObj->id];
+
+            foreach ($tokens as $value) {
+                $fireBase->send_android_notification($value,$metaData,$myData);
+            }
+
             \Session::flash('success', "Upload Video Success !!");
             $statusObj['status'] = \TraitsFunc::SuccessResponse('Upload Video Success !!');
             $statusObj['count'] = LessonVideo::NotDeleted()->where('lesson_id',$id)->count();
@@ -342,6 +356,15 @@ class LessonControllers extends Controller {
                     return \TraitsFunc::ErrorMessage("You Can't Reply To Your Comment!!", 400);
                 }
             }
+
+
+            $replier = User::getData(User::getOne(USER_ID));
+            $msg = $replier->name.' replied on your comment';
+            $tokens = Devices::getDevicesBy($commentObj->created_by,true);
+            $fireBase = new \FireBase();
+            $metaData = ['title' => "New Comment", 'body' => $msg,];
+            $myData = ['type' => 3 , 'id' => $commentObj->video_id];
+            $fireBase->send_android_notification($tokens[0],$metaData,$myData);
         }
 
         $commentObj = new VideoComment;
