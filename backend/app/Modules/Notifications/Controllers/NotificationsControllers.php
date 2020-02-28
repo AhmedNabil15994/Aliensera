@@ -74,11 +74,8 @@ class NotificationsControllers extends Controller {
                 \Session::flash('error', "Upload images Failed");
                 return \Redirect::back()->withInput();
             }
-            $notfImage = \ImagesHelper::GetImagePath('notifications',0,$fileName);
-            dd($notfImage);
-            
+            $notfImage = \ImagesHelper::GetImagePath('notifications',0,$fileName);            
         }
-        dd($notfImage);
 
         $users = StudentRequest::NotDeleted()->whereHas('Course',function($courseQuery) use ($input){
             if($input['course_type'] == 1){
