@@ -34,6 +34,9 @@
                             @if(\Helper::checkRules('list-groups'))
                                 <li class="{{ Active(URL::to('/groups*')) }}"><a href="{{ URL::to('/groups') }}">Groups</a></li>
                             @endif
+                            @if(\Helper::checkRules('list-groups'))
+                                <li class="{{ Active(URL::to('/notifications*')) }}"><a href="{{ URL::to('/notifications') }}">Notifications</a></li>
+                            @endif
                         </ul>
                     </li>
                     @endif
