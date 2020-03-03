@@ -97,7 +97,7 @@ class NotificationsControllers extends Controller {
       public function sendNotification($tokens,$title,$msg,$image){
         $fireBase = new \FireBase();
         $metaData = ['title' => $title, 'body' => $msg,];
-        $myData = ['type' => 4, 'image'=>$image,];
+        $myData = ['type' => 4, 'image'=>$image,'title' => $title, 'body' => $msg,];
         $fireBase->send_android_notification($tokens,$metaData,$myData);
         return true;
     }
