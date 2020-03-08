@@ -62,7 +62,7 @@ $lpm1 = $lastpage - 1;
 
 $pagination = "";
 if($lastpage > 1){
-    $pagination .= "<div align='center'>";
+    $pagination .= "<div align='center' style='float:right;'>";
     $pagination .= "<ul class='paginationer'>";
     $pagination .= "<li class='page_info'>Page {$page} of {$lastpage}</li>";
 

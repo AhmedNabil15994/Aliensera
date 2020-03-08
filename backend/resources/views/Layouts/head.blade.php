@@ -50,7 +50,7 @@
         }
         ul.paginationer{
             float: right;
-            margin-top: -25px;
+            /*margin-top: -25px;*/
         }
         .child_menu li a span.badge{
             width: 20px;
