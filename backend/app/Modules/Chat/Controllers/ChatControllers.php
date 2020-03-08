@@ -98,7 +98,7 @@ class ChatControllers extends Controller {
             $data= ['from'=>USER_ID,'to'=>$chatHeadObj->receiver_id,'msg'=>$messageObj];
             $pusher->trigger('receiver-'.$chatHeadObj->receiver_id,'my-event',$data);
         }elseif($chatHeadObj->receiver_id == USER_ID){
-            $data= ['from'=>$chatHeadObj->receiver_id,'to'=>USER_ID,'msg'=>$messageObj];
+            $data= ['from'=>$chatHeadObj->receiver_id,'to'=>$chatHeadObj->sender_id,'msg'=>$messageObj];
             $pusher->trigger('receiver-'.$chatHeadObj->sender_id,'my-event',$data);
         }
 
@@ -162,7 +162,7 @@ class ChatControllers extends Controller {
             $data= ['from'=>USER_ID,'to'=>$chatHeadObj->receiver_id,'msg'=>$messageObj];
             $pusher->trigger('receiver-'.$chatHeadObj->receiver_id,'my-event',$data);
         }elseif($chatHeadObj->receiver_id == USER_ID){
-            $data= ['from'=>$chatHeadObj->receiver_id,'to'=>USER_ID,'msg'=>$messageObj];
+            $data= ['from'=>$chatHeadObj->receiver_id,'to'=>$chatHeadObj->sender_id,'msg'=>$messageObj];
             $pusher->trigger('receiver-'.$chatHeadObj->sender_id,'my-event',$data);
         }
 
