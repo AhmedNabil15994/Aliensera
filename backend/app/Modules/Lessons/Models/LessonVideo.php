@@ -72,15 +72,15 @@ class LessonVideo extends Model{
     static function getDuration($duration){
         $result = '';
         if($duration > 3600){
-            $hours = round($duration / 3600);
-            $minutes = round(($duration % 3600) / 60);
+            $hours = floor($duration / 3600);
+            $minutes = floor(($duration % 3600) / 60);
             $result = $hours.' Hr '.$minutes.' Min';
         }elseif($duration > 60){
-            $minutes = round($duration / 60);
+            $minutes = floor($duration / 60);
             $seconds = $duration % 60;
             $result = $minutes.' Min '.$seconds.' Sec';
         }elseif($duration > 0 && $duration < 60){
-            $result = round($duration).' Sec';
+            $result = $duration.' Sec';
         }
         return $result;
     }
