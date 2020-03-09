@@ -60,7 +60,7 @@ class StudentVideoDuration extends Model{
     static function getDuration($duration){
         $result = '';
         if($duration > 3600){
-            $hours = round($duration / 3600);
+            $hours = $duration / 3600;
             dd($hours);
             $minutes = round(($duration % 3600) / 60);
             $result = $hours.' Hr '.$minutes.' Min';
