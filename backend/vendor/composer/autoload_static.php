@@ -497,6 +497,7 @@ class ComposerStaticInit7c20f717b021ec35cf5ad3bdfd0ce2c3
         'App\\Http\\Controllers\\FieldControllers' => __DIR__ . '/../..' . '/app/Modules/Fields/Controllers/FieldControllers.php',
         'App\\Http\\Controllers\\GroupsControllers' => __DIR__ . '/../..' . '/app/Modules/Groups/Controllers/GroupsControllers.php',
         'App\\Http\\Controllers\\LessonControllers' => __DIR__ . '/../..' . '/app/Modules/Lessons/Controllers/LessonControllers.php',
+        'App\\Http\\Controllers\\NotificationsControllers' => __DIR__ . '/../..' . '/app/Modules/Notifications/Controllers/NotificationsControllers.php',
         'App\\Http\\Controllers\\PagesControllers' => __DIR__ . '/../..' . '/app/Modules/Pages/Controllers/PagesControllers.php',
         'App\\Http\\Controllers\\QuizScoresControllers' => __DIR__ . '/../..' . '/app/Modules/QuizScores/Controllers/QuizScoresControllers.php',
         'App\\Http\\Controllers\\RequestControllers' => __DIR__ . '/../..' . '/app/Modules/Requests/Controllers/RequestControllers.php',

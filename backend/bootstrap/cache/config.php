@@ -486,6 +486,7 @@
     'LessonControllers@removeQuestion' => 'delete-lesson-question',
     'LessonControllers@addComment' => 'add-video-comment',
     'LessonControllers@removeComment' => 'delete-video-comment',
+    'LessonControllers@updateName' => 'update-video-name',
     'VariablesControllers@index' => 'list-variables',
     'VariablesControllers@edit' => 'edit-variable',
     'VariablesControllers@update' => 'edit-variable',

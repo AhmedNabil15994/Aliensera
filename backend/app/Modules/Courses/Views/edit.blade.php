@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -155,7 +155,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            @if(IS_ADMIN == true)
+                            <div class="col-md-4">
                                 <div class="row" >
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -165,7 +166,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            @endif
+                            <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="row" >
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -185,6 +188,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="row" >
                                     <div class="col-md-12">
