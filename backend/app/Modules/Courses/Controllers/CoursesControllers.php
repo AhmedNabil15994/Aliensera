@@ -139,10 +139,10 @@ class CoursesControllers extends Controller {
         $courseObj->status = $input['status'];
         $courseObj->course_type = $input['course_type'];
         $courseObj->field_id = $input['field_id'];
-        $courseObj->price = $input['price'];
+        $courseObj->price = isset($input['price']) ? $input['price'] : 0;
         $courseObj->what_learn = $input['what_learn'];
         $courseObj->requirements = $input['requirements'];
-        $courseObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
+        $courseObj->valid_until = !empty($input['valid_until']) ? date('Y-m-d',strtotime($input['valid_until'])) : null;
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
@@ -233,14 +233,18 @@ class CoursesControllers extends Controller {
         $courseObj->field_id = $input['field_id'];
         $courseObj->status = $input['status'];
         $courseObj->course_type = $input['course_type'];
-        $courseObj->price = $input['price'];
+        $courseObj->price = isset($input['price']) ? $input['price'] : 0;
         $courseObj->what_learn = $input['what_learn'];
         $courseObj->requirements = $input['requirements'];
-        $courseObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
+        $courseObj->valid_until = !empty($input['valid_until']) ? date('Y-m-d',strtotime($input['valid_until'])) : null;
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
             $courseObj->year = $input['year'];
+        }else{
+            $courseObj->university_id = null;
+            $courseObj->faculty_id = null;
+            $courseObj->year = null;
         }
         $courseObj->created_by = USER_ID;
         $courseObj->created_at = DATE_TIME;
