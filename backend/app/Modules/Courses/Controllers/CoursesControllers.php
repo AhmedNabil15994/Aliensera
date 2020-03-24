@@ -269,11 +269,11 @@ class CoursesControllers extends Controller {
     }
 
     public function getUniversities(){
-        return \Response::json((object) University::where('status',1)->get());
+        return \Response::json((object) University::NotDeleted()->where('status',1)->get());
     }
 
     public function getFaculties($university_id){
-        return \Response::json((object) Faculty::where('status',1)->where('university_id',$university_id)->get());
+        return \Response::json((object) Faculty::NotDeleted()->where('status',1)->where('university_id',$university_id)->get());
     }
 
     public function addImage($images, $id) {

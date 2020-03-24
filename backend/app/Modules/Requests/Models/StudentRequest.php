@@ -89,13 +89,19 @@ class StudentRequest extends Model{
     }
 
     static function getCount(){
-        return self::NotDeleted()->whereHas('Student',function($studentQuery){
+        $source = self::NotDeleted()->whereHas('Student',function($studentQuery){
             $studentQuery->where('is_active',1);
         })->whereHas('Instructor',function($instructorQuery){
             $instructorQuery->where('is_active',1);
         })->whereHas('Course',function($courseQuery){
             $courseQuery->where('status',3);
-        })->where('status',2)->count();;
+        })->where('status',2);
+
+        if(!IS_ADMIN){
+            $source->where('instructor_id',USER_ID);
+        }
+
+        return $source->count();
     }
 
 }

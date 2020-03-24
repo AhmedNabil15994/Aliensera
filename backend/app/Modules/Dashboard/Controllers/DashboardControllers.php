@@ -71,7 +71,9 @@ class DashboardControllers extends Controller {
         	$dataList['allStudents'] = StudentCourse::NotDeleted()->where('status',1)->where('instructor_id',USER_ID)->count();
             $dataList['allCourses'] = Course::NotDeleted()->where('instructor_id',USER_ID)->where('status',3)->count();
 	    	$dataList['allCourses2'] = Course::NotDeleted()->where('instructor_id',USER_ID)->count();
-	    	$dataList['allVideos'] = LessonVideo::NotDeleted()->count();
+	    	$dataList['allVideos'] = LessonVideo::NotDeleted()->whereHas('Course',function($courseQuery){
+                $courseQuery->where('instructor_id',USER_ID);
+            })->count();
 
             $myStudents = StudentCourse::NotDeleted()->where('status',1)->where('instructor_id',USER_ID)->pluck('student_id');
             $dataList['allStudentSessions'] = ApiAuth::whereIn('user_id',$myStudents)->count();
