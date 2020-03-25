@@ -77,7 +77,7 @@ class LessonVideo extends Model{
             $result = $hours.' Hr '.$minutes.' Min';
         }elseif($duration > 60){
             $minutes = round(floor($duration / 60));
-            $seconds = $duration % 60;
+            $seconds = round($duration % 60);
             $result = $minutes.' Min '.$seconds.' Sec';
         }elseif($duration > 0 && $duration < 60){
             $result = round($duration).' Sec';
