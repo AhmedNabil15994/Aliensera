@@ -133,7 +133,7 @@ class Course extends Model{
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
-            if(date('Y-m-d') > $value->valid_until){
+            if($value->valid_until != null && date('Y-m-d') > $value->valid_until){
                 $value->status = 4;
                 $value->save();
             }
