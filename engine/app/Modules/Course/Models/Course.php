@@ -117,7 +117,6 @@ class Course extends Model{
                 $source->whereHas('StudentCourse',function($query){
                     $query->NotDeleted()->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id');
                 });
-                dd($source->count());
             }
             elseif($type == 3){
                 $source->whereHas('Feedback',function($query){
