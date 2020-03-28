@@ -27,7 +27,9 @@ class CourseFeedback extends Model{
 
     static function dataList($course_id=null,$creator=null) {
         $input = \Input::all();
-        $source = self::NotDeleted()->where('status',1);
+        $source = self::NotDeleted()->where('status',1)->whereHas('Course',function($courseQuery){
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+        });
 
         if (isset($course_id) && $course_id != null ) {
             $source->where('course_id', $course_id);
