@@ -81,7 +81,9 @@ class StudentCourse extends Model{
     }
 
     static function myCourses($count){
-        $source = self::NotDeleted()->where('status',1)->where('student_id',USER_ID)->get()->take($count);
+        $source = self::NotDeleted()->whereHas('Course',function($courseQuery){
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+        })->where('status',1)->where('student_id',USER_ID)->get()->take($count);
         return self::generateObj2($source,'myCourses');
     }
 
