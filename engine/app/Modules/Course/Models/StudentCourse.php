@@ -65,7 +65,9 @@ class StudentCourse extends Model{
     }
 
     static function getTopCourses($count,$instructor_id=null){
-        $source = self::NotDeleted()->where('status',1)->where(function($myQuery) use ($instructor_id){
+        $source = self::NotDeleted()->whereHas('Course',function($courseQuery){
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+        })->where('status',1)->where(function($myQuery) use ($instructor_id){
             if($instructor_id != null){
                 $myQuery->where('instructor_id',$instructor_id);
             }
