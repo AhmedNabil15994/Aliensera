@@ -21,7 +21,7 @@ class RequestControllers extends Controller {
         }else{
             $dataList = StudentRequest::dataList(USER_ID);
         }
-        $dataList['courses'] = Course::dataList()['data'];
+        $dataList['courses'] = Course::dataList(USER_ID,null,null)['data'];
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['students'] = User::getUsersByType(3);
         return view('Requests.Views.index')
