@@ -13,7 +13,7 @@ class CourseStudentControllers extends Controller {
 
     public function index() {
     	$dataList['data'] = StudentCourse::dataList(null,USER_ID,null,true);
-        $dataList['courses'] = Course::dataList(USER_ID)['data'];
+        $dataList['courses'] = Course::dataList(USER_ID,null,null)['data'];
         $dataList['students'] = User::getInstructorStudents(StudentCourse::where('instructor_id',USER_ID)->where('status',1)->pluck('student_id'));
         return view('CourseStudents.Views.index')->with('data', (Object) $dataList);
     }

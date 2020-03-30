@@ -91,7 +91,7 @@ class Course extends Model{
         return $mainViews;
     }
 
-    static function dataList($instructor_id=null,$student_id=null) {
+    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null) {
         $input = \Input::all();
 
         $source = self::with('Feedback');
@@ -134,11 +134,15 @@ class Course extends Model{
             $source->where('instructor_id',USER_ID);
         }
 
-        return self::generateObj($source);
+        return self::generateObj($source,$withPaginate);
     }
 
-    static function generateObj($source){
-        $sourceArr = $source->paginate(PAGINATION);
+    static function generateObj($source,$withPaginate){
+        if($withPaginate != null){
+            $sourceArr = $source->get();
+        }else{
+            $sourceArr = $source->paginate(PAGINATION);
+        }
 
         $list = [];
         foreach($sourceArr as $key => $value) {
