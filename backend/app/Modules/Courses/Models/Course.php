@@ -153,8 +153,9 @@ class Course extends Model{
             }
             $list[$key] = self::getData($value);
         }
-
-        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        if($withPaginate == null){
+            $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        }
         $data['data'] = $list;
 
         return $data;
