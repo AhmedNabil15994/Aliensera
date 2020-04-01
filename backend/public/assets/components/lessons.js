@@ -271,11 +271,11 @@ $('#fileUpload').on('change',function(){
         processData: false,
         success:function(data){
             successNotification(data.status.message);
-            location.reload();
+            // location.reload();
         },
         error: function(data){
             errorNotification(data.status.message);
-            location.reload();
+            // location.reload();
         }
     });
 })
