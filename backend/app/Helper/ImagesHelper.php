@@ -66,7 +66,7 @@ class ImagesHelper {
         }
 
 
-        if ($fileObj->getClientSize() >= 2000000) {
+        if ($fileObj->getClientSize() >= 20000000) {
             return false;
         }
 
@@ -107,7 +107,7 @@ class ImagesHelper {
         }
 
         $fileName_full = $fileName . '.' . $extension;
-        dd($directory);
+
         if ($directory == '') {
             return false;
         }
