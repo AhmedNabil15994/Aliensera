@@ -107,7 +107,7 @@ class ImagesHelper {
         }
 
         $fileName_full = $fileName . '.' . $extension;
-
+        dd($directory);
         if ($directory == '') {
             return false;
         }
