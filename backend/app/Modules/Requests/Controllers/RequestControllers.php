@@ -54,10 +54,10 @@ class RequestControllers extends Controller {
             Cart::where('student_id',$requestObj->student_id)->where('course_id',$requestObj->course_id)->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
             Favourites::where('student_id',$requestObj->student_id)->where('course_id',$requestObj->course_id)->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
         }
-        $tokens = Devices::getDevicesBy($requestObj->student_id,true);
-        if(!empty($tokens)){
-            $this->sendNotification($tokens[0],$msg,$requestObj->course_id);
-        }
+        // $tokens = Devices::getDevicesBy($requestObj->student_id,true);
+        // if(!empty($tokens)){
+        //     $this->sendNotification($tokens[0],$msg,$requestObj->course_id);
+        // }
 
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
