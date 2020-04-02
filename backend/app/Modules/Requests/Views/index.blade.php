@@ -121,7 +121,7 @@
                             <th>Instructor</th>
                             @endif
                             <th>Status</th>
-                            @if(IS_ADMIN)
+                            @if(IS_ADMIN || \Helper::checkRules('edit-student-request'))
                             <th style="padding-left: 50px">Actions</th>                            
                             @endif
                         </tr>
@@ -155,7 +155,7 @@
                                 </td>
                                 @endif
                                 <td>{{ $value->status == 1 ? 'Active' : ($value->status == 0 ? 'In Active' : 'Student Sent Request') }}</td>
-                                @if(IS_ADMIN)
+                                @if(IS_ADMIN || \Helper::checkRules('edit-student-request'))
                                 <td width="150px" align="center">
                                     @if(\Helper::checkRules('edit-student-request'))
                                         <a href="{{ URL::to('/requests/update/' . $value->id . '/1') }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Accept </a>
