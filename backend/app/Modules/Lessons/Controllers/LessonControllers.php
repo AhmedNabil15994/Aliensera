@@ -5,6 +5,8 @@ use App\Models\LessonVideo;
 use App\Models\LessonQuestion;
 use App\Models\Course;
 use App\Models\StudentRequest;
+use App\Models\StudentVideoDuration;
+use App\Models\StudentScore;
 use App\Models\Devices;
 use App\Models\VideoComment;
 use App\Models\User;
@@ -71,6 +73,8 @@ class LessonControllers extends Controller {
             return Redirect('404');
         }
 
+        $oldCourseID = $universityObj->course_id;
+
         $oldStatus = $universityObj->status;
         $validate = $this->validateLesson($input);
         if($validate->fails()){
@@ -80,6 +84,7 @@ class LessonControllers extends Controller {
 
 
         $universityObj->title = $input['title'];
+        $universityObj->course_id = $input['course_id'];
         $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         $universityObj->status = isset($input['status']) ? 1 : 0;
@@ -96,6 +101,21 @@ class LessonControllers extends Controller {
             foreach ($tokens as $value) {
                 $this->sendNotification($value,$msg,$id);
             }
+        }
+
+        if(isset($input['course_id']) && !empty($input['course_id']) && $oldCourseID != $input['course_id']){
+            $msg = 'New Lesson Added To Course '.$universityObj->Course->title;
+            $users = StudentRequest::NotDeleted()->where('course_id',$universityObj->course_id)->where('status',1)->pluck('student_id');
+            $tokens = Devices::getDevicesBy($users);
+            $tokens = reset($tokens);
+            foreach ($tokens as $value) {
+                $this->sendNotification($value,$msg,$id);
+            }
+
+            LessonQuestion::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            LessonVideo::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            StudentScore::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            StudentVideoDuration::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
         }
 
         \Session::flash('success', "Alert! Update Successfully");
