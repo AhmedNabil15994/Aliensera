@@ -112,10 +112,10 @@ class LessonControllers extends Controller {
                 $this->sendNotification($value,$msg,$id);
             }
 
-            LessonQuestion::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
-            LessonVideo::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
-            StudentScore::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
-            StudentVideoDuration::NotDeleted()->where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            LessonQuestion::where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            LessonVideo::where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            StudentScore::where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
+            StudentVideoDuration::where('lesson_id',$id)->where('course_id',$oldCourseID)->update(['course_id' => $input['course_id']]);
         }
 
         \Session::flash('success', "Alert! Update Successfully");
