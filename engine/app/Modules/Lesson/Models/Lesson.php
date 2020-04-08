@@ -33,7 +33,7 @@ class Lesson extends Model{
     static function dataList($course_id=null) {
         $input = \Input::all();
 
-        $source = self::NotDeleted();
+        $source = self::NotDeleted()->where('status',1);
 
         if (isset($input['title']) && !empty($input['title'])) {
             $source->where('title', 'LIKE', '%' . $input['title'] . '%');
