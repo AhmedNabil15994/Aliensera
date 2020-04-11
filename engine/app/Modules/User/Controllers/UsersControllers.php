@@ -21,6 +21,7 @@ class UsersControllers extends Controller {
         $profileObj = $userObj->Profile;
         $dataObj = new \stdClass();
         $dataObj->username = $profileObj->username;
+        $dataObj->user_id = USER_ID;
         $dataObj->name = $profileObj->display_name;
         $dataObj->phone = $profileObj->phone;
         $dataObj->email = $userObj->email;
