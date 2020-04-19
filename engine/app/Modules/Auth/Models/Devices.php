@@ -30,6 +30,7 @@ class Devices extends Model{
             $newDevice->auth_id = $authId;
             $newDevice->device_key = $deviceKey;
             $newDevice->created_at = DATE_TIME;
+            $newDevice->version = $_SERVER['HTTP_APPVER'];
             $newDevice->save();
         }
 
