@@ -51,7 +51,7 @@ class Lesson extends Model{
     }
 
     static function generateObj($source){
-        $sourceArr = $source->paginate(PAGINATION);
+        $sourceArr = $source->get();
 
         $list = [];
         foreach($sourceArr as $key => $value) {
@@ -59,7 +59,7 @@ class Lesson extends Model{
             $list[$key] = self::getData($value);
         }
 
-        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        // $data['pagination'] = \Helper::GeneratePagination($sourceArr);
         $data['data'] = $list;
 
         return $data;
