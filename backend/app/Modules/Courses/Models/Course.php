@@ -131,7 +131,7 @@ class Course extends Model{
         } 
 
         if ($status != null) {
-            $source->where('status', 3);
+            $source->where('status' ,'!=', 4);
         } 
 
         if(IS_ADMIN == false){
