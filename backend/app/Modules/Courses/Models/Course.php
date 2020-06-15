@@ -91,7 +91,7 @@ class Course extends Model{
         return $mainViews;
     }
 
-    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null) {
+    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null,$status=null) {
         $input = \Input::all();
 
         $source = self::with('Feedback');
@@ -128,6 +128,10 @@ class Course extends Model{
             }])->whereHas('StudentCourse',function($query) use ($student_id){
                 $query->NotDeleted()->where('student_id',$student_id)->where('status',1);
             });
+        } 
+
+        if ($status != null) {
+            $source->where('status', 3);
         } 
 
         if(IS_ADMIN == false){

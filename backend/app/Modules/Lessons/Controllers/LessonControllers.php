@@ -52,7 +52,7 @@ class LessonControllers extends Controller {
         }
 
         $data['data'] = Lesson::getData($universityObj);
-        $data['courses'] = Course::dataList(null,null,true)['data'];
+        $data['courses'] = Course::dataList(null,null,true,true)['data'];
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
@@ -123,7 +123,7 @@ class LessonControllers extends Controller {
     }
 
     public function add() {
-        $data['courses'] = Course::dataList(null,null,true)['data'];
+        $data['courses'] = Course::dataList(null,null,true,true)['data'];
         return view('Lessons.Views.add')->with('data', (object) $data);
     }
 
