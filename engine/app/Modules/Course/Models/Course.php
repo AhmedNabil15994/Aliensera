@@ -203,7 +203,7 @@ class Course extends Model{
         $data->valid_until = $source->valid_until;
         $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
         $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
-        $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->count() : 0;
+        $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->where('status',1)->count() : 0;
         $data->videosCount = $source->Video != null ? $source->Video()->NotDeleted()->count() : 0;
         $data->allTime = $source->Video != null ? self::getDuration($source->Video()->NotDeleted()->sum('duration')) : 0;
         $data->rateCount = $source->Feedback != null ? $source->Feedback()->NotDeleted()->count() :0;

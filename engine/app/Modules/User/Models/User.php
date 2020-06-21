@@ -160,6 +160,9 @@ class User extends Model{
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
+        if($source->Profile->group_id == 2){
+            $data->show_student_id = $source->Profile->show_student_id;
+        }
         $data->phone = $source->Profile != null ? $source->Profile->phone: '';
         $data->address = $source->Profile != null ? $source->Profile->address: '';
         $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
