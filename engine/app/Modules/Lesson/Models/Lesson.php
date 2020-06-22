@@ -47,6 +47,7 @@ class Lesson extends Model{
             $source->where('course_id', $course_id);
         } 
 
+        $source->orderBy('sort','asc');
         return self::generateObj($source);
     }
 
@@ -58,7 +59,6 @@ class Lesson extends Model{
             $list[$key] = new \stdClass();
             $list[$key] = self::getData($value);
         }
-
         // $data['pagination'] = \Helper::GeneratePagination($sourceArr);
         $data['data'] = $list;
 
@@ -91,13 +91,21 @@ class Lesson extends Model{
         $data->description = $source->description;
         $data->valid_until = $source->valid_until;
         $data->questions_sort = $source->questions_sort;
+        $data->quiz_duration = $source->quiz_duration;
+        $data->pass_quiz_to_view_next_lesson = $source->pass_quiz;
+        $data->student_must_get = (int) \App\Models\Variable::getVar('STUDENT_PERCENTAGE_TO_VIEW_NEXT_LESSON');
+        if($userCount > 0){
+            $myData = self::getUserScore($source->id);
+            $data->myScore = $myData;
+            $data->last_quiz_score = str_replace('%', '', $myData->score);
+        }else{
+            $data->last_quiz_score = 0;
+        }
         $data->status = $source->status;
         $data->free_videos =  LessonVideo::dataList($source->id,null,1);
         $data->videos =  LessonVideo::dataList($source->id);
         $data->questions =  LessonQuestion::dataList($source->id);
-        if($userCount > 0){
-            $data->myScore = self::getUserScore($source->id);
-        }
+        
         return $data;
     }
 

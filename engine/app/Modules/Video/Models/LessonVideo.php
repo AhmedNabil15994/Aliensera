@@ -52,7 +52,7 @@ class LessonVideo extends Model{
         if (isset($free) && !empty($free) ) {
             $source->where('free', $free);
         } 
-
+        $source->orderBy('sort','asc');
         return self::generateObj($source);
     }
 
