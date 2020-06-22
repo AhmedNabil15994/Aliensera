@@ -31,7 +31,13 @@ class LessonQuestion extends Model{
         $source = self::NotDeleted();
 
         if (isset($lesson_id) && !empty($lesson_id) ) {
+            $lessonObj = Lesson::find($lesson_id);
             $source->where('lesson_id', $lesson_id);
+            if($lessonObj->questions_sort == 0){
+                $source->orderBy('id','asc');
+            }else{
+                $source->inRandomOrder();
+            }
         } 
 
         return self::generateObj($source);
@@ -60,6 +66,8 @@ class LessonQuestion extends Model{
         $data->answer_b = $source->answer_b;
         $data->answer_c = $source->answer_c;
         $data->answer_d = $source->answer_d;
+        $data->answer_e = $source->answer_e;
+        $data->number_of_answers = $source->number_of_answers;
         $data->correct_answer = $source->correct_answer;
         $data->correctAnswer = 'Answer '.ucfirst($source->correct_answer);
         return $data;

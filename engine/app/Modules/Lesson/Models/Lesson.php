@@ -90,6 +90,7 @@ class Lesson extends Model{
         $data->course = $source->Course->title;
         $data->description = $source->description;
         $data->valid_until = $source->valid_until;
+        $data->questions_sort = $source->questions_sort;
         $data->status = $source->status;
         $data->free_videos =  LessonVideo::dataList($source->id,null,1);
         $data->videos =  LessonVideo::dataList($source->id);
