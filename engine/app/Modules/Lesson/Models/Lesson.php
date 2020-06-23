@@ -105,7 +105,7 @@ class Lesson extends Model{
         $data->free_videos =  LessonVideo::dataList($source->id,null,1);
         $data->videos =  LessonVideo::dataList($source->id);
         $data->questions =  LessonQuestion::dataList($source->id);
-        
+        $data->independent_quiz = Quiz::dataList($source->course_id,$source->id);
         return $data;
     }
 
