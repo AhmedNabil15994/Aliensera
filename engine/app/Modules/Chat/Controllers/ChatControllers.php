@@ -34,11 +34,12 @@ class ChatControllers extends Controller {
         $input = \Input::all();
         $userObj = User::NotDeleted()
             ->with('Profile')
-            ->whereHas('Profile', function() {})
-            ->find($id);
+            ->whereHas('Profile', function($whereQuery) {
+                $whereQuery->where('group_id',2);
+            })->find($id);
 
         if($userObj == null) {
-            return \TraitsFunc::ErrorMessage("Sorry you cant edit this user", 400);
+            return \TraitsFunc::ErrorMessage("Sorry you can't message this user", 400);
         }
 
         $chatHeadObj = ChatHead::where(function($whereQuery) use ($id){
@@ -110,11 +111,12 @@ class ChatControllers extends Controller {
 
         $userObj = User::NotDeleted()
             ->with('Profile')
-            ->whereHas('Profile', function() {})
-            ->find($id);
+            ->whereHas('Profile', function($whereQuery) {
+                $whereQuery->where('group_id',2);
+            })->find($id);
 
         if($userObj == null) {
-            return \TraitsFunc::ErrorMessage("Sorry you cant edit this user", 400);
+            return \TraitsFunc::ErrorMessage("Sorry you cant message this user", 400);
         }
 
         $chatHeadObj = ChatHead::where(function($whereQuery) use ($id){
