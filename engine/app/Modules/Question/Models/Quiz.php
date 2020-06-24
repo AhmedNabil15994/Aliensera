@@ -63,7 +63,7 @@ class Quiz extends Model{
         $data->status = $source->status;
         $data->course_id = $source->course_id;
         $data->course_title = $source->Course != null ? $source->Course->title : '';
-        $data->questions = QuizQuestion::dataList($source->id);
+        $data->questions = (array)QuizQuestion::dataList($source->id);
         return $data;
     }
 

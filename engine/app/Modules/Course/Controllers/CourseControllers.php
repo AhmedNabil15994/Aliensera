@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\CourseDiscussion;
 use App\Models\University;
 use App\Models\Field;
 use App\Models\Faculty;
@@ -68,6 +69,128 @@ class CourseControllers extends Controller {
 
         $statusObj['status'] = \TraitsFunc::SuccessResponse("Your Request Had Been Sent");
         return \Response::json((object) $statusObj);   
+    }
+
+    public function addDiscussion($course_id){
+        $input = \Input::all();
+        $rules = [
+            'comment' => 'required',
+        ];
+
+        $message = [
+            'comment.required' => "Sorry Comment Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+        if($validate->fails()){
+            return \TraitsFunc::ErrorMessage($validate->messages()->first(), 400);
+        }   
+
+        $videoObj = Course::getOne($course_id);
+        if($videoObj == null){
+            return \TraitsFunc::ErrorMessage('This Course Not Found !!', 400);
+        }
+
+        if($input['reply'] != 0){
+            $commentObj = CourseDiscussion::getOne($input['reply']);
+            if($commentObj == null){
+                return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+            }
+            $input['reply'] = $commentObj->reply_on != 0 ? $commentObj->reply_on : $input['reply'];
+            if($commentObj->reply_on == 0 ){
+                if($commentObj->created_by == USER_ID){
+                    return \TraitsFunc::ErrorMessage("You Can't Reply To Your Comment!!", 400);
+                }
+            }
+
+            $replier = User::getData(User::getOne(USER_ID));
+            $msg = $replier->name.' replied on your comment';
+            $tokens = Devices::getDevicesBy($commentObj->created_by,true);
+            $fireBase = new \FireBase();
+            $metaData = ['title' => "New Comment", 'body' => $msg,];
+            $myData = ['type' => 3 , 'id' => $commentObj->course_id];
+            $fireBase->send_android_notification($tokens[0],$metaData,$myData);
+        }
+
+        $commentObj = new CourseDiscussion;
+        $commentObj->comment = $input['comment'];
+        $commentObj->reply_on = $input['reply'];
+        $commentObj->course_id = $course_id;
+        $commentObj->status = 1;
+        $commentObj->created_by = USER_ID;
+        $commentObj->created_at = date('Y-m-d H:i:s');
+        $commentObj->save();
+
+        $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Saved Successfully !!');
+        return $statusObj;
+    }
+
+    public function updateDiscussion($course_id,$comment_id){
+        $input = \Input::all();
+        $rules = [
+            'comment' => 'required',
+        ];
+
+        $message = [
+            'comment.required' => "Sorry Comment Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+        if($validate->fails()){
+            return \TraitsFunc::ErrorMessage($validate->messages()->first(), 400);
+        }   
+
+        $videoObj = Course::getOne($course_id);
+        if($videoObj == null){
+            return \TraitsFunc::ErrorMessage('This Course Not Found !!', 400);
+        }
+
+        $commentObj = CourseDiscussion::getOne($comment_id);
+        if($commentObj == null){
+            return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+        }
+
+        if($input['reply'] != 0){
+            $commentObj = CourseDiscussion::getOne($input['reply']);
+            if($commentObj == null){
+                return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+            }
+            $input['reply'] = $commentObj->reply_on != 0 ? $commentObj->reply_on : $input['reply'];
+            if($commentObj->reply_on == 0 ){
+                if($commentObj->created_by == USER_ID){
+                    return \TraitsFunc::ErrorMessage("You Can't Reply To Your Comment!!", 400);
+                }
+            }
+        }
+
+        $commentObj->comment = $input['comment'];
+        $commentObj->reply_on = $input['reply'];
+        $commentObj->updated_by = USER_ID;
+        $commentObj->updated_at = date('Y-m-d H:i:s');
+        $commentObj->save();
+
+        $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Updated Successfully !!');
+        return $statusObj;
+    }
+
+    public function removeDiscussion($course_id,$comment_id){
+
+        $videoObj = Course::getOne($course_id);
+        if($videoObj == null){
+            return \TraitsFunc::ErrorMessage('This Course Not Found !!', 400);
+        }
+
+        $commentObj = CourseDiscussion::getOne($comment_id);
+        if($commentObj == null){
+            return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+        }
+
+        $commentObj->deleted_by = USER_ID;
+        $commentObj->deleted_at = date('Y-m-d H:i:s');
+        $commentObj->save();
+
+        $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Deleted Successfully !!');
+        return $statusObj;
     }
 
 }

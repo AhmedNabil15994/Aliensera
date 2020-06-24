@@ -30,6 +30,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\CourseFeedback', 'course_id','id');
     }
 
+    function Discussion(){
+        return $this->hasMany('App\Models\CourseDiscussion', 'course_id','id');
+    }
+
     function StudentCourse(){
         return $this->hasMany('App\Models\StudentCourse', 'course_id','id');
     }
@@ -211,6 +215,7 @@ class Course extends Model{
         $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
         $data->free_videos =  LessonVideo::dataList(null,$source->id,1);
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
+        $data->discussion = $source->Discussion != null ? CourseDiscussion::dataList($source->id) : [];
         $data->image = $source->image != null ? self::getPhotoPath($source->id, $source->image) : '';
         $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
