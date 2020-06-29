@@ -31,7 +31,7 @@ class StudentCourse extends Model{
     static function dataList($course_id=null,$creator=null,$student=null,$paginate=false) {
         $input = \Input::all();
         $source = self::NotDeleted()->where('status',1)->whereHas('Course',function($courseQuery){
-            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->whereIn('status',[3,5]);
         });
 
         if (isset($course_id) && $course_id != null ) {
@@ -66,7 +66,7 @@ class StudentCourse extends Model{
 
     static function getTopCourses($count,$instructor_id=null){
         $source = self::NotDeleted()->whereHas('Course',function($courseQuery){
-            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->whereIn('status',[3,5]);
         })->where('status',1)->where(function($myQuery) use ($instructor_id){
             if($instructor_id != null){
                 $myQuery->where('instructor_id',$instructor_id);
@@ -82,7 +82,7 @@ class StudentCourse extends Model{
 
     static function myCourses($count){
         $source = self::NotDeleted()->whereHas('Course',function($courseQuery){
-            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->where('status',3);
+            $courseQuery->whereRaw('(deleted_at IS NULL OR deleted_at="0000-00-00 00:00:00")')->whereIn('status',[3,5]);
         })->where('status',1)->where('student_id',USER_ID)->get()->take($count);
         return self::generateObj2($source,'myCourses');
     }

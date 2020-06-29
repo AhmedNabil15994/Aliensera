@@ -60,20 +60,20 @@ class Course extends Model{
 
     static function getOne($id){
         $source = self::NotDeleted()
-            ->where('id', $id)->where('status',3);
+            ->where('id', $id)->whereIn('status',[3,5]);
   
         return $source->first();
     }
 
     static function getRalated($field_id,$counter,$notId=null){
-        $source = self::NotDeleted()->with('Feedback')->where('status',3)->where('field_id',$field_id)->where('id','!=',$notId)->take($counter);
+        $source = self::NotDeleted()->with('Feedback')->whereIn('status',[3,5])->where('field_id',$field_id)->where('id','!=',$notId)->take($counter);
         return self::generateObj($source);
     }
 
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
 
-        $source = self::NotDeleted()->with('Feedback')->where('status',3)->where(function($whereQuery){
+        $source = self::NotDeleted()->with('Feedback')->whereIn('status',[3,5])->where(function($whereQuery){
             $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
         });
 
@@ -154,7 +154,7 @@ class Course extends Model{
             $statusLabel = "Instructor Sent Request";
         }elseif($status == 2){
             $statusLabel = "Request Refused";
-        }elseif($status == 3){
+        }elseif($status == 3 || $status == 5){
             $statusLabel = "Active";
         }elseif($status == 4){
             $statusLabel = "Expired";
