@@ -60,9 +60,9 @@ class Course extends Model{
 
     static function getOne($id){
         $source = self::NotDeleted()
-            ->where('id', $id)->whereIn('status',[3,5])->first();
+            ->where('id', $id)->whereIn('status',[3,5]);
   
-        return $source;
+        return $source->first();
     }
 
     static function getRalated($field_id,$counter,$notId=null){
@@ -73,10 +73,7 @@ class Course extends Model{
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
 
-        $source = self::NotDeleted()->with('Feedback')->where(function($whereQuery){
-            $whereQuery->where('status',3);
-            $whereQuery->where('valid_until','!=',null)->orWhere('valid_until','>=',date('Y-m-d'));
-        });
+        $source = self::NotDeleted()->with('Feedback')->whereIn('status',[3,5]);
 
         if (isset($input['keyword']) && !empty($input['keyword'])) {
             $source->where('title', 'LIKE', '%' . $input['keyword'] . '%')
@@ -130,10 +127,10 @@ class Course extends Model{
             }
         }         
 
-        return self::generateObj($source);
+        return self::generateObj($source,$type);
     }
 
-    static function generateObj($source){
+    static function generateObj($source,$type=null){
         $sourceArr = $source->paginate(PAGINATION);
         $list = [];
         foreach($sourceArr as $key => $value) {
@@ -142,7 +139,7 @@ class Course extends Model{
                 $value->status = 4;
                 $value->save();
             }
-            $list[$key] = self::getData($value);
+            $list[$key] = self::getData($value,$type);
         }
         $data['data'] = $list;
         $data['pagination'] = \Helper::GeneratePagination($sourceArr);
@@ -179,7 +176,7 @@ class Course extends Model{
         return $result;
     }
 
-    static function getData($source) {
+    static function getData($source,$type=null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
@@ -221,10 +218,10 @@ class Course extends Model{
         $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
         $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
-        // if($type == 1){
-        //     $controllerObj = new \App\Http\Controllers\CourseControllers();
-        //     $data->certificate = $controllerObj->getCertificate($source->id)->original->link;   
-        // }
+        if($type == 1){
+            $controllerObj = new \App\Http\Controllers\CourseControllers();
+            $data->certificate = $controllerObj->getCertificate($source->id)->original->link;   
+        }
         return $data;
     }
 
