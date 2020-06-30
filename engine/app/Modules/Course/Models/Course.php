@@ -72,7 +72,8 @@ class Course extends Model{
 
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
-
+        //->whereIn('status',[3,5])
+        dd(USER_ID);
         $source = self::NotDeleted()->with('Feedback')->where(function($whereQuery){
             $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
         });
