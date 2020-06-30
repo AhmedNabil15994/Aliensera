@@ -72,31 +72,10 @@ class Course extends Model{
 
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
-        $source = self::NotDeleted()->where(function($whereQuery){
+
+        $source = self::NotDeleted()->with('Feedback')->where(function($whereQuery){
             $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
         });
-        
-        if($type == null && isset($input['type']) && !empty($input['type'])){
-            $type = $input['type'];
-        }
-
-        if ( isset($type) && $type != null) {
-            $student_id = USER_ID;
-            if($type == 1){
-                $source->whereHas('StudentCourse',function($query) use ($student_id){
-                    $query->NotDeleted()->where('student_id',$student_id)->where('status',1);
-                });
-            }elseif($type == 2){
-                $source->whereHas('StudentCourse',function($query){
-                    $query->NotDeleted()->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id');
-                });
-            }
-            elseif($type == 3){
-                $source->whereHas('Feedback',function($query){
-                    $query->NotDeleted()->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id');
-                });
-            }
-        }         
 
         if (isset($input['keyword']) && !empty($input['keyword'])) {
             $source->where('title', 'LIKE', '%' . $input['keyword'] . '%')
@@ -128,7 +107,27 @@ class Course extends Model{
             $source->where('price','>=', $input['price_from'])->where('price','<=',$input['price_to']);
         }  
 
-        
+        if($type == null && isset($input['type']) && !empty($input['type'])){
+            $type = $input['type'];
+        }
+
+        if ( isset($type) && $type != null) {
+            $student_id = USER_ID;
+            if($type == 1){
+                $source->whereHas('StudentCourse',function($query) use ($student_id){
+                    $query->NotDeleted()->where('student_id',$student_id)->where('status',1);
+                });
+            }elseif($type == 2){
+                $source->whereHas('StudentCourse',function($query){
+                    $query->NotDeleted()->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id');
+                });
+            }
+            elseif($type == 3){
+                $source->whereHas('Feedback',function($query){
+                    $query->NotDeleted()->where('status',1)->withCount('Course')->orderBy('course_count', 'desc')->groupBy('course_id');
+                });
+            }
+        }         
 
         return self::generateObj($source,$type);
     }
