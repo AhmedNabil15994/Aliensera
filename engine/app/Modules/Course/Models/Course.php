@@ -220,10 +220,10 @@ class Course extends Model{
         $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
         $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
-        if($type == 1){
-            $controllerObj = new \App\Http\Controllers\CourseControllers();
-            $data->certificate = $controllerObj->getCertificate($source->id)->original->link;   
-        }
+        // if($type == 1){
+        //     $controllerObj = new \App\Http\Controllers\CourseControllers();
+        //     $data->certificate = $controllerObj->getCertificate($source->id)->original->link;   
+        // }
         return $data;
     }
 
