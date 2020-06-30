@@ -129,10 +129,10 @@ class Course extends Model{
             }
         }         
 
-        return self::generateObj($source,$type);
+        return self::generateObj($source);
     }
 
-    static function generateObj($source,$type=null){
+    static function generateObj($source){
         $sourceArr = $source->paginate(PAGINATION);
         $list = [];
         foreach($sourceArr as $key => $value) {
@@ -141,7 +141,7 @@ class Course extends Model{
                 $value->status = 4;
                 $value->save();
             }
-            $list[$key] = self::getData($value,$type);
+            $list[$key] = self::getData($value);
         }
         $data['data'] = $list;
         $data['pagination'] = \Helper::GeneratePagination($sourceArr);
@@ -178,7 +178,7 @@ class Course extends Model{
         return $result;
     }
 
-    static function getData($source,$type=null) {
+    static function getData($source) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
