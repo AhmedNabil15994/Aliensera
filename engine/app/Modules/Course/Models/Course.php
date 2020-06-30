@@ -73,7 +73,9 @@ class Course extends Model{
     static function dataList($type=null,$counter=null) {
         $input = \Input::all();
 
-        $source = self::NotDeleted()->with('Feedback')->whereIn('status',[3,5]);
+        $source = self::with('Feedback')->NotDeleted()->whereIn('status',[3,5])->where(function($whereQuery){
+            $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
+        });
 
         if (isset($input['keyword']) && !empty($input['keyword'])) {
             $source->where('title', 'LIKE', '%' . $input['keyword'] . '%')
