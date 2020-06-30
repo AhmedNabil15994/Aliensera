@@ -50,21 +50,27 @@ class CourseControllers extends Controller {
 
         $minPercent = (int) Variable::getVar('STUDENT_PERCENTAGE_TO_VIEW_NEXT_LESSON');
         $allQuestion = LessonQuestion::NotDeleted()->where('course_id',$id)->count();
-        $studentRight = StudentScore::where('student_id',USER_ID)->where('course_id',$id)->where('correct',1)->count();
-        $studentPercent = ($studentRight / $allQuestion) * 100;
-
-        if($studentPercent >= $minPercent){
-            $data = new \stdClass();
-            $data->course = $courseObj->title;
-            $data->instructor = $courseObj->Instructor->name;
-            $data->student = User::find(USER_ID)->name;
-            $statusObj['link'] = \URL::to('/courses/'.encrypt([$id,USER_ID]).'/downloadCertificate');
-            $statusObj['status'] = \TraitsFunc::SuccessResponse("Your Certification Is Ready");
+        if($allQuestion > 0){
+            $studentRight = StudentScore::where('student_id',USER_ID)->where('course_id',$id)->where('correct',1)->count();
+            $studentPercent = ($studentRight / $allQuestion) * 100;
+            
+            if($studentPercent >= $minPercent){
+                $data = new \stdClass();
+                $data->course = $courseObj->title;
+                $data->instructor = $courseObj->Instructor->name;
+                $data->student = User::find(USER_ID)->name;
+                $statusObj['link'] = \URL::to('/courses/'.encrypt([$id,USER_ID]).'/downloadCertificate');
+                $statusObj['status'] = \TraitsFunc::SuccessResponse("Your Certification Is Ready");
+            }else{
+                $statusObj['link'] = '';
+                $statusObj['status'] = \TraitsFunc::SuccessResponse("No Certification For This Course");
+            }
+            return \Response::json((object) $statusObj);
         }else{
             $statusObj['link'] = '';
             $statusObj['status'] = \TraitsFunc::SuccessResponse("No Certification For This Course");
+            return \Response::json((object) $statusObj);
         }
-        return \Response::json((object) $statusObj);
     }
 
     public function downloadCertificate($id) {
