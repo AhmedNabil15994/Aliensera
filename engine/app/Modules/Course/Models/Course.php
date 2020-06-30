@@ -74,7 +74,8 @@ class Course extends Model{
         $input = \Input::all();
 
         $source = self::NotDeleted()->with('Feedback')->where(function($whereQuery){
-            $whereQuery->where('status',3)->where('valid_until','!=',null)->orWhere('valid_until','>=',date('Y-m-d'));
+            $whereQuery->where('status',3);
+            $whereQuery->where('valid_until','!=',null)->orWhere('valid_until','>=',date('Y-m-d'));
         });
 
         if (isset($input['keyword']) && !empty($input['keyword'])) {
