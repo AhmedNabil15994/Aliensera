@@ -6,6 +6,7 @@ Courses
 Route::group(['prefix' => '/courses'] , function () {
     Route::get('/', 'CourseControllers@index');
     Route::get('/{id}', 'CourseControllers@getOne');
+    Route::get('/{id}/getCertificate', 'CourseControllers@getCertificate');
     Route::post('/{id}/enroll', 'CourseControllers@enroll');
     Route::post('/{id}/addDiscussion', 'CourseControllers@addDiscussion');
     Route::post('/{id}/updateDiscussion/{disucssion_id}', 'CourseControllers@updateDiscussion');

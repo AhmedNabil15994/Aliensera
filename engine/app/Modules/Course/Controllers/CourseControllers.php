@@ -6,11 +6,15 @@ use App\Models\CourseDiscussion;
 use App\Models\University;
 use App\Models\Field;
 use App\Models\Faculty;
+use App\Models\LessonQuestion;
+use App\Models\StudentScore;
+use App\Models\Variable;
 use App\Models\CourseFeedback;
 use App\Models\StudentCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 class CourseControllers extends Controller {
 
@@ -34,6 +38,56 @@ class CourseControllers extends Controller {
         $statusObj['related'] = Course::getRalated($courseObj->field_id,3,$courseObj->id)['data'];
         $statusObj['status'] = \TraitsFunc::SuccessResponse();
         return \Response::json((object) $statusObj);   
+    }
+
+    public function getCertificate($id) {
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return \TraitsFunc::ErrorMessage("This Course not found", 400);
+        }
+
+        $minPercent = (int) Variable::getVar('STUDENT_PERCENTAGE_TO_VIEW_NEXT_LESSON');
+        $allQuestion = LessonQuestion::NotDeleted()->where('course_id',$id)->count();
+        $studentRight = StudentScore::where('student_id',USER_ID)->where('course_id',$id)->where('correct',1)->count();
+        $studentPercent = ($studentRight / $allQuestion) * 100;
+
+        if($studentPercent >= $minPercent){
+            $data = new \stdClass();
+            $data->course = $courseObj->title;
+            $data->instructor = $courseObj->Instructor->name;
+            $data->student = User::find(USER_ID)->name;
+            $statusObj['link'] = \URL::to('/courses/'.encrypt([$id,USER_ID]).'/downloadCertificate');
+            $statusObj['status'] = \TraitsFunc::SuccessResponse("Your Certification Is Ready");
+        }else{
+            $statusObj['link'] = '';
+            $statusObj['status'] = \TraitsFunc::SuccessResponse("No Certification For This Course");
+        }
+        return \Response::json((object) $statusObj);
+    }
+
+    public function downloadCertificate($id) {
+        $myData = decrypt($id);
+        $id = (int) $myData[0];
+        $user_id = (int) $myData[1];
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return \TraitsFunc::ErrorMessage("This Course not found", 400);
+        }
+        $minPercent = (int) Variable::getVar('STUDENT_PERCENTAGE_TO_VIEW_NEXT_LESSON');
+        $allQuestion = LessonQuestion::NotDeleted()->where('course_id',$id)->count();
+        $studentRight = StudentScore::where('student_id',$user_id)->where('course_id',$id)->where('correct',1)->count();
+        $studentPercent = ($studentRight / $allQuestion) * 100;
+
+        if($studentPercent >= $minPercent){
+            $data['course'] = $courseObj->title;
+            $data['instructor'] = $courseObj->Instructor->name;
+            $data['student'] = User::find($user_id)->name;
+
+            $pdf = PDF::loadView('certification', $data)->setPaper('a4', 'landscape');
+            return $pdf->download('Certification.pdf');;
+        }
     }
 
     public function enroll($id) {

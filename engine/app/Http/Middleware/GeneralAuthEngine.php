@@ -11,6 +11,10 @@ class GeneralAuthEngine
 {
 
     public function handle($request, Closure $next){
+        if(last(request()->segments()) == 'downloadCertificate'){
+            return $next($request);
+        }
+
         if (!isset($_SERVER['HTTP_APIKEY'])) {
             return \TraitsFunc::ErrorMessage("API key is invalid", 401);
         }

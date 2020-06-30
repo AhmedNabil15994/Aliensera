@@ -7,6 +7,7 @@ Route::group(['prefix' => '/'] , function () {
     Route::post('login', 'AuthController@login');
     Route::post('social', 'AuthController@social');
     Route::post('register', 'AuthController@register');
+    Route::get('/courses/{id}/downloadCertificate', 'CourseControllers@downloadCertificate');
 
     Route::post('get-code', 'AuthController@getCode');
     Route::post('check-email-code', 'AuthController@checkEmailCode');

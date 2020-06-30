@@ -195,6 +195,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         // Lanin\Laravel\ApiDebugger\ServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Nexmo\Laravel\NexmoServiceProvider::class,
@@ -267,6 +268,8 @@ return [
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+
     ],
 
 ];
