@@ -59,7 +59,7 @@ class Course extends Model{
     }
 
     static function getOne($id){  
-        return self::NotDeleted()->where('id', $id)->where('status',3)->first();
+        return self::where('id', $id)->where('status',3)->first();
     }
 
     static function getRalated($field_id,$counter,$notId=null){
