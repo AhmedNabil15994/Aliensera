@@ -58,11 +58,8 @@ class Course extends Model{
         return \ImagesHelper::GetImagePath('courses', $id, $photo);
     }
 
-    static function getOne($id){
-        $source = self::NotDeleted()
-            ->where('id', $id)->where('status',3)->first();
-  
-        return $source;
+    static function getOne($id){  
+        return self::NotDeleted()->where('id', $id)->where('status',3)->first();
     }
 
     static function getRalated($field_id,$counter,$notId=null){
