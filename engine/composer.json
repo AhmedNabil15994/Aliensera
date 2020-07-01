@@ -10,6 +10,7 @@
         "brozot/laravel-fcm": "^1.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^2.0",
         "laravel/tinker": "^1.0",

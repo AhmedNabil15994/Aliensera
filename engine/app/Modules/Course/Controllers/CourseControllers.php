@@ -90,7 +90,8 @@ class CourseControllers extends Controller {
             $data['course'] = $courseObj->title;
             $data['instructor'] = $courseObj->Instructor->name;
             $data['student'] = User::find($user_id)->name;
-
+            $score = StudentScore::where('student_id',$user_id)->where('course_id',$id)->orderBy('created_at','DESC')->first()->created_at;
+            $data['date'] = date('Y-m-d',strtotime($score));
             $pdf = PDF::loadView('certification', $data)->setPaper('a4', 'landscape');
             return $pdf->download('Certification.pdf');;
         }
