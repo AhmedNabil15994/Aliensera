@@ -60,7 +60,7 @@ class Course extends Model{
 
     static function getOne($id){
         $source = self::NotDeleted()
-            ->where('id', $id)->whereIn('status',[3,5])->first();
+            ->where('id', $id)->where('status',3)->first();
   
         return $source;
     }
