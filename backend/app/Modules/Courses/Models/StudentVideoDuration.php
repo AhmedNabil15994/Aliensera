@@ -73,14 +73,16 @@ class StudentVideoDuration extends Model{
         return $result;
     }
 
-    static function getAllDuration(){
+    static function getAllDuration($type = null){
        $source = self::NotDeleted()->whereHas('Course',function($courseQuery){
-            $courseQuery->where('status',3);
+            $courseQuery->whereIn('status',[3,5]);
         });
-        if(IS_ADMIN == false){
-            $source->whereHas('Course',function($courseQuery){
-                $courseQuery->where('instructor_id',USER_ID);
-            });
+        if($type == null){
+            if(IS_ADMIN == false){
+                $source->whereHas('Course',function($courseQuery){
+                    $courseQuery->where('instructor_id',USER_ID);
+                });
+            }
         }
         return self::getDuration($source->sum('see_duration'));
     }

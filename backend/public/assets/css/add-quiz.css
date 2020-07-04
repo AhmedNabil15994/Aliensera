@@ -1,0 +1,60 @@
+.panel_toolbox>li{
+    float: right;
+}
+div.playlist,
+div.quiz{
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+div.playlist div.row,
+div.quiz div.row{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid #DDD;
+}
+div.playlist div.row:first-of-type,
+div.quiz div.row:first-of-type{
+    padding-top: 10px;
+    background: #eee;
+}
+div.playlist div.row:last-child,
+div.quiz div.row:last-child{
+    border-bottom: 0 ;
+}
+div.playlist div.row div,
+div.quiz div.row div{
+    font-weight: bold;
+    font-size: 13px;
+}
+.btn-xs i.fa{
+    font-size: 14px;
+}
+.playlist .row.results,
+.quiz .row.results{
+    font-weight: 400;
+    color: #555;
+}
+.playlist .row.results:hover,
+.quiz .row.results:hover{
+    background: #f9f9f9;
+    cursor: pointer;
+}
+a.editable{
+    color: inherit;
+}
+h2 span{
+    font-size: 16px;
+}
+button.add-question,
+button.clear-question{
+    margin-top: 25px;
+}
+.answer_c,.answer_d,.answer_e,
+.correct_answer option[value="c"],
+.correct_answer option[value="d"],
+.correct_answer option[value="e"]{
+    display: none;
+}

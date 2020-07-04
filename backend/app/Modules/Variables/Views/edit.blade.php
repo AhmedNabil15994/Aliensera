@@ -21,13 +21,13 @@
                     <div class="x_content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Key</label>
                                         <input type="text" class="form-control" name="key" placeholder="Key" value="{{ $data->data->key }}">
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Value</label>
                                         <input type="text" class="form-control" name="value" placeholder="Value" value="{{ $data->data->value }}">

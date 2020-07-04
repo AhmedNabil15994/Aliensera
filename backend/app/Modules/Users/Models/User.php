@@ -16,8 +16,24 @@ class User extends Model{
         return $this->hasOne('App\Models\Profile', 'user_id');
     }
 
+    function Courses(){
+        return $this->hasMany('App\Models\Course', 'instructor_id');
+    }
+
     function InstructorRate(){
         return $this->hasMany('App\Models\InstructorRate', 'instructor_id');
+    }
+
+    function StudentCourse(){
+        return $this->hasMany('App\Models\StudentCourse', 'instructor_id','id');
+    }
+
+    function StudentCourse2(){
+        return $this->hasMany('App\Models\StudentCourse', 'student_id','id');
+    }
+
+    function StudentViewDuration(){
+        return $this->hasMany('App\Models\StudentVideoDuration', 'student_id','id');
     }
 
     static function getPhotoPath($id, $photo) {
@@ -31,7 +47,8 @@ class User extends Model{
             ->whereHas('Profile', function($queryProfile) use ($input) {
                 if (isset($input['name']) && !empty($input['name'])) {
                     $queryProfile->where('first_name', 'LIKE', '%' . $input['name'] . '%')
-                        ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%');
+                        ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%')
+                        ->orWhere('id',$input['name']);
                 }
                 if (isset($input['group_id']) && $input['group_id'] != 0) {
                     $queryProfile->where('group_id', $input['group_id']);
@@ -45,13 +62,46 @@ class User extends Model{
             $source->where('email', 'LIKE', '%' . $input['email'] . '%');
         }
 
+        if (isset($input['course_id']) && !empty($input['course_id'])) {
+            if (isset($input['group_id']) && $input['group_id'] != 0) {
+                if($input['group_id'] == 3){ // Student
+                    $source->whereHas('StudentCourse2',function($whereHas) use ($input) {
+                        $whereHas->NotDeleted()->where('status',1)->where('course_id',$input['course_id']);
+                    });
+                }elseif($input['group_id'] == 2){ // Instructor
+                    $source->whereHas('StudentCourse',function($whereHas) use ($input){
+                        $whereHas->NotDeleted()->where('status',1)->where('course_id',$input['course_id']);
+                    });
+                }
+            }else{
+                $source->where(function($whereQuery) use ($input) {
+                    $whereQuery->whereHas('StudentCourse',function($whereHas2) use ($input) {
+                        $whereHas2->NotDeleted()->where('status',1)->where('course_id',$input['course_id']);
+                    })->orWhereHas('StudentCourse2',function($whereHas) use ($input) {
+                        $whereHas->NotDeleted()->where('status',1)->where('course_id',$input['course_id']);
+                    });
+                });
+            }
+            $source->with(['StudentViewDuration'=>function($withQuery) use ($input) {
+                $withQuery->where('course_id',$input['course_id']);
+            }]);
+            
+        }
+
         return self::generateObj($source);
     }
 
-    static function getUsersByType($user_type){
-        return self::NotDeleted()->where('is_active',1)->with('Profile')->whereHas('Profile',function($queryProfile) use ($user_type){
-            $queryProfile->where('group_id',$user_type);
-        })->orderBy('id','DESC')->get();
+    static function getUsersByType($user_type,$active=null){
+        if($active == true){
+            return self::NotDeleted()->with('Profile')->whereHas('Profile',function($queryProfile) use ($user_type){
+                $queryProfile->where('group_id',$user_type);
+            })->orderBy('id','DESC')->get();
+        }else{
+            return self::NotDeleted()->where('is_active',1)->with('Profile')->whereHas('Profile',function($queryProfile) use ($user_type){
+                $queryProfile->where('group_id',$user_type);
+            })->orderBy('id','DESC')->get();
+        }
+        
     }
 
     static function getInstructorStudents($ids){
@@ -76,6 +126,22 @@ class User extends Model{
         return $data;
     }
 
+    static function getDuration($duration){
+        $result = '';
+        if($duration > 3600){
+            $hours = round(floor($duration / 3600));
+            $minutes = round(floor(($duration % 3600) / 60));
+            $result = $hours.' Hr '.$minutes.' Min';
+        }elseif($duration > 60){
+            $minutes = round(floor($duration / 60));
+            $seconds = round($duration % 60);
+            $result = $minutes.' Min '.$seconds.' Sec';
+        }elseif($duration > 0 && $duration < 60){
+            $result = round($duration).' Sec';
+        }
+        return $result;
+    }
+
     static function selectImage($source){
         
         if($source->Profile->image != null){
@@ -93,6 +159,69 @@ class User extends Model{
                 return asset('/assets/images/avatar.png');
             }
         }
+    }
+
+    static function getTopInstructors($count){
+        $source = self::NotDeleted()->where('is_active',1)->whereHas('Profile',function($whereQuery){
+            $whereQuery->where('group_id',2);
+        })->withCount(['StudentCourse'=>function($withQuery){
+            $withQuery->NotDeleted()->whereHas('Course',function($whereQuery){
+                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
+            })->where('status',1);
+        }])->orderBy('student_course_count','desc')->take($count)->get();
+        return self::generateObj2($source,'instructor');
+    }
+
+    static function getTopStudents($count){
+        $source = self::NotDeleted()->where('is_active',1)->whereHas('Profile',function($whereQuery){
+            $whereQuery->where('group_id',3);
+        })->withCount(['StudentCourse2'=>function($withQuery){
+            $withQuery->NotDeleted()->whereHas('Course',function($whereQuery){
+                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
+            })->where('status',1);
+        }])->orderBy('student_course2_count','desc')->take($count)->get();
+        return self::generateObj2($source,'student');
+    }
+
+    static function generateObj2($source,$type=null){
+        $list = [];
+        foreach($source as $key => $value) {
+            $list[$key] = new \stdClass();
+            $list[$key] = self::getData2($value,$type);
+        }
+        return (object) $list;
+    }
+
+    static function getData2($source,$type) {
+        $data = new  \stdClass();
+        $data->id = $source->id;
+        $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
+        $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
+        $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
+        $data->image = self::selectImage($source);
+        $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
+        $data->gender = $source->Profile != null ? $source->Profile->gender : '';
+        $data->group_id = $source->Profile->group_id;
+        $data->phone = $source->Profile != null ? $source->Profile->phone: '';
+        $data->address = $source->Profile != null ? $source->Profile->address: '';
+        $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
+        $data->email = $source->email;
+        $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
+        $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
+        $data->active = $source->is_active == 1 ? "Yes" : "No";
+        $data->is_active = $source->is_active;
+        $data->deleted_by = $source->deleted_by;
+
+        if($type == 'instructor'){
+            $data->studentCount = $source->StudentCourse()->NotDeleted()->where('status',1)->whereHas('Course',function($whereHasQuery){
+                $whereHasQuery->NotDeleted()->whereIn('status',[3,4]);
+            })->groupBy('student_id')->get()->count();
+            $data->courseCount = $source->Courses()->NotDeleted()->whereIn('status',[3,4])->count();
+        }else{
+            $data->courseCount = $source->student_course2_count;
+        }
+
+        return $data;
     }
 
     static function getData($source) {
@@ -113,12 +242,16 @@ class User extends Model{
         $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
         $data->active = $source->is_active == 1 ? "Yes" : "No";
         $data->is_active = $source->is_active;
+        $data->show_student_id = $source->Profile->show_student_id;
         if($source->Profile->group_id == 2){
             $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
-            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
-            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->count() :0;
+            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('student_id')->count() :0;
+            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('course_id')->count() :0;
             $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
             $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
+        }
+        if($source->StudentViewDuration){
+            $data->viewDuration = $source->StudentViewDuration->sum('see_duration') != 0 ? self::getDuration($source->StudentViewDuration->sum('see_duration')) : 0;
         }
         $data->deleted_by = $source->deleted_by;
         return $data;
@@ -209,7 +342,7 @@ class User extends Model{
         return $dataObj->first();
     }
 
-    static function createOneUser(){
+    static function createOneUser($group_id=null){
         $input = \Input::all();
 
         $userObj = new User();
@@ -219,11 +352,11 @@ class User extends Model{
         $userObj->password = \Hash::make($input['password']);
         $userObj->save();
 
-        self::saveProfile($userObj);
+        self::saveProfile($userObj,$group_id);
         return $userObj->id;
     }
 
-    static function saveProfile($userObj) {
+    static function saveProfile($userObj,$group_id=null) {
         $input = \Input::all();
 
         $profileObj = $userObj->Profile;
@@ -241,7 +374,7 @@ class User extends Model{
         $profileObj->address = isset($input['address']) && !empty($input['address']) ? $input['address'] : '' ;
         $profileObj->gender = $input['gender'];
         $profileObj->display_name = $input['first_name'].' '.$input['last_name'];
-        $profileObj->group_id = $input['group_id'];
+        $profileObj->group_id = $group_id != null ? $group_id : $input['group_id'];
         $profileObj->save();
     }
 

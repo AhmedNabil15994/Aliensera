@@ -21,6 +21,7 @@ Route::group(['prefix' => '/videos'] ,function(){
     Route::get('/{id}/changeStatus', 'LessonControllers@changeStatus');
     Route::post('/{id}/comments/addComment', 'LessonControllers@addComment');
     Route::post('/{id}/uploadAttachment', 'LessonControllers@uploadAttachment');
+    Route::get('/{id}/removeAttachment', 'LessonControllers@removeAttachment');
     Route::post('/{id}/updateName', 'LessonControllers@updateName');
     Route::get('/removeComment/{id}', 'LessonControllers@removeComment');
 });

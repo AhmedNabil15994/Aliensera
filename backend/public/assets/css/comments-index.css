@@ -1,0 +1,67 @@
+td p{
+    color: #777;
+}
+td img{
+    display: inline-block;
+    float: left;
+}
+div.course-data{
+    float: left;
+    display: inline;
+    width: calc(100% - 60px);
+    margin-left: 5px;
+    margin-top: 5px;
+}
+ul.messages li .message_wrapper{
+    margin-right: 0;
+}
+ul.messages li .message_wrapper h4.heading{
+    margin-bottom: 10px;
+    padding-top: 5px;
+}
+span.time{
+    margin-bottom: 10px;
+    color: #999;
+    font-size: 14px;
+}
+div.row.comment{
+    margin-top: 15px;
+    display: none;
+}
+ul.bar_tabs{
+    background: unset;
+    margin-top: 40px;
+}
+li.pull-right.btn-default{
+    margin-top: -10px;
+}
+ul.messages2 li img{
+    width: 70px !important;
+    height: 70px !important;
+    margin-right: 15px;
+}
+ul.messages2{
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 10px;
+}
+ul.messages2 li a{
+    color: unset !important; 
+}
+ul.messages2 li{
+    min-height: 85px;
+    transition: all ease-in-out .25s;
+    -webkit-transition: all ease-in-out .25s;
+    -moz-transition: all ease-in-out .25s;
+    -o-transition: all ease-in-out .25s;
+}
+p.message{
+    direction: rtl;
+    padding-left: 35px;
+}
+ul.messages2 li:hover{
+    background-color: #eee;
+}
+.my-title{
+    font-size: 13px;
+}

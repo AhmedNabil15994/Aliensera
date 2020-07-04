@@ -25,6 +25,7 @@
 
     <!-- editor -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/dist/summernote.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
     <link href="{{ asset('assets/plugins/lou-multi-select/css/multi-select.css')}}" rel="stylesheet">
 
 

@@ -21,13 +21,13 @@
                     <div class="x_content search">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Key</label>
                                         <input type="text" class="form-control" name="key" placeholder="Key" value="{{ Input::get('key') }}">
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Value</label>
                                         <input type="text" class="form-control" name="value" placeholder="Value" value="{{ Input::get('value') }}">
@@ -60,13 +60,13 @@
                     <div class="x_content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Key</label>
                                         <input type="text" class="form-control" name="key" placeholder="Key" value="{{ Input::get('key') }}">
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Value</label>
                                         <input type="text" class="form-control" name="value" placeholder="Value" value="{{ Input::get('value') }}">
@@ -81,7 +81,7 @@
     </div>
     @endif
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">

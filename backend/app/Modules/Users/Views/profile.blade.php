@@ -1,23 +1,8 @@
 @extends('Layouts.master')
 @section('title', $data->id . ' - ' . $data->name)
 @section('otherhead')
-<style type="text/css" media="screen">
-   .user_data li i{
-        color: #1ABB9C !important
-   }
-   img.img-responsive.avatar-view{
-        width: 250px;
-   }
-   .form-control-feedback{
-        margin-top: 5px;
-   }
-   .iradio_flat-green{
-        margin-left: 5px;
-   }
-   p.gender{
-        margin-top: 8px;
-   }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/vendors/switchery/dist/switchery.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/profile.css') }}">
 @endsection
 @section('content')
 <div class="">
@@ -62,11 +47,11 @@
                                 <form class="form-horizontal form-label-left" method="post" action="{{ URL::to('/updateProfile') }}" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
                                             <input type="text" class="form-control has-feedback-left" value="{{ $data->first_name }}" name="first_name" placeholder="First Name">
                                             <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                         </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
                                             <input type="text" class="form-control has-feedback-left" value="{{ $data->last_name }}" name="last_name" placeholder="Last Name">
                                             <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                         </div>
@@ -116,6 +101,16 @@
                                         </div>
                                     </div>
                                     <input type="file" name="image" class="hidden">
+                                    @if(!IS_ADMIN)
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Show Students IDs</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <label>
+                                              <input type="checkbox" name="show" class="js-switch" {{ $data->show_student_id == 1 ? 'checked' : '' }} /> On
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
@@ -136,4 +131,6 @@
 
 @section('script')
 <script src="{{ asset('assets/components/profile.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/vendors/switchery/dist/switchery.min.js') }}"></script>
+
 @stop

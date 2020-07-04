@@ -1,0 +1,15 @@
+ .user_data li i{
+      color: #1ABB9C !important
+ }
+ img.img-responsive.avatar-view{
+      width: 250px;
+ }
+ .form-control-feedback{
+      margin-top: 5px;
+ }
+ .iradio_flat-green{
+      margin-left: 5px;
+ }
+ p.gender{
+      margin-top: 8px;
+ }

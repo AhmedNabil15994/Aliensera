@@ -6,8 +6,10 @@ use App\Models\Group;
 use App\Models\Course;
 use App\Models\CourseFeedback;
 use App\Models\InstructorRate;
+use App\Models\ApiAuth;
 use App\Models\StudentCourse;
 use App\Models\StudentScore;
+use App\Models\StudentRequest;
 use App\Models\VideoComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -87,6 +89,7 @@ class UsersControllers extends Controller {
 
     public function index() {
         $usersList = User::usersList();
+        $usersList['courses'] = Course::dataList(null,null,true)['data'];
         return view('Users.Views.index')
             ->with('data', (Object) $usersList);
     }
@@ -143,13 +146,15 @@ class UsersControllers extends Controller {
         $profileObj = $userObj->Profile;
 
         if($profileObj->group_id == 2){
-            $data['courses'] = Course::dataList($userObj->id)['data'];
+            $data['courses'] = Course::dataList($userObj->id,null,true)['data'];
             $data['rates'] = InstructorRate::dataList($userObj->id);
         }elseif($profileObj->group_id == 3){
-            $data['courses'] = Course::dataList(null,$userObj->id)['data'];
+            $data['courses'] = Course::dataList(null,$userObj->id,true)['data'];
             $data['reviews'] = CourseFeedback::dataList(null,$userObj->id);
             $data['rates'] = InstructorRate::dataList(null,$userObj->id);
             $data['scores'] = StudentScore::dataList($id);
+            $data['requests'] = StudentRequest::dataList($id)['data'];
+            $data['sessions'] = ApiAuth::where('user_id',$id)->orderBy('id','desc')->get()->take(5);
         }
         return view('Users.Views.view')->with('data', (object) $data);
     }
@@ -317,6 +322,7 @@ class UsersControllers extends Controller {
         $profileObj->display_name = $display_name;
         $profileObj->phone = $input['phone'];
         $profileObj->gender = $input['gender'];
+        $profileObj->show_student_id = isset($input['show']) ? 1 : 0;
         $profileObj->address = $input['address'];
         $profileObj->save();
 

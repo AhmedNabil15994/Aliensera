@@ -22,11 +22,9 @@ class AuthEngine
         if (in_array($request->segment(1), ['login','register','reset'])) {
             if (in_array($request->segment(1), ['login','register','reset'])) {
                 return $next($request);
-            } else {
-
-            }
+            } else {}
         }
-
+        
         if (!(USER_ID && USER_ID != '')) {
             \Auth::logout();
             session()->flush();

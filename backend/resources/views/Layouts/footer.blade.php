@@ -71,15 +71,16 @@
     <script src="{{ asset('assets/js/lib/fancybox/jquery.fancybox.pack.js')}}"></script>
     <script src="{{ asset('assets/plugins/lou-multi-select/js/jquery.multi-select.js')}}"></script>
     <script src="{{ asset('assets/plugins/quicksearch/jquery.quicksearch.js')}}"></script>
-
+    <script src="{{ asset('assets/plugins/select2/select2.min.js') }}" type="text/javascript"></script>
     <!-- Custom Theme Scripts -->
     <script  src="{{ asset('assets/build/js/custom.js')}}"></script>
     <script src="{{ asset('assets/components/notifications.js')}}"></script>
     <script src="{{ asset('assets/components/master.js')}}"></script>
     <script src="{{ asset('assets/js/load_languages.js')}}"></script>
-    {{-- <script type="text/javascript">
-        document.addEventListener('contextmenu', function(e) {
-          e.preventDefault();
+
+    <script type="text/javascript">
+        $(function(){
+            $('select:not(#custom-headers)').select2();
         });
-    </script> --}}
+    </script>
     @yield('script')

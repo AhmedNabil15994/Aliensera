@@ -1,90 +1,7 @@
 @extends('Layouts.master')
 @section('title', $data->data->id . ' - ' . $data->data->title)
 @section('otherhead')
-<style type="text/css" media="screen">
-    .file-row{
-        min-height: 80px;
-        clear: both;
-    }
-    .file-row div{
-        width: 50%;
-        float: left;
-        display: inline-block;
-    }
-    .file-row div p{
-        display: block;
-        width: 100%;
-        margin: auto;
-    }
-    .file-row div p.name{
-        padding-top: 25px;
-    }
-    .file-row div p.size{
-        padding-top: 17px;
-    }
-    .file-row div:nth-of-type(4){
-        padding-top: 20px;
-    }
-    .panel_toolbox>li{
-        float: right;
-    }
-    div.playlist,
-    div.quiz{
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    div.playlist div.row,
-    div.quiz div.row{
-        padding-bottom: 10px;
-        padding-top: 10px;
-        border-bottom: 1px solid #DDD;
-    }
-    div.playlist div.row:first-of-type,
-    div.quiz div.row:first-of-type{
-        padding-top: 10px;
-        background: #eee;
-    }
-    div.playlist div.row:last-child,
-    div.quiz div.row:last-child{
-        border-bottom: 0 ;
-    }
-    div.playlist div.row div,
-    div.quiz div.row div{
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .btn-xs i.fa{
-        font-size: 14px;
-    }
-    .playlist .row.results,
-    .quiz .row.results{
-        font-weight: 400;
-        color: #555;
-    }
-    .playlist .row.results:hover,
-    .quiz .row.results:hover{
-        background: #f9f9f9;
-        cursor: pointer;
-    }
-    h2 span{
-        font-size: 16px;
-    }
-    button.add-question,
-    button.clear-question{
-        margin-top: 25px;
-    }
-    button i.fa-play{
-        margin-left: 3px;
-    }
-    a.editable{
-        color: inherit;
-    }
-    .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
-    .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/edit-lesson.css') }}">
 @endsection
 @section('content')
 <div class="">
@@ -106,18 +23,59 @@
                     </div>
                     <div class="x_content">
                         <div class="row" >
-                            @if(IS_ADMIN == true)
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Title</label>
-                                            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
+                            <div class="row" style="margin: 0;">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Valid Until</label>
+                                        <input type="text" class="form-control datepicker" placeholder="Enter Date" name="valid_until" value="{{ $data->data->valid_until }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Course</label>
+                                        <select class="form-control" name="course_id">
+                                            <option value="">Select Course...</option>
+                                            @foreach($data->courses as $course)
+                                            <option value="{{ $course->id }}" {{ $data->data->course_id == $course->id ? 'selected' : '' }}>{{ $course->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @if(!IS_ADMIN)
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Questions Sort</label>
+                                        <div>
+                                            <p class="gender">
+                                                In Order <input type="radio" class="flat" name="questions_sort" {{ $data->data->questions_sort == 0 ? 'checked' : ''  }} value="0"/>
+                                                Random <input type="radio" class="flat" name="questions_sort" {{ $data->data->questions_sort == 1 ? 'checked' : ''  }} value="1"/>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Quiz Duration (In Minutes)</label>
+                                    <input type="text" class="form-control" placeholder="Enter Quiz Duration (In Minutes)" name="quiz_duration" value="{{ $data->data->quiz_duration }}">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            @if($data->data->course_status == 3)
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Active At</label>
+                                    <input type="text" class="form-control" placeholder="Active At" name="active_at" value="{{ $data->data->active_at }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
                                 <div class="form-group">
                                     <label>Active</label>
                                     <div class="checkbox">
@@ -125,51 +83,19 @@
                                     </div>
                                 </div>
                             </div>
-                            @else
-                            <div class="col-md-6">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Title</label>
-                                            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             @endif
-                            <div class="col-md-3">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Valid Until</label>
-                                            <input type="text" class="form-control datepicker" placeholder="Enter Date" name="valid_until" value="{{ $data->data->valid_until }}">
-                                        </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <label class="control-label">Pass Quiz To View Next Lessons</label>
+                                    <div class="checkbox">
+                                        <input type="checkbox" class="flat" name="pass_quiz" {{ $data->data->pass_quiz == 1 ? 'checked' : '' }}>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Course</label>
-                                            <select class="form-control" name="course_id">
-                                                <option value="">Select Course...</option>
-                                                @foreach($data->courses as $course)
-                                                <option value="{{ $course->id }}" {{ $data->data->course_id == $course->id ? 'selected' : '' }}>{{ $course->title }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea class="form-control" placeholder="Enter Description" name="description">{{ $data->data->description }}</textarea>
-                                        </div>
-                                    </div>
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" placeholder="Enter Description" name="description">{{ $data->data->description }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +112,7 @@
                         <div class="row">
                             @php $count = 12; @endphp
                             @if(\Helper::checkRules('add-lesson-video'))
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-3 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h2>Lesson Lectures</h2>
@@ -257,9 +183,9 @@
                                     </div>
                                 </div>
                             </div>
-                            @php $count = 6; @endphp
+                            @php $count = 9; @endphp
                             @endif
-                            <div class="col-md-{{ $count }} col-sm-{{ $count }} col-xs-12" style="padding-left: 0;">
+                            <div class="col-md-{{ $count }} col-sm-12 col-xs-12" style="padding-left: 0;">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h2>List Lectures <span>Total:</span><span class="total_videos"> {{ count((array)$data->data->videos) }}</span></h2>
@@ -269,49 +195,45 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content x_content_playlist">
-                                        @if(!empty((array)$data->data->videos))
                                         <div class="playlist">
                                             <div class="row">
                                                 <div class="col-xs-1">No#</div>
-                                                <div class="col-xs-3">Lecture</div>
+                                                <div class="col-xs-2">Lecture</div>
                                                 <div class="col-xs-2 text-center">Duration</div>
                                                 <div class="col-xs-2 text-center">Size</div>
                                                 <div class="col-xs-2 text-center">Free</div>
-                                                <div class="col-xs-2 text-center">Action</div>
+                                                <div class="col-xs-3 text-center">Action</div>
                                             </div>
                                             @foreach($data->data->videos as $key => $video)
-                                            <div class="row results" id="results{{ $video->id }}">
-                                                <div class="col-xs-1">{{ $key+1 }}</div>
-                                                <div class="col-xs-3"><a href="#" class="editable" data-area="{{ $video->id }}">{{ $video->title }}</a></div>
+                                            <div class="row results" id="results{{ $video->id }}" data-tab="{{ $video->id }}" data-area="{{ $video->lesson_id }}" data-plot="{{ $video->course_id }}">
+                                                <div class="col-xs-1"><i class="fa fa-arrows-alt second"></i>  {{ $key+1 }}</div>
+                                                <div class="col-xs-2 title"><a href="#" class="editable" data-area="{{ $video->id }}">{{ $video->title }}</a></div>
                                                 <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->free }}</div>
-                                                <div class="col-xs-2 text-center">
-                                                    <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i></button>
-                                                    <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>
+                                                <div class="col-xs-3 text-center">
+                                                    <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i> Play Video</button>
                                                     @if(\Helper::checkRules('delete-lesson-video'))
-                                                    <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
+                                                    <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i> Delete</button>
                                                     @endif
+                                                    <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i> Comments</a>
                                                     @if(\Helper::checkRules('change-video-status'))
                                                     <a href="{{ URL::to('/videos/'.$video->id.'/changeStatus') }}" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>
                                                     @endif
+                                                    <a class="btn btn-warning btn-xs" target="_blank" data-tab="{{ $video->id }}" data-area="{{ $video->lesson_id }}" data-plot="{{ $video->course_id }}"><i class="fa fa-share"></i> Move To Another Lesson</a>
                                                     @if(\Helper::checkRules('add-video-attachment'))
                                                     @if($video->attachment == '')
                                                     <input id="fileUpload" class="hidden" name="attachment" type="file">
                                                     <button class="btn btn-info btn-xs" onclick="uploadAttachment({{ $video->id }})"><i class="fa fa-file"></i> Upload PDF</button>
                                                     @else
                                                     <a class="btn btn-info btn-xs" href="{{ $video->attachment }}" target="_blank"><i class="fa fa-file"></i> Download PDF</a>
+                                                    <a class="btn btn-dark btn-xs" href="{{ URL::to('/videos/'.$video->id.'/removeAttachment') }}"><i class="fa fa-trash"></i> Remove PDF</a>
                                                     @endif
                                                     @endif
                                                 </div>
                                             </div>
                                             @endforeach
                                         </div>
-                                        @else
-                                        <div class="empty">
-                                            No Videos Available
-                                        </div>
-                                        @endif
                                     </div>
                                     @include('Partials.videoPlayer')
                                 </div>
@@ -319,7 +241,7 @@
                         </div>
                         <div class="row">
                             @if(\Helper::checkRules('add-lesson-question'))
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h2>Lesson Quiz Questions</h2>
@@ -330,49 +252,65 @@
                                     </div>
                                     <div class="x_content">
                                         <div class="row" >
-                                            <div class="col-md-12">
+                                            <div class="col-xs-12 col-sm-6">
                                                 <div class="form-group">
                                                     <label>Question</label>
                                                     <input type="text" class="form-control" placeholder="Enter Question" name="question">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-xs-12 col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Number OF Answers</label>
+                                                    <select class="form-control" name="number_of_answers">
+                                                        <option value="2">2 Answers</option>
+                                                        <option value="3">3 Answers</option>
+                                                        <option value="4">4 Answers</option>
+                                                        <option value="5">5 Answers</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
                                                 <div class="form-group">
                                                     <label>Answer A</label>
                                                     <input type="text" class="form-control" placeholder="Enter Answer A" name="answer_a">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-xs-12 col-sm-6">
                                                 <div class="form-group">
                                                     <label>Answer B</label>
                                                     <input type="text" class="form-control" placeholder="Enter Answer B" name="answer_b">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="clearfix"></div>
+                                            <div class="col-xs-12 col-sm-6 answer_c">
                                                 <div class="form-group">
                                                     <label>Answer C</label>
                                                     <input type="text" class="form-control" placeholder="Enter Answer C" name="answer_c">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-xs-12 col-sm-6 answer_d">
                                                 <div class="form-group">
                                                     <label>Answer D</label>
                                                     <input type="text" class="form-control" placeholder="Enter Answer D" name="answer_d">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-xs-12 col-sm-6 answer_e">
+                                                <div class="form-group">
+                                                    <label>Answer E</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Answer E" name="answer_e">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
                                                 <div class="form-group">
                                                     <label>Correct Answer</label>
                                                     <select class="form-control" name="correct_answer">
                                                         <option value="">Select Correct Answer</option>
                                                         <option value="a">Answer A</option>
                                                         <option value="b">Answer B</option>
-                                                        <option value="c">Answer C</option>
-                                                        <option value="d">Answer D</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-xs-12 col-sm-6">
                                                 <div class="form-group text-right">
                                                     <button class="btn btn-sm btn-warning clear-question"><i class="fa fa-refresh"></i></button>
                                                     <button class="btn btn-sm btn-success add-question"><i class="fa fa-plus"></i> Add</button>
@@ -383,7 +321,7 @@
                                 </div>
                             </div>
                             @endif
-                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
+                            <div class="col-md-6 col-sm-12 col-xs-12" style="padding-left: 0;">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h2>List Questions <span>Total:</span><span class="total_questions"> {{ count((array)$data->data->questions) }}</span></h2>
@@ -397,22 +335,24 @@
                                         <div class="quiz">
                                             <div class="row">
                                                 <div class="col-xs-1">No#</div>
-                                                <div class="col-xs-2">Question</div>
-                                                <div class="col-xs-2">Answer A</div>
-                                                <div class="col-xs-2">Answer B</div>
-                                                <div class="col-xs-2">Answer C</div>
-                                                <div class="col-xs-2">Answer D</div>
-                                                <div class="col-xs-1 text-center">Action</div>
+                                                <div class="col-xs-4">Question</div>
+                                                <div class="col-xs-1">Answer A</div>
+                                                <div class="col-xs-1">Answer B</div>
+                                                <div class="col-xs-1">Answer C</div>
+                                                <div class="col-xs-1">Answer D</div>
+                                                <div class="col-xs-1">Answer E</div>
+                                                <div class="col-xs-2 text-center">Action</div>
                                             </div>
                                             @foreach($data->data->questions as $key => $question)
                                             <div class="row results" id="questions{{ $question->id }}">
                                                 <div class="col-xs-1">{{ $key+1 }}</div>
-                                                <div class="col-xs-2">{{ $question->question }}</div>
-                                                <div class="col-xs-2">{!! $question->answer_a !!}</div>
-                                                <div class="col-xs-2">{!! $question->answer_b !!}</div>
-                                                <div class="col-xs-2">{!! $question->answer_c !!}</div>
-                                                <div class="col-xs-2">{!! $question->answer_d !!}</div>
-                                                <div class="col-xs-1 text-center">
+                                                <div class="col-xs-4">{{ $question->question }}</div>
+                                                <div class="col-xs-1">{!! $question->answer_a !!}</div>
+                                                <div class="col-xs-1">{!! $question->answer_b !!}</div>
+                                                <div class="col-xs-1">{!! $question->answer_c !!}</div>
+                                                <div class="col-xs-1">{!! $question->answer_d !!}</div>
+                                                <div class="col-xs-1">{!! $question->answer_e !!}</div>
+                                                <div class="col-xs-2 text-center">
                                                     @if(\Helper::checkRules('delete-lesson-question'))
                                                     <button class="btn btn-danger btn-xs" onclick="deleteQuestion({{ $question->id }})"><i class="fa fa-trash"></i></button>
                                                     @endif
@@ -451,8 +391,11 @@
         @endif
     </div>
 </div>
+@include('Partials.videoPlayer')
+@include('Partials.move_to_another_lesson')
 @stop()
 @section('script')
 <script src="{{ asset('assets/components/lessons.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/sortable.js')}}"></script>
 <script src="https://player.vimeo.com/api/player.js"></script>
 @endsection

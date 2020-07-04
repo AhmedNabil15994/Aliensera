@@ -66,7 +66,7 @@ if($lastpage > 1){
     $pagination .= "<ul class='paginationer'>";
     $pagination .= "<li class='page_info'>Page {$page} of {$lastpage}</li>";
 
-    if ($page > 1) $pagination.= "<li><a href='{$url}page={$first}'>{$firstlabel}</a></li>";
+    //if ($page > 1) $pagination.= "<li><a href='{$url}page={$first}'>{$firstlabel}</a></li>";
     if ($page > 1) $pagination.= "<li><a href='{$url}page={$prev}'>{$prevlabel}</a></li>";
 
     if ($lastpage < 7 + ($adjacents * 2)){
@@ -82,7 +82,7 @@ if($lastpage > 1){
 
         if($page < 1 + ($adjacents * 2)) {
 
-            for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
+            for ($counter = 1; $counter < 2 + ($adjacents * 2); $counter++){
                 if ($counter == $page){
                     $pagination.= "<li><a class='current'>{$counter}</a></li>";
                 } else{
@@ -90,15 +90,15 @@ if($lastpage > 1){
                 }
             }
 
-            $pagination.= "<li class='dot'>...</li>";
-            $pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
-            $pagination.= "<li><a href='{$url}page={$lastpage}'>{$lastpage}</a></li>";
+            //$pagination.= "<li class='dot'>...</li>";
+            //$pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
+            //$pagination.= "<li><a href='{$url}page={$lastpage}'>{$lastpage}</a></li>";
 
         } elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
 
-            $pagination.= "<li><a href='{$url}page=1'>1</a></li>";
-            $pagination.= "<li><a href='{$url}page=2'>2</a></li>";
-            $pagination.= "<li class='dot'>...</li>";
+            //$pagination.= "<li><a href='{$url}page=1'>1</a></li>";
+            //$pagination.= "<li><a href='{$url}page=2'>2</a></li>";
+            //$pagination.= "<li class='dot'>...</li>";
             for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
                 if ($counter == $page){
                     $pagination.= "<li><a class='current'>{$counter}</a></li>";
@@ -107,15 +107,15 @@ if($lastpage > 1){
 
                 }
             }
-            $pagination.= "<li class='dot'>..</li>";
-            $pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
-            $pagination.= "<li><a href='{$url}page={$lastpage}'>{$lastpage}</a></li>";
+            //$pagination.= "<li class='dot'>..</li>";
+            //$pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
+            //$pagination.= "<li><a href='{$url}page={$lastpage}'>{$lastpage}</a></li>";
 
         } else {
 
-            $pagination.= "<li><a href='{$url}page=1'>1</a></li>";
-            $pagination.= "<li><a href='{$url}page=2'>2</a></li>";
-            $pagination.= "<li class='dot'>..</li>";
+            //$pagination.= "<li><a href='{$url}page=1'>1</a></li>";
+            //$pagination.= "<li><a href='{$url}page=2'>2</a></li>";
+            //$pagination.= "<li class='dot'>..</li>";
             for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++) {
                 if ($counter == $page){
                     $pagination.= "<li><a class='current'>{$counter}</a></li>";
@@ -128,7 +128,7 @@ if($lastpage > 1){
 
     if ($page < $counter - 1) {
         $pagination.= "<li><a href='{$url}page={$next}'>{$nextlabel}</a></li>";
-        $pagination.= "<li><a href='{$url}page=$lastpage'>{$lastlabel}</a></li>";
+        //$pagination.= "<li><a href='{$url}page=$lastpage'>{$lastlabel}</a></li>";
     }
 
     $pagination.= "</ul>";

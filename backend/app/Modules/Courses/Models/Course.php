@@ -38,6 +38,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\StudentVideoDuration', 'course_id','id');
     }
 
+    function CoursePrice(){
+        return $this->hasOne('App\Models\CoursePrice', 'course_id','id');
+    }
+
     function Lesson(){
         return $this->hasMany('App\Models\Lesson', 'course_id','id');
     }
@@ -75,17 +79,14 @@ class Course extends Model{
         $mainViews = [0,0,0,0,0,0,0,0,0,0];
         $views = $course->StudentDuration()->groupBy('student_id')->get();
         foreach ($views as $value) {
-            $student_duration = $value->where('student_id',$value->student_id)->sum('see_duration');
+            $student_duration = $course->StudentDuration()->where('student_id',$value->student_id)->groupBy('student_id')->sum('see_duration');      
             if($mainDuration != 0){
                 $rate = round( ($student_duration / $mainDuration) * 100 ,2);
                 $index = floor($rate / 10);
-                if($index > 0){
-                    if($index >= 10){
-                        $index = 10;
-                    }
-                    $mainViews[$index-1] = $mainViews[$index-1] + 1; 
+                if($index >= 10){
+                    $index = 9;
                 }
-
+                $mainViews[$index] = $mainViews[$index] + 1;
             }
         }
         return $mainViews;
@@ -103,7 +104,7 @@ class Course extends Model{
             $source->where('instructor_id', $input['instructor_id']);
         } 
         if (isset($input['status']) && !empty($input['status'])) {
-            $source->where('status', $input['status']);
+            $source->NotDeleted()->where('status', $input['status']);
         } 
         if (isset($input['course_type']) && !empty($input['course_type'])) {
             $source->where('course_type', $input['course_type']);
@@ -138,6 +139,7 @@ class Course extends Model{
             $source->where('instructor_id',USER_ID);
         }
 
+        $source->orderBy('id','DESC');
         return self::generateObj($source,$withPaginate);
     }
 
@@ -175,8 +177,21 @@ class Course extends Model{
             $statusLabel = "<span class='btn btn-success btn-xs'>Active</span>";
         }elseif($status == 4){
             $statusLabel = "<span class='btn btn-dark btn-xs'>Expired</span>";
+        }elseif($status == 5){
+            $statusLabel = "<span class='btn btn-primary btn-xs'>Instructor Sent Upgrading Request</span>";
         }
         return $statusLabel;
+    }
+
+    static function getTopCourses($count){
+        $source = self::NotDeleted()->whereIn('status',[3,5]);
+        if(IS_ADMIN == false){
+            $source->where('instructor_id',USER_ID);
+        }
+        $source = self::withCount(['StudentCourse'=> function($withQuery){
+            $withQuery->where('status',1);
+        }])->orderBy('student_course_count','desc')->take($count);
+        return self::generateObj($source,true);
     }
 
     static function getDuration($duration){
@@ -219,7 +234,7 @@ class Course extends Model{
         $data->requirements = $source->requirements;
         $data->valid_until = $source->valid_until;
         $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
-        $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
+        $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id,true)['data'] : [];
         $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
         $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->count() : 0;
         $data->videosCount = $source->Video != null ? $source->Video()->NotDeleted()->count() : 0;
@@ -228,11 +243,15 @@ class Course extends Model{
         $data->rateSum = $source->Feedback != null ? $source->Feedback()->NotDeleted()->sum('rate') :0;
         $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
+        $data->instructor_price = $source->CoursePrice != null ? CoursePrice::getData($source->CoursePrice) : [];
         $data->image = self::getPhotoPath($source->id, $source->image);
         $data->rates = self::getRates($source);
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
+        if(isset($source->student_course_count)){
+            $data->student_course_count = $source->student_course_count;
+        }
         $data->deleted_by = $source->deleted_by;
         return $data;
     }

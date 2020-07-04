@@ -12,7 +12,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <div align="right">
                                 <button type="submit" class="btn btn-primary" style="width:110px;"><i class="fa fa fa-search"></i> Search ..</button>
-                                @if(Input::has('name') || Input::has('email') || Input::has('phone') || Input::has('group_id'))
+                                @if(Input::has('name') || Input::has('email') || Input::has('phone') || Input::has('group_id') || Input::has('course_id'))
                                     <a href="{{ URL::to('/users') }}" type="submit" class="btn btn-danger" style="color: black;"><i class="fa fa fa-refresh"></i></a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -22,41 +22,46 @@
                     </div>
                     <div class="x_content search">
                         <div class="row">
-                            <div class="col-xs-12">
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Name" value="{{ Input::get('name') }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" name="email" placeholder="Email" value="{{ Input::get('email') }}">
-                                    </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Name / ID</label>
+                                    <input type="text" class="form-control" name="name" placeholder="Name / ID" value="{{ Input::get('name') }}">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label>Phone</label>
-                                        <input type="text" class="form-control" name="phone" placeholder="Phone" value="{{ Input::get('phone') }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label>Group</label>
-                                        <select class="form-control" name="group_id">
-                                            <option value="0">Select Group</option>
-                                            @foreach($data->groups as $group)
-                                                <option value="{{ $group->id }}" {{ Input::get('group_id') == $group->id ? 'selected' : '' }}>{{ $group->title }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ Input::get('email') }}">
                                 </div>
                             </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone" value="{{ Input::get('phone') }}">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Group</label>
+                                    <select class="form-control select2" name="group_id">
+                                        <option value="0">Select Group</option>
+                                        @foreach($data->groups as $group)
+                                            <option value="{{ $group->id }}" {{ Input::get('group_id') == $group->id ? 'selected' : '' }}>{{ $group->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Course</label>
+                                    <select class="form-control select2" name="course_id">
+                                        <option value="0">Select Course</option>
+                                        @foreach($data->courses as $course)
+                                            <option value="{{ $course->id }}" {{ Input::get('course_id') == $course->id ? 'selected' : '' }}>{{ $course->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                 </div>
@@ -69,10 +74,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <h3>Users<small> Total : {{ $data->pagination->total_count }}</small></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 @if(\Helper::checkRules('add-user'))
                                     <a href="{{URL::to('/users/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
@@ -90,11 +95,10 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Group</th>
-                            <th>Phone</th>
                             <th>Active</th>
-                            <th>Last Login</th>
+                            @if(Input::get('course_id') != 0)
+                            <th>View Duration</th>
+                            @endif
                             <th style="padding-left: 50px">Actions</th>
                         </tr>
                         </thead>
@@ -103,20 +107,19 @@
                             <tr id="tableRaw{{ $value->id }}">
                                 <td width="3%">{{ $value->id }}</td>
                                 <td>{{ $value->name }}</td>
-                                <td>{{ $value->email }}</td>
-                                <td>{{ $value->group }}</td>
-                                <td>{{ $value->phone }}</td>
                                 <td width="3%" align="left"><span class="btn {{ $value->is_active == 1 ? "btn-success" : "btn-danger" }} btn-xs"> {{ $value->active }}</span></td>
+                                @if(Input::get('course_id') != 0)
                                 <td align="left">
-                                    {{ $value->last_login }}
+                                    {{ $value->viewDuration }} of {{ \App\Models\Course::getData(\App\Models\Course::getOne(Input::get('course_id')))->allTime }}
                                 </td>
-                                <td class="actions" width="170px" align="left">
+                                @endif
+                                <td class="actions" width="15%" align="left">
                                     @if(\Helper::checkRules('edit-user'))
                                         <a href="{{ URL::to('/users/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                                     @endif
 
                                     @if($value->group_id != 1)
-                                        <a href="{{ URL::to('/messages/with/' . $value->id) }}" class="btn btn-dark btn-xs"><i class="fa fa-comments"></i> Say Hello </a>
+                                        {{-- <a href="{{ URL::to('/messages/with/' . $value->id) }}" class="btn btn-dark btn-xs"><i class="fa fa-comments"></i> Say Hello </a> --}}
 
                                         @if(\Helper::checkRules('view-user'))
                                             <a href="{{ URL::to('/users/view/' . $value->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i> View </a>
@@ -136,9 +139,9 @@
                                 <td></td>
                                 <td colspan="6">No Data Found</td>
                                 <td style="display: none;"></td>
+                                @if(Input::get('course_id') != 0)
                                 <td style="display: none;"></td>
-                                <td style="display: none;"></td>
-                                <td style="display: none;"></td>
+                                @endif
                                 <td style="display: none;"></td>
                             </tr>    
                         @endif

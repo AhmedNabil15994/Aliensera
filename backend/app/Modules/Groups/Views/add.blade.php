@@ -20,30 +20,22 @@
                         </div>
                         <div class="x_content">
                             <div class="row" >
-                                <div class="col-md-6">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Title</label>
-                                                <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
-                                            </div>
-                                        </div>
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Permissions</label>
-                                                <select id='custom-headers' class="searchable" name="permissions[]" multiple='multiple'>
-                                                @forelse($data->permissions as $permissionKey => $permissionValue)
-                                                    <option value="{{$permissionValue}}">{{$permissionValue}}</option>
-                                                @empty
-                                                    <option value="0" disabled selected>-- No Data -- </option>
-                                                @endforelse
-                                            </select>
-                                            </div>
-                                        </div>
+                                <div class="col-sm-6 col-md-8 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Permissions</label>
+                                        <select id='custom-headers' class="searchable" name="permissions[]" multiple='multiple'>
+                                        @forelse($data->permissions as $permissionKey => $permissionValue)
+                                            <option value="{{$permissionValue}}">{{$permissionValue}}</option>
+                                        @empty
+                                            <option value="0" disabled selected>-- No Data -- </option>
+                                        @endforelse
+                                        </select>
                                     </div>
                                 </div>
                             </div>

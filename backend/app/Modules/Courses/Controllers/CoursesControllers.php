@@ -5,9 +5,15 @@ use App\Models\Course;
 use App\Models\University;
 use App\Models\Field;
 use App\Models\Faculty;
+use App\Models\CoursePrice;
+use App\Models\Lesson;
+use App\Models\LessonVideo;
+use App\Models\Devices;
 use App\Models\InstructorRate;
 use App\Models\CourseFeedback;
+use App\Models\CourseDiscussion;
 use App\Models\StudentScore;
+use App\Models\StudentVideoDuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -78,6 +84,162 @@ class CoursesControllers extends Controller {
         return view('Courses.Views.view')->with('data', (object) $data);      
     }
 
+    public function discussion($id) {
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+
+        $data = CourseDiscussion::dataList($id,true);
+        $data['course'] = Course::getData($courseObj);
+        return view('Courses.Views.discussion')->with('data', (object) $data);      
+    }
+
+    public function addDiscussion($id){
+        $input = \Input::all();
+        $rules = [
+            'comment' => 'required',
+        ];
+
+        $message = [
+            'comment.required' => "Sorry Comment Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+        if($validate->fails()){
+            return \TraitsFunc::ErrorMessage($validate->messages()->first(), 400);
+        }   
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null){
+            return \TraitsFunc::ErrorMessage('This Course Not Found !!', 400);
+        }
+
+        if($input['reply'] != 0){
+            $commentObj = CourseDiscussion::getOne($input['reply']);
+            if($commentObj == null){
+                return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+            }
+            $input['reply'] = $commentObj->reply_on != 0 ? $commentObj->reply_on : $input['reply'];
+            if($commentObj->reply_on == 0 ){
+                if($commentObj->created_by == USER_ID){
+                    return \TraitsFunc::ErrorMessage("You Can't Reply To Your Comment!!", 400);
+                }
+            }
+            $replier = User::getData(User::getOne(USER_ID));
+            $msg = $replier->name.' replied on your comment';
+            $tokens = Devices::getDevicesBy($commentObj->created_by,true);
+            $fireBase = new \FireBase();
+            $metaData = ['title' => "New Comment", 'body' => $msg,];
+            $myData = ['type' => 4 , 'id' => $id];
+            $fireBase->send_android_notification($tokens[0],$metaData,$myData);
+        }
+
+        $commentObj = new CourseDiscussion;
+        $commentObj->comment = $input['comment'];
+        $commentObj->reply_on = $input['reply'];
+        $commentObj->course_id = $id;
+        $commentObj->status = 1;
+        $commentObj->created_by = USER_ID;
+        $commentObj->created_at = date('Y-m-d H:i:s');
+        $commentObj->save();
+
+        $statusObj['status'] = \TraitsFunc::SuccessResponse('Comment Saved Successfully !!');
+        $statusObj['data'] = CourseDiscussion::getData($commentObj);
+        return $statusObj;
+    }
+
+    public function removeDiscussion($comment_id){
+        $commentObj = CourseDiscussion::getOne($comment_id);
+        if($commentObj == null){
+            return \TraitsFunc::ErrorMessage('This Comment Not Found !!', 400);
+        }
+        return \Helper::globalDelete($commentObj);
+    }
+
+
+    public function movableLessons($id){
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+        $input = \Input::all();
+        $lessonObj = Lesson::getOne($input['lesson_id']);
+        if($lessonObj == null) {
+            return Redirect('404');
+        }
+        $data = Lesson::NotDeleted()->where('status',1)->where('course_id',$id)->where('id','!=',$input['lesson_id'])->get();
+        return \Response::json((object) $data );
+    }
+
+    public function moveVideo($id){
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+        $input = \Input::all();
+        $oldLessonObj = Lesson::getOne($input['old_lesson_id']);
+        if($oldLessonObj == null) {
+            return Redirect('404');
+        }
+        $lessonObj = Lesson::getOne($input['lesson_id']);
+        if($lessonObj == null) {
+            return Redirect('404');
+        }
+        $videoObj = LessonVideo::getOne($input['video_id']);
+        if($videoObj == null) {
+            return Redirect('404');
+        }
+
+        LessonVideo::where('id',$input['video_id'])->where('lesson_id',$input['old_lesson_id'])->update(['lesson_id'=>$input['lesson_id']]);
+        StudentVideoDuration::where('video_id',$input['video_id'])->where('lesson_id',$input['old_lesson_id'])->update(['lesson_id'=>$input['lesson_id']]);
+
+        \Session::flash('success', "Moving Video Success !!");
+        return 1;
+    }
+
+    public function sortLesson($id) {
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+
+        $input = \Input::all();
+        $ids = json_decode($input['ids']);
+        $sorts = json_decode($input['sorts']);
+
+        for ($i = 0; $i < count($ids) ; $i++) {
+            Lesson::where('id',$ids[$i])->update(['sort'=>$sorts[$i]]);
+        }
+        return 'sorted';
+    }
+
+    public function sortVideo($id) {
+        $id = (int) $id;
+
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+
+        $input = \Input::all();
+        $ids = json_decode($input['ids']);
+        $sorts = json_decode($input['sorts']);
+
+        for ($i = 0; $i < count($ids) ; $i++) {
+            LessonVideo::where('lesson_id',$input['lesson_id'])->where('id',$ids[$i])->update(['sort'=>$sorts[$i]]);
+        }
+        return 'sorted';
+    }
+
     public function update($id,Request $request) {
         $id = (int) $id;
         $input = \Input::all();
@@ -91,6 +253,7 @@ class CoursesControllers extends Controller {
         }
 
         $old_title = $courseObj->title;
+        $coursePriceObj = $courseObj->CoursePrice;
 
         $validate = $this->validateCourse($input);
         if($validate->fails()){
@@ -136,13 +299,17 @@ class CoursesControllers extends Controller {
         $courseObj->title = $input['title'];
         $courseObj->description = $input['description'];
         $courseObj->instructor_id = $input['instructor_id'];
-        $courseObj->status = $input['status'];
+        if(IS_ADMIN){
+            $courseObj->status = $input['status'];
+        }
         $courseObj->course_type = $input['course_type'];
         $courseObj->field_id = $input['field_id'];
         $courseObj->price = isset($input['price']) ? $input['price'] : 0;
         $courseObj->what_learn = $input['what_learn'];
         $courseObj->requirements = $input['requirements'];
-        $courseObj->valid_until = !empty($input['valid_until']) ? date('Y-m-d',strtotime($input['valid_until'])) : null;
+        if($input['status'] ==3){
+            $courseObj->valid_until = !empty($input['end_date']) ? date('Y-m-d',strtotime($input['end_date'])) : null;
+        }
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
@@ -155,6 +322,35 @@ class CoursesControllers extends Controller {
         $courseObj->updated_by = USER_ID;
         $courseObj->updated_at = DATE_TIME;
         $courseObj->save();
+
+        if($courseObj->status == 3 && !IS_ADMIN){
+            if($coursePriceObj->upload_space != $input['upload_space'] || $coursePriceObj->course_duration != $input['course_duration'] || $coursePriceObj->approval_number != $input['approval_number']){
+                $coursePriceObj->updated_upload_space = $input['upload_space'];
+                $coursePriceObj->updated_upload_cost = $input['upload_space'] * 25;
+                $coursePriceObj->updated_course_duration = $input['course_duration'];
+                $coursePriceObj->updated_start_date = $input['start_date'];
+                $coursePriceObj->updated_end_date = $input['end_date'];
+                $coursePriceObj->updated_approval_number = $input['approval_number'];
+                $coursePriceObj->updated_approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+
+                $coursePriceObj->updated_by = USER_ID;
+                $coursePriceObj->updated_at = DATE_TIME;
+                $coursePriceObj->save();
+
+                $courseObj->status = 5;
+                $courseObj->save();
+            }
+
+        }elseif($courseObj->status == 1 && !IS_ADMIN){
+            $coursePriceObj->start_date = $input['start_date'];
+            $coursePriceObj->end_date = $input['end_date'];
+            $coursePriceObj->course_duration = $input['course_duration'];
+            $coursePriceObj->upload_space = $input['upload_space'];
+            $coursePriceObj->upload_cost = $input['upload_space'] * 25;
+            $coursePriceObj->approval_number = $input['approval_number'];
+            $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+            $coursePriceObj->save();
+        }
 
         if ($request->hasFile('image')) {
             $files = $request->file('image');
@@ -174,6 +370,51 @@ class CoursesControllers extends Controller {
         return \Redirect::back()->withInput();
     }
 
+    public function upgrade($id,$status){
+        $id = (int) $id;
+        $status = (int) $status;
+        $courseObj = Course::getOne($id);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+
+        if(!in_array($status, [1,2])){
+            return \Redirect::back()->withInput();
+        }
+
+        $coursePriceObj = $courseObj->CoursePrice;
+
+        $courseObj->status = 3;
+        $courseObj->save();
+    
+        if($status == 1){
+            $courseObj->valid_until = $coursePriceObj->updated_end_date;
+            $courseObj->save();
+            
+            $coursePriceObj->start_date = $coursePriceObj->updated_start_date;
+            $coursePriceObj->end_date = $coursePriceObj->updated_end_date;
+            $coursePriceObj->course_duration = $coursePriceObj->updated_course_duration;
+            $coursePriceObj->upload_space = $coursePriceObj->updated_upload_space;
+            $coursePriceObj->upload_cost = $coursePriceObj->updated_upload_cost;
+            $coursePriceObj->approval_number = $coursePriceObj->updated_approval_number;
+            $coursePriceObj->approval_cost = $coursePriceObj->updated_approval_cost;
+        }
+
+        $coursePriceObj->updated_start_date = null;
+        $coursePriceObj->updated_end_date = null;
+        $coursePriceObj->updated_course_duration = null;
+        $coursePriceObj->updated_upload_space = null;
+        $coursePriceObj->updated_upload_cost = null;
+        $coursePriceObj->updated_approval_number = null;
+        $coursePriceObj->updated_approval_cost = null;
+        $coursePriceObj->updated_at = null;
+        $coursePriceObj->updated_by = null;
+        $coursePriceObj->save();
+
+        \Session::flash('success', "Alert! Update Successfully");
+        return \Redirect::back()->withInput();
+    }
+
     public function add() {
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['fields'] = Field::where('status',1)->get();
@@ -185,6 +426,8 @@ class CoursesControllers extends Controller {
         if(IS_ADMIN == false){
             $input['instructor_id'] = USER_ID;
             $input['status'] = 1;
+            $input['approval_number'] = $input['approval_number'] % 5 != 0 ? floor($input['approval_number'] / 5) * 5 : $input['approval_number'];
+
         }
         $validate = $this->validateCourse($input);
         if($validate->fails()){
@@ -192,6 +435,7 @@ class CoursesControllers extends Controller {
             return redirect()->back()->withInput();
         }   
         
+
         if($input['course_type'] == 2){
 
             if(empty($input['university_id']) || !isset($input['university_id'])){
@@ -236,7 +480,7 @@ class CoursesControllers extends Controller {
         $courseObj->price = isset($input['price']) ? $input['price'] : 0;
         $courseObj->what_learn = $input['what_learn'];
         $courseObj->requirements = $input['requirements'];
-        $courseObj->valid_until = !empty($input['valid_until']) ? date('Y-m-d',strtotime($input['valid_until'])) : null;
+        $courseObj->valid_until = !empty($input['valid_until']) ? date('Y-m-d',strtotime($input['valid_until'])) : $input['end_date'];
         if($input['course_type'] == 2){
             $courseObj->university_id = $input['university_id'];
             $courseObj->faculty_id = $input['faculty_id'];
@@ -259,10 +503,26 @@ class CoursesControllers extends Controller {
             }
         }
 
-        $vimeoObj = new \Vimeos();
-        $project_id = $vimeoObj->createFolder($courseObj->title);
-        $courseObj->project_id = $project_id;
-        $courseObj->save();
+        if(IS_ADMIN){
+            $vimeoObj = new \Vimeos();
+            $project_id = $vimeoObj->createFolder($courseObj->title);
+            $courseObj->project_id = $project_id;
+            $courseObj->save();
+        }else{
+            $coursePriceObj = new CoursePrice;
+            $coursePriceObj->course_id = $courseObj->id;
+            $coursePriceObj->instructor_id = $courseObj->instructor_id;
+            $coursePriceObj->start_date = $input['start_date'];
+            $coursePriceObj->end_date = $input['end_date'];
+            $coursePriceObj->course_duration = $input['course_duration'];
+            $coursePriceObj->upload_space = $input['upload_space'];
+            $coursePriceObj->upload_cost = $input['upload_space'] * 25;
+            $coursePriceObj->approval_number = $input['approval_number'];
+            $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+            $coursePriceObj->created_by = USER_ID;
+            $coursePriceObj->created_at = DATE_TIME;
+            $coursePriceObj->save();
+        }
 
         \Session::flash('success', "Alert! Create Successfully");
         return redirect()->to('courses/edit/' . $courseObj->id);
@@ -274,6 +534,10 @@ class CoursesControllers extends Controller {
 
     public function getFaculties($university_id){
         return \Response::json((object) Faculty::NotDeleted()->where('status',1)->where('university_id',$university_id)->get());
+    }
+
+    public function getLessons($course_id){
+        return \Response::json((object) Lesson::NotDeleted()->where('status',1)->where('course_id',$course_id)->get());
     }
 
     public function addImage($images, $id) {

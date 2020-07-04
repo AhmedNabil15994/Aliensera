@@ -23,6 +23,7 @@ class RoutesGate {
             'general',
             'login',
             'logout',
+            'register',
             'doLogin',
         ];
  

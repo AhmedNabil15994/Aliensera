@@ -1,0 +1,59 @@
+.embed-responsive{
+    padding-bottom: 0;
+    height: 500px;
+}
+.profile_title{
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    display: block;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.row.results{
+    padding: 20px;
+    background: #f9f9f9;
+    color: #666;
+}
+.row.results p{
+    display: inline-block;
+    float: left;
+}
+.row.results p i,
+.row.results p span.glyphicon{
+    font-size: 16px;
+    color: #31708f;
+}
+video {
+    object-fit: fill;
+}
+ul.messages li .message_wrapper h4.heading{
+    margin-bottom: 5px;
+}
+span.time{
+    display: block;
+    margin-bottom: 10px;
+    color: #777;
+}
+div.row.comment{
+    margin-top: 15px;
+    display: none;
+}
+ul.bar_tabs{
+    background: unset;
+    margin-top: 40px;
+}
+li.pull-right.btn-default{
+    margin-top: -10px;
+}
+ul.messages2{
+    border: 1px solid #DDD;
+    margin-left: 45px;
+    border-radius: 5px;
+    padding: 10px;
+}
+@media (max-width: 991px){
+    .row.results p:nth-of-type(3){
+        clear: both;
+    }
+}

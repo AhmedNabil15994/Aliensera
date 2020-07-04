@@ -26,7 +26,7 @@ class StudentRequest extends Model{
         return $source->first();
     }
 
-    static function dataList($instructor_id=null) {
+    static function dataList($instructor_id=null,$student_id=null,$withPaginate = false) {
         $input = \Input::all();
 
         $source = self::NotDeleted()->whereHas('Student',function($studentQuery){
@@ -34,7 +34,7 @@ class StudentRequest extends Model{
         })->whereHas('Instructor',function($instructorQuery){
             $instructorQuery->where('is_active',1);
         })->whereHas('Course',function($courseQuery){
-            $courseQuery->where('status',3);
+            $courseQuery->whereIn('status',[3,5]);
         });
 
         if (isset($input['course_id']) && !empty($input['course_id'])) {
@@ -57,19 +57,28 @@ class StudentRequest extends Model{
             $source->where('instructor_id', $instructor_id);
         } 
 
-        return self::generateObj($source);
+        if (isset($student_id) && !empty($student_id)) {
+            $source->where('student_id', $student_id);
+        } 
+
+        return self::generateObj($source,$withPaginate);
     }
 
-    static function generateObj($source){
-        $sourceArr = $source->paginate(PAGINATION);
+    static function generateObj($source,$withPaginate=false){
+        if($withPaginate == true){
+            $sourceArr = $source->paginate(PAGINATION);
+        }else{
+            $sourceArr = $source->get();
+        }
 
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
             $list[$key] = self::getData($value);
         }
-
-        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        if($withPaginate == true){
+            $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        }
         $data['data'] = $list;
 
         return $data;
@@ -94,7 +103,7 @@ class StudentRequest extends Model{
         })->whereHas('Instructor',function($instructorQuery){
             $instructorQuery->where('is_active',1);
         })->whereHas('Course',function($courseQuery){
-            $courseQuery->where('status',3);
+            $courseQuery->whereIn('status',[3,5]);
         })->where('status',2);
 
         if(!IS_ADMIN){

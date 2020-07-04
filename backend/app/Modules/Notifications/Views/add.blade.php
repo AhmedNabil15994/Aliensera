@@ -16,10 +16,11 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
+                            @if(IS_ADMIN)
                             <div class="row" >
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Title</label>
                                                 <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
@@ -27,9 +28,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Course Type</label>
                                                 <select name="course_type" class="form-control">
@@ -40,10 +41,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
+                                </div> 
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>University</label>
                                                 <select name="university_id" class="form-control">
@@ -53,9 +54,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Faculty</label>
                                                 <select name="faculty_id" class="form-control">
@@ -65,9 +66,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Year</label>
                                                 <select name="year" class="form-control">
@@ -77,9 +78,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-xs-12 col-sm-6">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Field</label>
                                                 <select name="field_id" class="form-control">
@@ -92,9 +93,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <div class="row" >
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label>Body</label>
                                                 <textarea class="form-control" placeholder="Enter Body" name="description">{{ old('description') }}</textarea>
@@ -103,10 +104,10 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <div class="row" >
                                         <h3><b>Notification Image</b></h3> <br>
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <h3 class="">Upload new Notification image</h3>
                                                 <h6>Upload a different photo...</h6>
@@ -117,6 +118,59 @@
                                     </div>
                                 </div>
                             </div>
+                            @else
+                            <div class="row" >
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12 col-sm-6">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>Course</label>
+                                                <select name="course_id" class="form-control">
+                                                    <option value="">Select A Course...</option>
+                                                    @foreach($data->courses as $course)
+                                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>Body</label>
+                                                <textarea class="form-control" placeholder="Enter Body" name="description">{{ old('description') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="col-xs-12">
+                                    <div class="row" >
+                                        <h3><b>Notification Image</b></h3> <br>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <h3 class="">Upload new Notification image</h3>
+                                                <h6>Upload a different photo...</h6>
+                                                <input id="fileUpload" name="image" type="file">
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

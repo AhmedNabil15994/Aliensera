@@ -1,96 +1,7 @@
 @extends('Layouts.master')
 @section('title', $data->data->id . ' - ' . $data->data->name)
 @section('otherhead')
-<style type="text/css" media="screen">
-    .user_data li{
-        color: #777;
-        font-size: 14px;
-    }
-    .user_data li i{
-        color: #1ABB9C;
-        margin-right: 10px;
-    }
-    ul.messages li .message_wrapper h4.heading{
-        margin-bottom: 0;
-        float: left;
-        padding-top: 3px;
-        width: 75%;
-    }
-    p.url{
-        float: left;
-        width: 25%;
-        text-align: right;
-        margin-bottom: 0;
-    }
-    p.url a{
-        margin-bottom: 0;
-    }
-    ul.messages li .message_wrapper h4.heading{
-        margin-bottom: 5px;
-    }
-    span.time{
-        display: block;
-        margin-bottom: 10px;
-        color: #777;
-        margin-top: -8px;
-    }
-    div.row.comment{
-        margin-top: 15px;
-        display: none;
-    }
-    ul.bar_tabs{
-        background: unset;
-        margin-top: 40px;
-    }
-    li.pull-right.btn-default{
-        margin-top: -10px;
-    }
-    ul.messages2{
-        border: 1px solid #DDD;
-        margin-left: 45px;
-        border-radius: 5px;
-        padding: 10px;
-        margin-right: 45px;
-    }
-    i.fa-star{
-        color: #FFC400;
-        font-size: 15px;
-    }
-    .profile_left{
-        border-right: 1px solid #DDD;
-    }
-    div.empty{
-        border-bottom: 1px dotted #e6e6e6;
-        padding: 8px 0;
-    }
-    div.collapse.in:hover{
-        background: #FFF;
-        background-color: #FFF;
-    }
-    .panel-heading h4{
-        width: 50%;
-        display: inline-block;
-        float: left;
-    }
-    .panel-heading h4 span{
-        display: inline-block;
-        width: 25%;
-        float: left;
-        font-size: 18px;
-    }
-    i.fa-question-circle{
-        color: #337ab7;
-    }
-    i.fa-check-circle{
-        color: #26B99A;
-    }
-    i.fa-times-circle{
-        color: #d9534f;
-    }
-    i.fa-spinner{
-        color: #5bc0de;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/view-user.css') }}">
 @endsection
 @section('content')
 <div class="">
@@ -105,7 +16,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 profile_left">
                         <div class="profile_img">
                             <div id="crop-avatar">
                                 <!-- Current avatar -->
@@ -126,12 +37,25 @@
                             <li class="m-top-xs"><i class="fa fa-star"></i> ({{ $data->data->rateCount }} Review) {{ $data->data->totalRate }} of 5</li>
                             @endif
                         </ul>
+                        <hr>
+                        @if($data->data->group_id == 3)
+                        <h4>Last Login Sessions</h4>
+                        <ul class="list-unstyled user_data">                            
+                            @foreach($data->sessions as $session)
+                            <li><i class="fa fa-clock-o user-profile-icon"></i> {{ $session->created_at }}</li>
+                            @endforeach
+                        </ul>
+                        @endif
                     </div>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
                         <div class="" role="tabpanel" data-example-id="togglable-tabs">
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="home-tab" data-toggle="tab" aria-expanded="false">Courses ({{ count((array) $data->courses) }})</a></li>
+                                @if($data->data->group_id == 3)
+                                <li role="presentation" class="active"><a href="#tab_content" role="tab" id="requests-tab" data-toggle="tab" aria-expanded="false">Requests ({{ count((array) $data->requests) }})</a></li>
+                                @endif
+                                <li role="presentation" class="{{ $data->data->group_id == 3 ? '' : 'active' }}"><a href="#tab_content1" role="tab" id="home-tab" data-toggle="tab" aria-expanded="false">Courses ({{ count((array) $data->courses) }})</a></li>
                                 <li role="presentation" class=""><a href="#tab_content2" id="comment-tab" role="tab" data-toggle="tab" aria-expanded="true">Comments ({{ count((array) $data->comments) }})</a></li>
+                                <div class="clearfix"></div>
                                 @if($data->data->group_id == 3)
                                 <li role="presentation" class=""><a href="#tab_content3" role="tab" id="review-tab" data-toggle="tab" aria-expanded="false">Reviews ({{ count((array) $data->reviews) }})</a></li>
                                 @endif
@@ -141,7 +65,65 @@
                                 @endif
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                @if($data->data->group_id == 3)
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content" aria-labelledby="requests-tab">
+                                    @if(!empty((array) $data->requests))
+                                    <table class="data table table-striped no-margin">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Course</th>
+                                                @if(IS_ADMIN)
+                                                <th>Instructor</th>
+                                                @endif
+                                                <th>Status</th>
+                                                @if(IS_ADMIN || \Helper::checkRules('edit-student-request'))
+                                                <th style="padding-left: 50px">Actions</th>                            
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($data->requests as $value)
+                                            <tr id="tableRaw{{ $value->id }}">
+                                                <td width="3%">{{ $value->id }}</td>
+                                                <td width="20%">
+                                                    <div class="course-data">
+                                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course->title }}</a>
+                                                    </div>
+                                                </td>
+                                                @if(IS_ADMIN)
+                                                <td>
+                                                    <div class="course-data">
+                                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor->name }}</a>
+                                                    </div>
+                                                </td>
+                                                @endif
+                                                <td>{{ $value->status == 1 ? 'Active' : ($value->status == 0 ? 'In Active' : 'Student Sent Request') }}</td>
+                                                @if(IS_ADMIN || \Helper::checkRules('edit-student-request'))
+                                                <td width="20%" align="center">
+                                                    @if(\Helper::checkRules('edit-student-request'))
+                                                        @if($value->status != 1)
+                                                        <a href="{{ URL::to('/requests/update/' . $value->id . '/1') }}" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Accept </a>
+                                                        @endif
+                                                        @if($value->status != 0)
+                                                        <a href="{{ URL::to('/requests/update/' . $value->id . '/0') }}" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Refuse </a>
+                                                        @endif
+                                                    @endif
+                                                    @if(\Helper::checkRules('delete-student-request'))
+                                                        <a onclick="deleteRequest('{{ $value->id }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                                    @endif
+                                                </td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    @else
+                                    <div class="empty">No Requests Available</div>
+                                    @endif
+                                </div>
+                                @endif
+                                <div role="tabpanel" class="tab-pane fade {{ $data->data->group_id == 3 ? '' : 'active in' }}" id="tab_content1" aria-labelledby="home-tab">
                                     @if(!empty((array) $data->courses))
                                     <!-- start user projects -->
                                     <table class="data table table-striped no-margin">
@@ -345,28 +327,28 @@
                                 @if($data->data->group_id == 3)
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="score-tab">
                                     <div class="row">
-                                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="animated flipInY col-lg-3 col-md-6 col-sm-6 col-xs-12">
                                             <div class="tile-stats">
                                                 <div class="icon"><i class="fa fa-question-circle"></i></div>
                                                 <div class="count">{{ $data->scores->total->allQuestion }}</div>
                                                 <h3>Answers</h3>
                                             </div>
                                         </div>
-                                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="animated flipInY col-lg-3 col-md-6 col-sm-6 col-xs-12">
                                             <div class="tile-stats">
                                                 <div class="icon"><i class="fa fa-check-circle"></i></div>
                                                 <div class="count">{{ $data->scores->total->studentRightAnswers }}</div>
                                                 <h3>Right Answers</h3>
                                             </div>
                                         </div>
-                                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="animated flipInY col-lg-3 col-md-6 col-sm-6 col-xs-12">
                                             <div class="tile-stats">
                                                 <div class="icon"><i class="fa fa-times-circle"></i></div>
                                                 <div class="count">{{ $data->scores->total->studentWrongAnswers }}</div>
                                                 <h3>Wrong Answers</h3>
                                             </div>
                                         </div>
-                                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                        <div class="animated flipInY col-lg-3 col-md-6 col-sm-6 col-xs-12">
                                             <div class="tile-stats">
                                                 <div class="icon"><i class="fa fa-spinner"></i></div>
                                                 <div class="count">{{ $data->scores->total->score }}</div>
@@ -379,12 +361,13 @@
                                     @foreach($data->scores->scores as $key => $value)
                                     <div class="panel">
                                         <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{ $value->id }}" aria-expanded="false" aria-controls="collapseOne">
-                                            <h4 class="panel-title">{{ $key+1 }}- {{ $value->course }}</h4>
-                                            <h4 class="panel-title text-right">
+                                            <h4 class="panel-title col-xs-12 col-sm-12">{{ $key+1 }}- {{ $value->course }}</h4>
+                                            <h4 class="panel-title text-right col-xs-12 col-sm-12">
                                                 <span><i class="fa fa-question-circle"></i> {{ $value->all }}</span>
                                                 <span><i class="fa fa-check-circle"></i> {{ $value->right }}</span>
                                                 <span><i class="fa fa-times-circle"></i> {{ $value->wrong }}</span>
                                                 <span><i class="fa fa-spinner"></i> {{ $value->score }}</span>
+                                                <span><i class="fa fa-star"></i> Rank: {{ $value->rank }}</span>
                                                 <div class="clearfix"></div>
                                             </h4>
                                             <div class="clearfix"></div>

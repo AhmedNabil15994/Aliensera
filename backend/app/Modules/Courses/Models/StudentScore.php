@@ -62,7 +62,7 @@ class StudentScore extends Model{
             return self::generateObjWithPagination($source,$student_id);
         }
 
-        $source->orderBy('id','DESC');
+        $source->orderBy('course_id','DESC');
         return self::generateObj($source);
     }
 
@@ -147,7 +147,7 @@ class StudentScore extends Model{
 
     static function generateObj($source){
         $sourceArr2 = $source->get();
-        $sourceArr = $source->groupBy('course_id')->get();
+        $sourceArr = $source->groupBy('lesson_id')->get();
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
@@ -170,9 +170,9 @@ class StudentScore extends Model{
         return (object) $data;
     }
 
-    static function getLessons($student_id,$course_id){
+    static function getLessonsWithRank($student_id,$course_id,$lesson_id){
         $data = [];
-        $source = self::where('student_id',$student_id)->where('course_id',$course_id)->get();
+        $source = self::where('student_id',$student_id)->where('course_id',$course_id)->where('lesson_id',$lesson_id)->get();
         foreach ($source as $key => $value) {
             $dataObj = new \stdClass();
             $dataObj->question_id = $value->question_id;
@@ -183,20 +183,48 @@ class StudentScore extends Model{
             $dataObj->lesson = $value->Lesson != null ? $value->Lesson->title : '';
             $data[$key] = $dataObj;
         }
-        return $data;
+
+        $scores = [];
+
+        $lessonQuestion = LessonQuestion::NotDeleted()->where('lesson_id',$lesson_id)->count();
+        $studentCorrect = self::where('student_id',$student_id)->where('lesson_id',$lesson_id)->sum('correct');
+        $studentFinalScore = round( ($studentCorrect / $lessonQuestion) * 100 ,2);
+        $scores[0] = $studentFinalScore;
+
+        $otherStudentCorrect = self::where('lesson_id',$lesson_id)->where('student_id','!=',$student_id)->groupBy('student_id','lesson_id')->orderBy('id','asc')->get()->pluck('student_id');
+
+        foreach ($otherStudentCorrect as $value) {
+            $correct = self::where('student_id',$value)->where('lesson_id',$lesson_id)->sum('correct');
+            $result = round( ($correct / $lessonQuestion) * 100 ,2);
+            $scores[] = $result; 
+        }
+
+        $socres = usort($scores, function ($a, $b) {
+            return $b <=> $a;
+        });
+
+        $scores = array_values($scores);
+        $scores = array_unique($scores);
+        $scores = array_values($scores);
+
+        $rank = array_keys($scores,$studentFinalScore)[0] + 1  . '/'. count($scores);
+        
+        return [$data,$rank];
     }
 
     static function getData($source) {
-        $allQuestion = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->count();
-        $studentRight = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->where('correct',1)->count();
-        $studentWrong = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->where('correct',0)->count();
+        $allQuestion = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->groupBy('lesson_id')->count();
+        $studentRight = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->groupBy('lesson_id')->where('correct',1)->count();
+        $studentWrong = self::where('student_id',$source->student_id)->where('course_id',$source->course_id)->groupBy('lesson_id')->where('correct',0)->count();
         $score = round( ($studentRight / $allQuestion) * 100 ,2) .'%';
+        $lessonQuizs = self::getLessonsWithRank($source->student_id,$source->course_id,$source->lesson_id);
 
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->course_id = $source->course_id;
         $data->course = $source->Course != null ? $source->Course->title : '';
-        $data->lessons = self::getLessons($source->student_id,$source->course_id);
+        $data->lessons = $lessonQuizs[0];
+        $data->rank = $lessonQuizs[1];
         $data->lesson_id = $source->lesson_id;
         $data->lesson = $source->Lesson != null ? $source->Lesson->title : '';
         $data->instructor_id = $source->instructor_id;

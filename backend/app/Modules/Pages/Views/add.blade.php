@@ -20,24 +20,16 @@
                         </div>
                         <div class="x_content">
                             <div class="row" >
-                                <div class="col-md-6">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Title</label>
-                                                <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
-                                            </div>
-                                        </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ old('title') }}">
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Content</label>
-                                                <textarea class="form-control" placeholder="Enter Content" name="content">{{ old('content') }}</textarea>
-                                            </div>
-                                        </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Content</label>
+                                        <textarea class="form-control" placeholder="Enter Content" name="content">{{ old('content') }}</textarea>
                                     </div>
                                 </div>
                             </div>

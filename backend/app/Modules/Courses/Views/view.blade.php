@@ -1,167 +1,7 @@
 @extends('Layouts.master')
 @section('title', $data->data->id . ' - ' . $data->data->title)
 @section('otherhead')
-<style type="text/css" media="screen">
-    .feedback{
-        padding-left: 25px;
-    }
-    div.images{
-        border-right: 1px solid #DDD;
-    }
-    h3 span{
-        font-size: 14px;
-        color: #777;
-    }
-    .messages li{
-        border: 1px solid #DDD;
-        border-radius: 5px;
-        padding-left: 10px !important;
-        margin-bottom: 5px;
-    }
-    ul.messages li .message_wrapper h4.heading{
-        margin-bottom: 0;
-        float: left;
-        padding-top: 3px;
-        width: 75%;
-    }
-    p.url{
-        float: left;
-        width: 25%;
-        text-align: right;
-        margin-bottom: 0;
-    }
-    p.url a{
-        margin-bottom: 0;
-    }
-    span.time{
-        display: block;
-        margin-bottom: 10px;
-        color: #777;
-        margin-top: -10px;
-    }
-    i.fa-star{
-        color: #FFC400;
-        font-size: 15px;
-    }
-    .course_details p{
-        font-size: 15px;
-        color: #55;
-    }
-    .course_details p span{
-        color: #777;
-    }
-    .course_details p span.price{
-        font-size: 16px;
-        color: #26B99A;
-    }
-    .course_details p span span.btn{
-        color: #FFF;
-    }
-    ul.list-inline.prod_size li{
-        padding: 10px;
-        font-size: 15px;
-        background: transparent;
-        color: #666;
-    }
-    li span i.fa{
-        color: #26B99A;
-        font-size: 20px;
-    }
-    .product-image img{
-        height: 400px;
-        max-height: 500px;
-    }
-    .prod_title{
-        margin-top: 0;
-        margin-bottom: 15px;
-    }
-    div.playlist,
-    div.quiz{
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    div.playlist div.row,
-    div.quiz div.row{
-        padding-bottom: 10px;
-        padding-top: 10px;
-        border-bottom: 1px solid #DDD;
-    }
-    div.playlist div.row:first-of-type,
-    div.quiz div.row:first-of-type{
-        padding-top: 10px;
-        background: #eee;
-    }
-    div.playlist div.row:last-child,
-    div.quiz div.row:last-child{
-        border-bottom: 0 ;
-    }
-    div.playlist div.row div,
-    div.quiz div.row div{
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .btn-xs i.fa{
-        font-size: 14px;
-    }
-    .playlist .row.results,
-    .quiz .row.results{
-        font-weight: 400;
-        color: #555;
-    }
-    .playlist .row.results:hover,
-    .quiz .row.results:hover{
-        background: #f9f9f9;
-        cursor: pointer;
-    }
-    .collapse.in:hover{
-        background: #FFF;
-    }
-    p.desc{
-        color: #777;
-    }
-    .embed-container {
-        position: relative;
-        padding-bottom: 56.25%;
-        overflow: hidden;
-    }    
-    .embed-container iframe,
-    .embed-container object,
-    .embed-container embed {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    div.rowitem{
-        padding: 10px;
-        border: 1px solid #DDD;
-        margin: 0;
-        margin-top: 10px;
-        border-radius: 5px;
-    }
-    div.rowitem div{
-        font-size: 18px;
-    }
-    i.fa-question-circle{
-        color: #337ab7;
-    }
-    i.fa-check-circle{
-        color: #26B99A;
-    }
-    i.fa-times-circle{
-        color: #d9534f;
-    }
-    i.fa-spinner{
-        color: #5bc0de;
-    }
-    i.fa-user{
-        color: #26B99A;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/view-course.css') }}">
 @endsection
 @section('content')
 <div class="">
@@ -229,7 +69,7 @@
                         <br>
                         <div class="course_details">
                             <h3 class="prod_title">Course Details</h3>
-                            <div class="col-sm-6">
+                            <div class="col-lg-6 col-xs-12">
                                 <p>Course Type : <span>{{ $data->data->courseType }}</span></p>
                                 <p>Field : <span>{{ $data->data->field }}</span></p>
                                 <p>Instructor : <span>{{ $data->data->instructor }}</span></p>
@@ -237,7 +77,7 @@
                                 <p>University : <span>{{ $data->data->university }}</span></p>
                                 @endif
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-lg-6 col-xs-12">
                                 <p>Price : <span class="price">{{ $data->data->price }} $</span></p>
                                 <p>Valid Until : <span>{{ $data->data->valid_until }}</span></p>
                                 <p>Status : <span>{!! $data->data->statusLabel !!}</span></p>
@@ -258,13 +98,13 @@
                                 <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">Views Average</a></li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div role="tabpanel" class="tab-pane fade active in example" id="tab_content1" aria-labelledby="home-tab">
+                                    <ol class="accordion example" id="accordion" role="tablist" aria-multiselectable="true">
                                         @if(!empty((array) $data->data->lessons))
                                         @foreach($data->data->lessons as $key => $lesson)
-                                        <div class="panel">
+                                        <li class="panel"  data-tab="{{ $lesson->id }}">
                                             <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{ $lesson->id }}" aria-expanded="false" aria-controls="collapseOne">
-                                                <h4 class="panel-title">{{ $key+1 }}- {{ $lesson->title }}</h4>
+                                                <h4 class="panel-title"><i class="fa fa-arrows-alt first"></i> {{ $key+1 }}- {{ $lesson->title }}</h4>
                                             </a>
                                             <div id="collapseOne{{ $lesson->id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
                                                 <div class="panel-body">
@@ -272,34 +112,36 @@
                                                     <div class="playlist">
                                                         <div class="row">
                                                             <div class="col-xs-1">No#</div>
-                                                            <div class="col-xs-3">Lecture</div>
+                                                            <div class="col-xs-2">Lecture</div>
                                                             <div class="col-xs-2 text-center">Duration</div>
                                                             <div class="col-xs-2 text-center">Size</div>
                                                             <div class="col-xs-2 text-center">Free</div>
-                                                            <div class="col-xs-2 text-center">Action</div>
+                                                            <div class="col-xs-3 text-center">Action</div>
                                                         </div>
                                                         @foreach($lesson->videos as $keyr => $video)
-                                                        <div class="row results" id="results{{ $video->id }}">
-                                                            <div class="col-xs-1">{{ $keyr+1 }}</div>
-                                                            <div class="col-xs-3">{{ $video->title }}</div>
+                                                        <div class="row results" data-tab="{{ $video->id }}" id="results{{ $video->id }}">
+                                                            <div class="col-xs-1"><i class="fa fa-arrows-alt second"></i>  {{ $keyr+1 }}</div>
+                                                            <div class="col-xs-2 title">{{ $video->title }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                                             <div class="col-xs-2 text-center">{{ $video->free }}</div>
-                                                            <div class="col-xs-2 text-center">
-                                                                <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i></button>
-                                                                <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i></a>
+                                                            <div class="col-xs-3 text-center">
+                                                                <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i> Play Video</button>
                                                                 @if(\Helper::checkRules('delete-lesson-video'))
-                                                                <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i></button>
+                                                                <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i> Delete</button>
                                                                 @endif
+                                                                <a href="{{ URL::to('/videos/'.$video->id.'/comments') }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i> Comments</a>
                                                                 @if(\Helper::checkRules('change-video-status'))
                                                                 <a href="{{ URL::to('/videos/'.$video->id.'/changeStatus') }}" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>
                                                                 @endif
+                                                                <a class="btn btn-warning btn-xs" target="_blank" data-tab="{{ $video->id }}" data-area="{{ $lesson->id }}"><i class="fa fa-share"></i> Move To Another Lesson</a>
                                                                 @if(\Helper::checkRules('add-video-attachment'))
                                                                 @if($video->attachment == '')
                                                                 <input id="fileUpload" class="hidden" name="attachment" type="file">
                                                                 <button class="btn btn-info btn-xs" onclick="uploadAttachment({{ $video->id }})"><i class="fa fa-file"></i> Upload PDF</button>
                                                                 @else
                                                                 <a class="btn btn-info btn-xs" href="{{ $video->attachment }}" target="_blank"><i class="fa fa-file"></i> Download PDF</a>
+                                                                <a class="btn btn-dark btn-xs" href="{{ URL::to('/videos/'.$video->id.'/removeAttachment') }}"><i class="fa fa-trash"></i> Remove PDF</a>
                                                                 @endif
                                                                 @endif
                                                             </div>
@@ -313,12 +155,12 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        </div>
+                                        </li>
                                         @endforeach
                                         @else
                                         No Lectures Available
                                         @endif
-                                    </div>
+                                    </ol>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                                     <div class="accordion" id="accordion2" role="tablist" aria-multiselectable="true">
@@ -425,15 +267,15 @@
                                     <div class="col-xs-12 feedback">
                                         @foreach($data->data->rates as $rateKey => $rateValue)
                                         <div class="row">
-                                            <div class="col-xs-1">
+                                            <div class="col-xs-2">
                                                 {{ ($rateKey+1) * 10 }}%
                                             </div>
-                                            <div class="col-xs-4">
+                                            <div class="col-xs-6">
                                                 <div class="progress">
                                                     <div class="progress-bar progress-bar-success" data-transitiongoal="{{ ($rateKey+1) * 10 }}" aria-valuenow="{{ ($rateKey+1) * 10 }}" style="width: {{ ($rateKey+1) * 10 }}%;"></div> 
                                                 </div>
                                             </div>
-                                            <div class="col-xs-1">
+                                            <div class="col-xs-4">
                                                 {{ $rateValue }} Students
                                             </div>
                                         </div>
@@ -449,9 +291,13 @@
     </div>
 </div>
 @include('Partials.videoPlayer')
+@include('Partials.move_to_another_lesson')
 @stop()
 @section('script')
 <script src="{{ asset('assets/components/courses.js')}}"></script>
 <script src="{{ asset('assets/components/lessons.js')}}"></script>
+<script src="{{ asset('assets/js/sortable.js')}}"></script>
 <script src="https://player.vimeo.com/api/player.js"></script>
+<script src="{{ asset('assets/components/sorting.js') }}"></script>
+<script src="{{ asset('assets/components/view-course.js') }}"></script>
 @stop()

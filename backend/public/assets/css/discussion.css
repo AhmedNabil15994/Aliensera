@@ -1,0 +1,70 @@
+ul.messages li .message_wrapper h4.heading{
+    margin-bottom: 5px;
+}
+span.time{
+    display: block;
+    margin-bottom: 10px;
+    color: #777;
+}
+div.row.comment{
+    margin-top: 15px;
+    display: none;
+}
+ul.bar_tabs{
+    background: unset;
+    margin-top: 40px;
+}
+li.pull-right.btn-default{
+    margin-top: -10px;
+}
+ul.messages2{
+    border: 1px solid #DDD;
+    margin-left: 45px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+div.images{
+    border-right: 1px solid #DDD;
+}
+h3 span{
+    font-size: 14px;
+    color: #777;
+}
+p.url{
+    float: left;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0;
+}
+p.url a{
+    margin-bottom: 0;
+}
+.course_details p{
+    font-size: 15px;
+    color: #55;
+}
+.course_details p span{
+    color: #777;
+}
+.course_details p span.price{
+    font-size: 16px;
+    color: #26B99A;
+}
+.course_details p span span.btn{
+    color: #FFF;
+}
+ul.list-inline.prod_size li{
+    padding: 10px;
+    font-size: 15px;
+    background: transparent;
+    color: #666;
+}
+li span i.fa{
+    color: #26B99A;
+    font-size: 20px;
+}
+.product-image img{
+    height: 400px;
+    max-height: 500px;
+}

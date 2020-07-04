@@ -17,9 +17,9 @@ class RequestControllers extends Controller {
 
     public function index() {
         if(IS_ADMIN){
-            $dataList = StudentRequest::dataList();
+            $dataList = StudentRequest::dataList(null,null,true);
         }else{
-            $dataList = StudentRequest::dataList(USER_ID);
+            $dataList = StudentRequest::dataList(USER_ID,null,true);
         }
         $dataList['courses'] = Course::dataList(null,null,true)['data'];
         $dataList['instructors'] = User::getUsersByType(2);

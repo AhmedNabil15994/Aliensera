@@ -69,7 +69,9 @@ class RouteServiceProvider extends ServiceProvider
             require app_path('Modules/Requests/routes.php');
             require app_path('Modules/QuizScores/routes.php');
             require app_path('Modules/Notifications/routes.php');
+            require app_path('Modules/Quizes/routes.php');
             require app_path('Modules/CourseStudents/routes.php');
+            require app_path('Modules/Comments/routes.php');
     
         });
     }

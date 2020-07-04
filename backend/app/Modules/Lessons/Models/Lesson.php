@@ -35,7 +35,7 @@ class Lesson extends Model{
         return $source->first();
     }
 
-    static function dataList($course_id=null) {
+    static function dataList($course_id=null,$paginate=false) {
         $input = \Input::all();
 
         $source = self::NotDeleted();
@@ -48,6 +48,10 @@ class Lesson extends Model{
             $source->where('course_id', $input['course_id']);
         } 
 
+        if (isset($input['status']) && $input['status'] != null) {
+            $source->where('status', $input['status']);
+        } 
+
         if (isset($course_id) && !empty($course_id) && $course_id != null) {
             $source->where('course_id', $course_id);
         } 
@@ -58,11 +62,16 @@ class Lesson extends Model{
             });
         }
 
-        return self::generateObj($source);
+        $source->orderBy('id','DESC')->orderBy('sort','ASC');
+        return self::generateObj($source,$paginate);
     }
 
-    static function generateObj($source){
-        $sourceArr = $source->paginate(PAGINATION);
+    static function generateObj($source,$paginate){
+        if($paginate == true){
+            $sourceArr = $source->get();
+        }else{
+            $sourceArr = $source->paginate(PAGINATION);
+        }
 
         $list = [];
         foreach($sourceArr as $key => $value) {
@@ -70,7 +79,9 @@ class Lesson extends Model{
             $list[$key] = self::getData($value);
         }
 
-        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        if($paginate != true){
+            $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        }
         $data['data'] = $list;
 
         return $data;
@@ -81,14 +92,19 @@ class Lesson extends Model{
         $data->id = $source->id;
         $data->title = $source->title;
         $data->course_id = $source->course_id;
+        $data->questions_sort = $source->questions_sort;
+        $data->quiz_duration = $source->quiz_duration;
+        $data->pass_quiz = $source->pass_quiz;
         $data->course = $source->Course->title;
         $data->course_status = $source->Course->status;
         $data->description = $source->description;
         $data->valid_until = $source->valid_until;
+        $data->active_at = $source->active_at;
         $data->studentScores = StudentScore::getByLesson($source->id);
         $data->videos = LessonVideo::dataList($source->id);
         $data->questions = LessonQuestion::dataList($source->id);
         $data->status = $source->status;
+        $data->sort = $source->sort;
         return $data;
     }
 

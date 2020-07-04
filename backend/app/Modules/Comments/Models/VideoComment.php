@@ -35,7 +35,7 @@ class VideoComment extends Model{
         return $source->first();
     }
 
-    static function dataList($video_id=null,$main=null,$isMain=null,$creator=null) {
+    static function dataList($video_id=null,$main=null,$isMain=null,$creator=null,$pagination=null) {
         $input = \Input::all();
         $source = self::NotDeleted()->where('status',1);
 
@@ -52,6 +52,14 @@ class VideoComment extends Model{
             $source->where('created_by', $creator);
         } 
 
+        if(isset($input['student_id']) && !empty($input['student_id'])){
+            $source->where('created_by',$input['student_id']);
+        }
+
+        if(isset($input['course_id']) && !empty($input['course_id'])){
+            $source->where('course_id',$input['course_id']);
+        }
+
         if(IS_ADMIN == false){
             $source->whereHas('Course',function($courseQuery) {
                 $courseQuery->where('instructor_id',USER_ID);
@@ -59,15 +67,24 @@ class VideoComment extends Model{
         }
 
         $source->orderBy('id','DESC');
-        return self::generateObj($source);
+        return self::generateObj($source,$pagination);
     }
 
-    static function generateObj($source){
-        $sourceArr = $source->get();
+    static function generateObj($source,$pagination=null){
+        if($pagination == null){
+            $sourceArr = $source->get();
+        }else{
+            $sourceArr = $source->paginate(PAGINATION);
+        }
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
             $list[$key] = self::getData($value);
+        }
+        if($pagination != null){
+            $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+            $data['data'] = $list;
+            return $data;
         }
         return (object) $list;
     }
@@ -85,6 +102,7 @@ class VideoComment extends Model{
         $data->id = $source->id;
         $data->video_id = $source->video_id;
         $data->video_title = $source->Video != null ? $source->Video->title : '';
+        $data->course = $source->Course != null ? $source->Course->title : '';
         $data->comment = $source->comment; 
         $data->status = $source->status;
         $data->reply_on = $source->reply_on;

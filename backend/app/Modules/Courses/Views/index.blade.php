@@ -45,7 +45,7 @@
                                         <label>Status</label>
                                         <select name="status" class="form-control">
                                             <option value="">Select A Status...</option>
-                                            <option value="0" {{ Input::get('status') == 0 ? 'selected' : '' }}>New</option>
+                                            <option value="0" {{ Input::has('status') && Input::get('status') == 0 ? 'selected' : '' }}>New</option>
                                             <option value="1" {{ Input::get('status') == 1 ? 'selected' : '' }}>Instructor Sent Request</option>
                                             <option value="2" {{ Input::get('status') == 2 ? 'selected' : '' }}>Request Refused</option>
                                             <option value="3" {{ Input::get('status') == 3 ? 'selected' : '' }}>Active</option>
@@ -99,14 +99,14 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <h3>Courses<small> Total : {{ $data->pagination->total_count }}</small></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 @if(\Helper::checkRules('add-course'))
                                     <a href="{{URL::to('/courses/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
@@ -122,42 +122,58 @@
                     <table id="tableList" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Image</th>
+                            <th width="3%">ID</th>
                             <th>Title</th>
-                            <th width="15%">Description</th>
                             <th>Course Type</th>
                             <th width="10%">University</th>
                             <th width="10%">Faculty</th>
                             <th>Field</th>
-                            <th>Price</th>
-                            <th>Valid Until</th>
+                            <th width="8%">Valid Until</th>
+                            <th width="5%">Price</th>
+                            @if(IS_ADMIN)
+                            <th width="15%">Estimated Cost</th>
+                            @endif
                             <th>Active Students</th>
                             <th>Status</th>
-                            <th style="padding-left: 50px">Actions</th>
+                            <th align="center">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($data->data as $value)
                             <tr id="tableRaw{{ $value->id }}">
-                                <td width="3%">{{ $value->id }}</td>
-                                <td><img src="{{ $value->image }}"></td>
-                                <td>{{ $value->title }}</td>
-                                <td>{{ substr($value->description, 0, 100) }}...</td>
+                                <td>{{ $value->id }}</td>
+                                <td>{{-- <img src="{{ $value->image }}"> --}}{{ $value->title }}</td>
                                 <td>{{ $value->course_type == 1 ? 'General' : 'University & Faculty' }}</td>
                                 <td>{{ $value->university }}</td>
                                 <td>{{ $value->faculty }}</td>
                                 <td>{{ $value->field }}</td>
-                                <td>{{ $value->price }} $</td>
-                                <td width="10%">{{ $value->valid_until }}</td>
+                                <td>{{ $value->valid_until }}</td>
+                                <td>{{ $value->price }} LE</td>
+                                @if(IS_ADMIN)
+                                <td>
+                                    @if($value->instructor_price != null)
+                                    Start Date: <span class="cost">{{ @$value->instructor_price->updated_start_date }}</span> <br>
+                                    End Date: <span class="cost">{{ @$value->instructor_price->updated_end_date }}</span> <br>
+                                    Upload Space: <span class="cost">{{ @$value->instructor_price->updated_upload_space }} GB</span><br>
+                                    Upload Cost: <span class="cost">{{ @$value->instructor_price->updated_upload_cost }} LE</span><br>
+                                    Students Approvals: <span class="cost">{{ @$value->instructor_price->updated_approval_number }}</span><br>
+                                    Approvals Cost: <span class="cost">{{ @$value->instructor_price->updated_approval_cost }} LE</span><br>
+                                    @endif
+                                </td>
+                                @endif
                                 <td>{{ $value->studentCount }}</td>
                                 <td>{!! $value->statusLabel !!}</td>
-                                <td width="150px" align="center">
+                                <td>
                                     @if(\Helper::checkRules('edit-course'))
                                         <a href="{{ URL::to('/courses/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                                        @if($value->status == 5)
+                                        <a href="{{ URL::to('/courses/upgrade/' . $value->id.'/1') }}" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Accept Upgrade </a>
+                                        <a href="{{ URL::to('/courses/upgrade/' . $value->id.'/2') }}" class="btn btn-dark btn-xs"><i class="fa fa-times"></i> Refuse Upgrade </a>
+                                        @endif
                                     @endif
                                     @if(\Helper::checkRules('view-course'))
                                         <a href="{{ URL::to('/courses/view/' . $value->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i> View </a>
+                                        <a href="{{ URL::to('/courses/discussion/' . $value->id) }}" class="btn btn-primary btn-xs"><i class="fa fa-comments"></i> Discussion </a>
                                     @endif
                                     @if(\Helper::checkRules('delete-course') && $value->deleted_by == null)
                                         <a onclick="deleteCourse('{{ $value->id }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
@@ -171,9 +187,12 @@
                         @if($data->pagination->total_count == 0)
                             <tr>
                                 <td></td>
+                                @if(!IS_ADMIN)
+                                <td colspan="11">No Data Found</td>
+                                @else
                                 <td colspan="12">No Data Found</td>
                                 <td style="display: none;"></td>
-                                <td style="display: none;"></td>
+                                @endif
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 <td style="display: none;"></td>

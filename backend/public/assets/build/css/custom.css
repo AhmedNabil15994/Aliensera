@@ -14,7 +14,10 @@ html , body{
 .full-height{
  height:100%;
  }
-
+#tableList_wrapper div.row:first-of-type{
+    visibility: hidden;
+    height: 0;
+}
 .daterangepicker .ranges li {
     color: #73879C
 }
@@ -31,6 +34,13 @@ html , body{
 }
 .daterangepicker .input-mini.active {
     border: 1px solid #ccc
+}
+table{
+    /*display: block;*/
+    overflow-x: scroll;
+}
+span.cost{
+    font-weight: bold;
 }
 .daterangepicker select.monthselect,
 .daterangepicker select.yearselect,

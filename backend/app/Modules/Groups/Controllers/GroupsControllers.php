@@ -47,7 +47,7 @@ class GroupsControllers extends Controller {
         $dataObj->title = $groupObj->title;
         $dataObj->permissions = $groupObj->permissions !=null ? unserialize($groupObj->permissions) : [];
 
-        $data['permissions'] = array_diff(array_unique(config('permissions')), ['general','doLogin','login','logout']);
+        $data['permissions'] = array_diff(array_unique(config('permissions')), ['general','doLogin','login','logout','register']);
         $data['data'] = $dataObj;
         return view('Groups.Views.edit')->with('data', (object) $data);      
     }
@@ -89,7 +89,7 @@ class GroupsControllers extends Controller {
     }
 
     public function add() {
-        $data['permissions'] = array_diff(array_unique(config('permissions')), ['general','doLogin','login','logout']);
+        $data['permissions'] = array_diff(array_unique(config('permissions')), ['general','doLogin','login','logout','register']);
         return view('Groups.Views.add')->with('data',(object) $data);
     }
 

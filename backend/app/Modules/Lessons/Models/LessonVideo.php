@@ -44,7 +44,7 @@ class LessonVideo extends Model{
 
     static function dataList($lesson_id=null) {
         $input = \Input::all();
-        $source = self::NotDeleted();
+        $source = self::NotDeleted()->orderBy('sort','asc');
 
         if (isset($lesson_id) && !empty($lesson_id) ) {
             $source->where('lesson_id', $lesson_id);
@@ -101,6 +101,7 @@ class LessonVideo extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->lesson_id = $source->lesson_id;
+        $data->course_id = $source->course_id;
         $data->lesson = $source->Lesson->title;
         $data->comments = VideoComment::dataList($source->id,null,'0');
         $data->course = $source->Lesson->Course->title;

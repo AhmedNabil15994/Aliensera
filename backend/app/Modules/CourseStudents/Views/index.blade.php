@@ -39,7 +39,7 @@
                     <div class="x_content search">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6 col-md-6">
+                                <div class="col-xs-12 col-md-6">
                                     <div class="form-group">
                                         <label>Student</label>
                                         <select name="student_id" class="form-control">
@@ -50,7 +50,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xs-6 col-md-6">
+                                <div class="col-xs-12 col-md-6">
                                     <div class="form-group">
                                         <label>Course</label>
                                         <select name="course_id" class="form-control">
@@ -69,14 +69,14 @@
         </form>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-8">
                             <h3>Students Courses<small> Total : {{ $data->data->pagination->total_count }}</small></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-4 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </ul>
@@ -103,17 +103,16 @@
                             <tr id="tableRaw{{ $value->id }}">
                                 <td width="3%">{{ $value->myCourse->id }}</td>
                                 <td>
-                                    <img src="{{ $value->student_image }}" alt="">
+                                    {{-- <img src="{{ $value->student_image }}" alt=""> --}}
                                     <div class="course-data">
                                         <a href="{{ URL::to('/users/view/'.$value->student_id) }}" target="_blank">{{ $value->student }}</a><br>
-                                        <p>Student</p>
                                     </div>
                                 </td>
                                 <td>
-                                    <img src="{{ $value->myCourse->image }}"> 
+                                    {{-- <img src="{{ $value->myCourse->image }}">  --}}
                                     <div class="course-data">
                                         <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->myCourse->title }}</a><br>
-                                        <p>{{ $value->myCourse->description }}</p>
+                                        {{-- <p>{{ $value->myCourse->description }}</p> --}}
                                     </div>
                                     <div class="clearfix"></div>
                                 </td>

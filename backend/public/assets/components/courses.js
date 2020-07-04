@@ -187,7 +187,48 @@ $(function(){
         }
     })
 
-    $('input[name="valid_until"]').datetimepicker({
+    $('input.datepicker').datetimepicker({
         format: 'YYYY-MM-DD',
     });
+
+    function fixDuration(elem){
+        var duration = elem.val();
+        if(duration % 5 != 0){
+            var correctValue = Math.floor(duration / 5);
+            elem.val(correctValue*5);   
+        }
+    }
+
+    $('input[name="approval_numbers"]').on('change',function(){
+        fixDuration($(this));
+    });
+
+    $('input[name="approval_numbers"]').on('blur',function(){
+        fixDuration($(this));
+    });
+
+    $('input[name="course_duration"]').on('change',function(){
+        if($('input[name="start_date"]').val()){
+            var startDate = moment($('input[name="start_date"]').val()).format('YYYY-MM-DD');
+            var endDate = moment(startDate).add('days',$('input[name="course_duration"]').val());
+            $('input[name="end_date"]').val(moment(endDate).format('YYYY-MM-DD')); 
+            $('span.upload_cost.student_approval').html($(this).val() * .5 * $('input[name="approval_number"]').val());
+        }
+    })
+
+    $('input[name="start_date"]').on('dp.change', function(e){
+        var startDate = moment(e.date).format('YYYY-MM-DD');
+        var endDate = moment(startDate).add('days',$('input[name="course_duration"]').val());
+        $('input[name="end_date"]').val(moment(endDate).format('YYYY-MM-DD')); 
+    });
+
+    $('input[name="upload_space"]').on('change',function(){
+        $('span.upload_cost:not(.student_approval)').html($(this).val() * 25);
+    });
+
+    $('input[name="approval_number"]').on('change',function(){
+        $('span.upload_cost.student_approval').html($(this).val() * .5 * $('input[name="course_duration"]').val());
+    });
+
+
 });

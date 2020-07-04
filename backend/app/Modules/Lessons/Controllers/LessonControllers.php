@@ -85,9 +85,19 @@ class LessonControllers extends Controller {
 
         $universityObj->title = $input['title'];
         $universityObj->course_id = $input['course_id'];
+        $universityObj->pass_quiz = isset($input['pass_quiz']) ? 1 : 0 ;
+        $universityObj->quiz_duration = $input['quiz_duration'] ;
         $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
-        $universityObj->status = isset($input['status']) ? 1 : 0;
+        if(IS_ADMIN){
+            $universityObj->status = isset($input['status']) ? 1 : 0;
+        }else{
+            if($universityObj->Course->status == 3){
+                $universityObj->status = isset($input['status']) ? 1 : 0;
+            }
+            $universityObj->questions_sort = $input['questions_sort'];
+        }
+        $universityObj->active_at = $input['active_at'].':00:00';
         $universityObj->updated_by = USER_ID;
         $universityObj->updated_at = DATE_TIME;
         $universityObj->save();
@@ -136,12 +146,32 @@ class LessonControllers extends Controller {
             return redirect()->back();
         }   
         
+        $lessonsCount = Lesson::NotDeleted()->where('status',1)->where('course_id',$input['course_id'])->orderBy('sort','DESC')->first();
+
         $universityObj = new Lesson;
         $universityObj->title = $input['title'];
         $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->course_id = $input['course_id'];
+        $universityObj->pass_quiz = isset($input['pass_quiz']) ? 1 : 0 ;
+        $universityObj->quiz_duration = $input['quiz_duration'] ;
+
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
-        $universityObj->status = IS_ADMIN ? (isset($input['status']) ? 1 : 0) : 2 ;
+        if(IS_ADMIN){
+            $universityObj->status = isset($input['status']) ? 1 : 0 ;
+        }elseif(!IS_ADMIN){
+            $universityObj->questions_sort = $input['questions_sort'];
+            if($universityObj->Course->status == 3){
+                if($input['active_at'] <= date('Y-m-d H:i:s')){
+                    $universityObj->status = 1;
+                }else{
+                    $universityObj->status = 0;
+                }
+            }else{
+                $universityObj->status = 2;
+            }
+        }
+        $universityObj->active_at = $input['active_at'].':00:00';
+        $universityObj->sort = $lessonsCount->sort+1;
         $universityObj->created_by = USER_ID;
         $universityObj->created_at = DATE_TIME;
         $universityObj->save();
@@ -187,7 +217,9 @@ class LessonControllers extends Controller {
             if($fileName == false){
                 return \TraitsFunc::ErrorMessage('Upload Video Failed !!', 400);
             }
-            // $video_id = $vimeoObj->upload(public_path().'/uploads/lessons/'.$id.'/'.$fileName[0],$fileName[1],$lessonObj->Course->project_id);
+            
+            $videosCount = LessonVideo::NotDeleted()->where('lesson_id',$id)->orderBy('sort','DESC')->first();
+
             $video_id = $vimeoObj->upload($_FILES['file']['tmp_name'],$fileName[1],$lessonObj->Course->project_id);
             $fileData = $this->getDuration($_FILES['file']['tmp_name']);
             $courseObj = new LessonVideo;
@@ -198,6 +230,7 @@ class LessonControllers extends Controller {
             $courseObj->course_id = $lessonObj->course_id;
             $courseObj->duration = $fileData[0];
             $courseObj->size = $fileData[1];
+            $courseObj->sort = $videosCount->sort+1;
             $courseObj->created_by = USER_ID;
             $courseObj->created_at = date('Y-m-d H:i:s');
             $courseObj->save();
@@ -232,6 +265,7 @@ class LessonControllers extends Controller {
             $files = $request->file('attachment');
             $fileName = \ImagesHelper::uploadImage('videos', $files, $id);
             if($fileName == false){
+                \Session::flash('error', "Upload Attachment Failed,Please Select PDF Files !!");
                 return \TraitsFunc::ErrorMessage('Upload Attachment Failed !!', 400);
             }
 
@@ -240,10 +274,23 @@ class LessonControllers extends Controller {
             $lessonObj->updated_at = date('Y-m-d H:i:s');
             $lessonObj->save();
             \Session::flash('success', "Upload Attachment Success !!");
-            $statusObj['status'] = \TraitsFunc::SuccessResponse('Upload Attachment Success !!');
             $statusObj['data'] = LessonVideo::getData($lessonObj);
             return $statusObj;
         }       
+    }
+
+    public function removeAttachment(Request $request , $id) {
+        $lessonObj = LessonVideo::getOne($id);
+        if($lessonObj == null){
+            return \TraitsFunc::ErrorMessage('This Lesson Video Not Found !!', 400);
+        }
+
+        $lessonObj->attachment = null;
+        $lessonObj->updated_by = USER_ID;
+        $lessonObj->updated_at = date('Y-m-d H:i:s');
+        $lessonObj->save();
+        \Session::flash('success', "Remove Attachment Success !!");
+        return redirect()->back();
     }
 
     public function removeVideo($video_id){
@@ -260,19 +307,17 @@ class LessonControllers extends Controller {
         $input = \Input::all();
         $rules = [
             'question' => 'required',
+            'number_of_answers' => 'required',
             'answer_a' => 'required',
             'answer_b' => 'required',
-            'answer_c' => 'required',
-            'answer_d' => 'required',
             'correct_answer' => 'required',
         ];
 
         $message = [
             'question.required' => "Sorry Question Required",
+            'number_of_answers.required' => "Sorry Number OF Answers Required",
             'answer_a.required' => "Sorry Answer A Required",
             'answer_b.required' => "Sorry Answer B Required",
-            'answer_c.required' => "Sorry Answer C Required",
-            'answer_d.required' => "Sorry Answer D Required",
             'correct_answer.required' => "Sorry Correct Answer Required",
         ];
 
@@ -286,18 +331,33 @@ class LessonControllers extends Controller {
             return \TraitsFunc::ErrorMessage('This Lesson Not Found !!', 400);
         }
 
+
         $questionObj = new LessonQuestion;
         $questionObj->lesson_id = $lesson_id;
         $questionObj->course_id = $lessonObj->course_id;
         $questionObj->question = $input['question'];
+        $questionObj->number_of_answers = $input['number_of_answers'];
         $questionObj->answer_a = $input['answer_a'];
         $questionObj->answer_b = $input['answer_b'];
         $questionObj->answer_c = $input['answer_c'];
         $questionObj->answer_d = $input['answer_d'];
+        $questionObj->answer_e = $input['answer_e'];
         $questionObj->correct_answer = $input['correct_answer'];
         $questionObj->created_by = USER_ID;
         $questionObj->created_at = date('Y-m-d H:i:s');
         $questionObj->save();
+
+        $msg = 'New Question Added To Lesson '.$lessonObj->title;
+        $users = StudentRequest::NotDeleted()->where('course_id',$lessonObj->course_id)->where('status',1)->pluck('student_id');
+        $tokens = Devices::getDevicesBy($users);
+        $tokens = reset($tokens);
+        $fireBase = new \FireBase();
+        $metaData = ['title' => "New Question", 'body' => $msg,];
+        $myData = ['type' => 5 , 'id' => $questionObj->id, 'lesson_id' => $lesson_id, 'course_id'=> $lessonObj->course_id];
+
+        foreach ($tokens as $value) {
+            $fireBase->send_android_notification($value,$metaData,$myData);
+        }
 
         \Session::flash('success', "Lesson Question Saved Successfully !!");
         $statusObj['status'] = \TraitsFunc::SuccessResponse('Lesson Question Saved Successfully !!');

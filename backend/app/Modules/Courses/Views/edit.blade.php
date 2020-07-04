@@ -1,18 +1,7 @@
 @extends('Layouts.master')
 @section('title', $data->data->id . ' - ' . $data->data->title)
 @section('otherhead')
-<style type="text/css" media="screen">
-    .feedback{
-        padding-left: 25px;
-    }
-    div.images{
-        border-right: 1px solid #DDD;
-    }
-    h3 span{
-        font-size: 14px;
-        color: #777;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/edit-course.css') }}">
 @endsection
 @section('content')
 <div class="">
@@ -34,164 +23,169 @@
                     </div>
                     <div class="x_content">
                         <div class="row" >
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Title</label>
-                                            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
-                                        </div>
-                                    </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Course Type</label>
+                                    <select name="course_type" class="form-control">
+                                        <option value="">Select A Course Type...</option>
+                                        <option value="1" {{ $data->data->course_type == 1 ? 'selected' : '' }}>General</option>
+                                        <option value="2" {{ $data->data->course_type == 2 ? 'selected' : '' }}>University & Faculty</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>University</label>
+                                    <select name="university_id" class="form-control" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
+                                        <option value="">Select An University...</option>
+                                        @foreach($data->universities as $university)
+                                        <option value="{{ $university->id }}" {{ $data->data->university_id == $university->id ? 'selected' : '' }}>{{ $university->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Faculty</label>
+                                    <select name="faculty_id" class="form-control" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
+                                        <option value="">Select A Faculty...</option>
+                                        @foreach($data->faculties as $faculty)
+                                        <option value="{{ $faculty->id }}" {{ $data->data->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Field</label>
+                                    <select name="field_id" class="form-control">
+                                        <option value="">Select A Field...</option>
+                                        @foreach($data->fields as $field)
+                                        <option value="{{ $field->id }}" {{ $data->data->field_id == $field->id ? 'selected' : '' }}>{{ $field->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="text" class="form-control" placeholder="Enter Price" name="price" value="{{ $data->data->price }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ $data->data->year }}" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
                                 </div>
                             </div>
                             @if(IS_ADMIN == true)
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Instructor</label>
-                                            <select name="instructor_id" class="form-control">
-                                                <option value="">Select An Instructor...</option>
-                                                @foreach($data->instructors as $instructor)
-                                                <option value="{{ $instructor->id }}" {{ $data->data->instructor_id == $instructor->id ? 'selected' : '' }}>{{ $instructor->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Instructor</label>
+                                    <select name="instructor_id" class="form-control">
+                                        <option value="">Select An Instructor...</option>
+                                        @foreach($data->instructors as $instructor)
+                                        <option value="{{ $instructor->id }}" {{ $data->data->instructor_id == $instructor->id ? 'selected' : '' }}>{{ $instructor->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Status</label>
-                                            <select name="status" class="form-control">
-                                                <option value="">Select A Status...</option>
-                                                <option value="1" {{ $data->data->status == 1 ? 'selected' : '' }}>Instructor Sent Request</option>
-                                                <option value="2" {{ $data->data->status == 2 ? 'selected' : '' }}>Request Refused</option>
-                                                <option value="3" {{ $data->data->status == 3 ? 'selected' : '' }}>Active</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select name="status" class="form-control">
+                                        <option value="">Select A Status...</option>
+                                        <option value="1" {{ $data->data->status == 1 ? 'selected' : '' }}>Instructor Sent Request</option>
+                                        <option value="2" {{ $data->data->status == 2 ? 'selected' : '' }}>Request Refused</option>
+                                        <option value="3" {{ $data->data->status == 3 ? 'selected' : '' }}>Active</option>
+                                    </select>
                                 </div>
                             </div>
                             @endif
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Course Type</label>
-                                            <select name="course_type" class="form-control">
-                                                <option value="">Select A Course Type...</option>
-                                                <option value="1" {{ $data->data->course_type == 1 ? 'selected' : '' }}>General</option>
-                                                <option value="2" {{ $data->data->course_type == 2 ? 'selected' : '' }}>University & Faculty</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>University</label>
-                                            <select name="university_id" class="form-control" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
-                                                <option value="">Select An University...</option>
-                                                @foreach($data->universities as $university)
-                                                <option value="{{ $university->id }}" {{ $data->data->university_id == $university->id ? 'selected' : '' }}>{{ $university->title }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Faculty</label>
-                                            <select name="faculty_id" class="form-control" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
-                                                <option value="">Select A Faculty...</option>
-                                                @foreach($data->faculties as $faculty)
-                                                <option value="{{ $faculty->id }}" {{ $data->data->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->title }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-xs-12">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    @if(IS_ADMIN)
+                                    <h3>Instructor Estimated Cost</h3>
+                                    @elseif(!IS_ADMIN && $data->data->status == 3)
+                                    <h3>Upgrade Estimated Cost</h3>
+                                    @endif
+                                    <div class="col-lg-3 col-md-4 col-xs-12 col-sm-6">
                                         <div class="form-group">
-                                            <label>Field</label>
-                                            <select name="field_id" class="form-control">
-                                                <option value="">Select A Field...</option>
-                                                @foreach($data->fields as $field)
-                                                <option value="{{ $field->id }}" {{ $data->data->field_id == $field->id ? 'selected' : '' }}>{{ $field->title }}</option>
-                                                @endforeach
-                                            </select>
+                                            <label>Start Date</label>
+                                            <input type="text" class="form-control datepicker" placeholder="Enter Start Date" name="start_date" value="{{ $data->data->instructor_price->start_date }}">
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Price</label>
-                                            <input type="text" class="form-control" placeholder="Enter Price" name="price" value="{{ $data->data->price }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Year</label>
-                                            <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ $data->data->year }}" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @if(IS_ADMIN == true)
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Valid Until</label>
-                                            <input type="text" class="form-control datepicker" placeholder="Enter Date" name="valid_until" value="{{ $data->data->valid_until }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>What Student Learn</label>
-                                                <textarea class="form-control" placeholder="What Student Learn" name="what_learn">{{ $data->data->what_learn }}</textarea>
+                                    <div class="col-lg-3 col-md-8 col-xs-12 col-sm-6">
+                                        <div class="col-xs-12" style="padding: 0;">
+                                            <div class="col-xs-6" style="padding-left: 0;">
+                                                <div class="form-group">
+                                                    <label>Course Duration (Days)</label>
+                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->course_duration  : 10 }}" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ $data->data->instructor_price->course_duration }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6" style="padding: 0;">
+                                                <div class="form-group">
+                                                    <label>End Date</label>
+                                                    <input type="text" class="form-control" readonly placeholder="Enter End Date" name="end_date" value="{{ $data->data->instructor_price->end_date }}">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row" >
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Requirements</label>
-                                                <textarea class="form-control" placeholder="Enter Requirements" name="requirements">{{ $data->data->requirements }}</textarea>
+                                    <div class="col-lg-3 col-xs-12 col-sm-6">
+                                        <div class="col-xs-12" style="padding: 0">
+                                            <div class="col-xs-6" style="padding-left: 0;">
+                                                <div class="form-group">
+                                                    <label>Uploading Space (GB)</label>
+                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->upload_space  : 2 }}" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ $data->data->instructor_price->upload_space }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label>Uploading Space Cost</label><br>
+                                                <span class="upload_cost">{{ $data->data->instructor_price->upload_cost }}</span> LE
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-12 col-sm-6">
+                                        <div class="col-xs-12" style="padding: 0">
+                                            <div class="col-xs-6" style="padding-left: 0;">
+                                                <div class="form-group">
+                                                    <label>Approval # OF Student</label>
+                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->approval_number  : 10 }}" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ $data->data->instructor_price->approval_number }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label>Students' Approval</label><br>
+                                                <span class="upload_cost student_approval">{{ $data->data->instructor_price->approval_cost }}</span> LE
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-xs-12 col-sm-6">
                                 <div class="row" >
-                                    <div class="col-md-12">
+                                    <div class="col-md-6 col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>What Student Learn</label>
+                                            <textarea class="form-control" placeholder="What Student Learn" name="what_learn">{{ $data->data->what_learn }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Requirements</label>
+                                            <textarea class="form-control" placeholder="Enter Requirements" name="requirements">{{ $data->data->requirements }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row" >
+                                    <div class="col-xs-12">
                                         <div class="form-group">
                                             <label>Description</label>
                                             <textarea class="form-control" placeholder="Enter Description" name="description">{{ $data->data->description }}</textarea>
@@ -200,11 +194,11 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="col-xs-12 col-md-12 images">
+                            <div class="col-xs-12 col-xs-12 images">
                                 <div class="row" >
                                     <h3><b>Course Image</b></h3> <br>
                                     @if(\Helper::checkRules('add-course-image'))
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div class="form-group">
                                                 <h3 class="">Upload new course image</h3>
                                                 <h6>Upload a different photo...</h6>
@@ -214,7 +208,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-12">
+                                    <div class="col-xs-12">
                                         <div class="imagesHolder">
                                             <h3 class="">List images</h3>
                                             @if($data->data->image != '')

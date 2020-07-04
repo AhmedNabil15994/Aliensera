@@ -20,17 +20,13 @@
                     </div>
                     <div class="x_content">
                         <div class="row" >
-                            <div class="col-md-4">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Title</label>
-                                            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
-                                        </div>
-                                    </div>
+                            <div class="col-xs-12 col-md-4 col-sm-9">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{ $data->data->title }}">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-xs-12 col-sm-3">
                                 <div class="form-group">
                                     <label>Active</label>
                                     <div class="checkbox">
@@ -38,14 +34,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="row" >
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea class="form-control" placeholder="Enter Description" name="description">{{ $data->data->description }}</textarea>
-                                        </div>
-                                    </div>
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" placeholder="Enter Description" name="description">{{ $data->data->description }}</textarea>
                                 </div>
                             </div>
                         </div>

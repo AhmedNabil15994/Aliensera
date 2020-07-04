@@ -21,13 +21,13 @@
                     <div class="x_content search">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Title</label>
                                         <input type="text" class="form-control" name="title" placeholder="Title" value="{{ Input::get('title') }}">
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-12 col-sm-6">
                                     <div class="form-group">
                                         <label>University</label>
                                         <select class="form-control" name="university_id">
@@ -47,14 +47,14 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <h3>Faculties<small> Total : {{ $data->pagination->total_count }}</small></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 @if(\Helper::checkRules('add-faculty'))
                                     <a href="{{URL::to('/faculties/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>

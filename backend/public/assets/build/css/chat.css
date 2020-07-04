@@ -155,9 +155,27 @@ p{
   margin-left: 15px;
   margin-top: -10px;
 }
-@media screen and (max-width: 735px) {
-  #frame #sidepanel #profile .wrap p {
+@media screen and (max-width: 767px) {
+  #frame #sidepanel #contacts ul li.contact .wrap img{
     display: none;
+  }
+  #frame #sidepanel{
+    width: 30%;
+  }
+  #frame .content{
+    width: 70% !important;
+  }
+  #frame #sidepanel #profile .wrap p{
+    margin-left: 8px;
+  }
+  #frame #sidepanel #contacts{
+    width: 100%;
+  }
+  #frame #sidepanel #contacts ul li.contact .wrap .meta{
+    display: block !important;
+  }
+  #frame #sidepanel #contacts ul li.contact{
+    padding-bottom: 15px !important;
   }
 }
 .dashboard-list-box{

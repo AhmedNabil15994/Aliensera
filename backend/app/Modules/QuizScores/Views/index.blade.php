@@ -1,67 +1,7 @@
 @extends('Layouts.master')
 @section('title', 'Quizzes Scores')
 @section('otherhead')
-<style type="text/css" media="screen">
-    td p{
-        color: #777;
-    }
-    td img{
-        display: inline-block;
-        float: left;
-    }
-    div.course-data{
-        float: left;
-        display: inline;
-        width: calc(100% - 60px);
-        margin-left: 5px;
-        margin-top: 5px;
-    }
-    div.collapse.in:hover{
-        background: #FFF;
-        background-color: #FFF;
-    }
-    .panel-heading h4{
-        width: 50%;
-        display: inline-block;
-        float: left;
-    }
-    .panel-heading h4 span{
-        display: inline-block;
-        width: 25%;
-        float: left;
-        font-size: 18px;
-    }
-    i.fa-question-circle{
-        color: #337ab7;
-    }
-    i.fa-check-circle{
-        color: #26B99A;
-    }
-    i.fa-times-circle{
-        color: #d9534f;
-    }
-    i.fa-spinner{
-        color: #5bc0de;
-    }
-    .panel a.panel-heading{
-        display: block;
-        background: #eee;
-        border: 1px solid #DDD;
-        border-radius: 5px;
-        border-bottom-left-radius: 0; 
-        border-bottom-right-radius: 0; 
-    }
-    .panel-collapse{
-        border: 1px solid #DDD;
-        border-radius: 5px;
-        border-top-left-radius: 0; 
-        border-top-right-radius: 0; 
-        margin-bottom: 10px;
-    }
-    ul.paginationer{
-        margin-top: 0;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/assets/css/quizscores-index.css') }}">
 @endsection
 @section('content')
 <div class="row">
@@ -84,7 +24,7 @@
                     <div class="x_content search">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="col-xs-6 col-md-6">
+                                <div class="col-xs-12 col-md-6">
                                     <div class="form-group">
                                         <label>Student</label>
                                         <select name="student_id" class="form-control">
@@ -95,7 +35,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xs-6 col-md-6">
+                                <div class="col-xs-12 col-md-6">
                                     <div class="form-group">
                                         <label>Course</label>
                                         <select name="course_id" class="form-control">
@@ -114,14 +54,14 @@
         </form>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <h3>Quizzes <small> Total : {{ $data->data->pagination->total_count }}</small></h3>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </ul>

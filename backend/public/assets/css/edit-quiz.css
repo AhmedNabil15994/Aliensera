@@ -1,0 +1,125 @@
+.col-md-3.col-sm-6.col-xs-12 .x_panel .x_content{
+    padding-bottom: 0;
+}
+div#previews{
+    margin-bottom: 0;
+}
+#actions .col-lg-7{
+    width: 100% !important;
+    margin-bottom: 10px !important;
+}
+#actions .col-lg-5{
+    width: 100% !important;
+}
+.file-row{
+    min-height: 90px;
+    border-top: 1px solid #DDD !important;
+}
+.file-row div{
+    width: 50%;
+    float: left;
+    display: inline-block;
+}
+.file-row div:first-of-type{
+    width: 0 !important;
+}
+.file-row div:nth-of-type(3){
+    height: 35px !important;
+}
+.file-row div:nth-of-type(4){
+    width: 100% !important;
+}
+.file-row div p.size,
+.file-row div p.name{
+    padding-top: 10px !important;
+}
+.panel_toolbox>li{
+    float: right;
+}
+div.playlist,
+div.quiz{
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+div.playlist div.row,
+div.quiz div.row{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid #DDD;
+}
+div.playlist div.row:first-of-type,
+div.quiz div.row:first-of-type{
+    padding-top: 10px;
+    background: #eee;
+}
+div.playlist div.row:last-child,
+div.quiz div.row:last-child{
+    border-bottom: 0 ;
+}
+div.playlist div.row div,
+div.quiz div.row div{
+    font-weight: bold;
+    font-size: 13px;
+}
+.btn-xs i.fa{
+    font-size: 14px;
+}
+.playlist .row.results,
+.quiz .row.results{
+    font-weight: 400;
+    color: #555;
+}
+.playlist .row.results:hover,
+.quiz .row.results:hover{
+    background: #f9f9f9;
+    cursor: pointer;
+}
+h2 span{
+    font-size: 16px;
+}
+button.add-question,
+button.add-question2,
+button.clear-question{
+    margin-top: 25px;
+}
+button i.fa-play{
+    margin-left: 3px;
+}
+a.editable{
+    color: inherit;
+}
+.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
+.embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.answer_c,.answer_d,.answer_e,
+.correct_answer option[value="c"],
+.correct_answer option[value="d"],
+.correct_answer option[value="e"]{
+    display: none;
+}
+i.fa-arrows-alt.second{
+    font-size: 16px;
+}
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+ol{
+    padding: 0;
+    list-style: none;
+}
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.example li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.example li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
