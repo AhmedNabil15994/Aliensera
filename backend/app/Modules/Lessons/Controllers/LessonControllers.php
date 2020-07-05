@@ -219,6 +219,7 @@ class LessonControllers extends Controller {
             }
             
             $videosCount = LessonVideo::NotDeleted()->where('lesson_id',$id)->orderBy('sort','DESC')->first();
+            dd($videosCount);
 
             $video_id = $vimeoObj->upload($_FILES['file']['tmp_name'],$fileName[1],$lessonObj->Course->project_id);
             $fileData = $this->getDuration($_FILES['file']['tmp_name']);
