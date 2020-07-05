@@ -220,8 +220,8 @@ class LessonControllers extends Controller {
                     return \TraitsFunc::ErrorMessage('Your Quota Exceeded The Limit, Please Contact System Adminstrator !!', 400);
                 }
 
-                $uploadedSize = LessonVideo::whereHas('Course',function($courseQuery) use ($instructor_id){
-                    $courseQuery->where('instructor_id',$instructor_id);
+                $uploadedSize = LessonVideo::whereHas('Course',function($courseQuery) use ($instructor_id,$course_id){
+                    $courseQuery->where('id',$course_id)->where('instructor_id',$instructor_id);
                 })->sum('size');
                 $totalSize = $uploadedSize + $fileData[1];
                 if($totalSize >= 2000000000){
