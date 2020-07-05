@@ -59,14 +59,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                @else
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Quiz Duration (In Minutes)</label>
+                                        <input type="text" class="form-control" placeholder="Enter Quiz Duration (In Minutes)" name="quiz_duration" value="{{ $data->data->quiz_duration }}">
+                                    </div>
+                                </div>
                                 @endif
                             </div>
+                            @if(!IS_ADMIN)
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label>Quiz Duration (In Minutes)</label>
                                     <input type="text" class="form-control" placeholder="Enter Quiz Duration (In Minutes)" name="quiz_duration" value="{{ $data->data->quiz_duration }}">
                                 </div>
                             </div>
+                            @endif
                             <div class="clearfix"></div>
                             @if($data->data->course_status == 3)
                             <div class="col-md-3 col-sm-6 col-xs-12">
