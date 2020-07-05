@@ -76,7 +76,7 @@
                 <div id="chart_plot_20" class="demo-placeholder"></div>
               </div>
               <div class="tiles">
-                <div class="col-md-{{ IS_ADMIN ? '4' : '6' }} col-xs-12 tile">
+                <div class="col-md-4 col-xs-12 tile">
                   <span>Total Students Sessions</span>
                   <h3>{{ $data->allStudentSessions }} Session</h3>
                   <span class="sparkline11 graph" style="height: 160px;">
@@ -84,15 +84,23 @@
                   </span>
                 </div>
                 @if(IS_ADMIN)
-                <div class="col-md-{{ IS_ADMIN ? '4' : '6' }} col-xs-12 tile">
+                <div class="col-md-4 col-xs-12 tile">
                   <span>Total Revenue</span>
                   <h3> {{ $data->allRevenue }} LE</h3>
                   <span class="sparkline22 graph" style="height: 160px;">
                         <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                   </span>
                 </div>
+                @else
+                <div class="col-md-4 col-xs-12 tile">
+                  <span>Total Quota</span>
+                  <h3> {{ $data->allRevenue }} GB</h3>
+                  <span class="sparkline22 graph" style="height: 160px;">
+                        <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+                </div>
                 @endif
-                <div class="col-md-{{ IS_ADMIN ? '4' : '6' }} col-xs-12 tile">
+                <div class="col-md-4 col-xs-12 tile">
                   <span>Total Views Duration</span>
                   <h3>{{ $data->allDuration != '' ? $data->allDuration : '0 Hr'  }}</h3>
                   <span class="sparkline11 graph" style="height: 160px;">

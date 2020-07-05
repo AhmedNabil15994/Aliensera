@@ -259,7 +259,7 @@ class Course extends Model{
 
     static function getCount(){
         if(IS_ADMIN){
-            $count = self::NotDeleted()->where('status',1)->count();
+            $count = self::NotDeleted()->whereIn('status',[3,5])->count();
         }else{
             $count = self::NotDeleted()->where('instructor_id',USER_ID)->where('status',1)->count();
         }

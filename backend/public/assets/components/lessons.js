@@ -333,7 +333,7 @@ $('.clear-question').on('click',function(){
     clearAll();
 });
 
-$('input[name="valid_until"]').datetimepicker({
+$('input[name="valid_until"]','input[name="start_date"]').datetimepicker({
     format: 'YYYY-MM-DD',
 });
 

@@ -122,7 +122,10 @@ class DashboardControllers extends Controller {
 
             $myStudents = StudentCourse::NotDeleted()->where('status',1)->where('instructor_id',USER_ID)->pluck('student_id');
             $dataList['allStudentSessions'] = ApiAuth::whereIn('user_id',$myStudents)->count();
-            // $dataList['allRevenue'] = StudentCourse::getRevenue();
+            $upload = LessonVideo::whereHas('Course',function($courseQuery){
+                    $courseQuery->where('instructor_id',USER_ID);
+                })->sum('size');
+            $dataList['allRevenue'] =  round($upload / 1000000000 ,2);
             $dataList['allDuration'] = StudentVideoDuration::getAllDuration();
 
             $dataList['topCourses'] = Course::getTopCourses(5)['data'];
