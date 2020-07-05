@@ -211,6 +211,24 @@ class LessonControllers extends Controller {
 
         if ($request->hasFile('file')) {
             $files = $request->file('file');
+            $fileData = $this->getDuration($_FILES['file']['tmp_name']);
+
+            if(!IS_ADMIN){
+                $course_id = $lessonObj->course_id;
+                $instructor_id = $lessonObj->Course->instructor_id;
+                if($lessonObj->Course->CoursePrice == null){
+                    return \TraitsFunc::ErrorMessage('Your Quota Exceeded The Limit, Please Contact System Adminstrator !!', 400);
+                }
+
+                $uploadedSize = LessonVideo::whereHas('Course',function($courseQuery) use ($instructor_id){
+                    $courseQuery->where('instructor_id',$instructor_id);
+                })->sum('size');
+                $totalSize = $uploadedSize + $fileData[1];
+                if($totalSize >= 2000000000){
+                    return \TraitsFunc::ErrorMessage('Your Quota Exceeded The Limit, Please Contact System Adminstrator !!', 400);
+                }
+            }
+
             $vimeoObj = new \Vimeos();
 
             $fileName = \ImagesHelper::UploadVideo('lessons', $files, $id);
@@ -221,7 +239,7 @@ class LessonControllers extends Controller {
             $videosCount = LessonVideo::NotDeleted()->where('lesson_id',$id)->orderBy('sort','DESC')->first();
 
             $video_id = $vimeoObj->upload($_FILES['file']['tmp_name'],$fileName[1],$lessonObj->Course->project_id);
-            $fileData = $this->getDuration($_FILES['file']['tmp_name']);
+
             $courseObj = new LessonVideo;
             $courseObj->video = $fileName[0];
             $courseObj->title = $fileName[1];
