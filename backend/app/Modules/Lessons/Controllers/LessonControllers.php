@@ -171,7 +171,7 @@ class LessonControllers extends Controller {
             }
         }
         $universityObj->active_at = $input['active_at'].':00:00';
-        $universityObj->sort = $lessonsCount->sort+1;
+        $universityObj->sort = $lessonsCount != null ?  $lessonsCount->sort+1 : 1;
         $universityObj->created_by = USER_ID;
         $universityObj->created_at = DATE_TIME;
         $universityObj->save();
@@ -219,7 +219,6 @@ class LessonControllers extends Controller {
             }
             
             $videosCount = LessonVideo::NotDeleted()->where('lesson_id',$id)->orderBy('sort','DESC')->first();
-            dd($videosCount);
 
             $video_id = $vimeoObj->upload($_FILES['file']['tmp_name'],$fileName[1],$lessonObj->Course->project_id);
             $fileData = $this->getDuration($_FILES['file']['tmp_name']);
@@ -231,7 +230,7 @@ class LessonControllers extends Controller {
             $courseObj->course_id = $lessonObj->course_id;
             $courseObj->duration = $fileData[0];
             $courseObj->size = $fileData[1];
-            $courseObj->sort = $videosCount->sort+1;
+            $courseObj->sort =  $videosCount != null ?  $videosCount->sort+1 : 1;
             $courseObj->created_by = USER_ID;
             $courseObj->created_at = date('Y-m-d H:i:s');
             $courseObj->save();
