@@ -50,6 +50,7 @@
                                             <option value="2" {{ Input::get('status') == 2 ? 'selected' : '' }}>Request Refused</option>
                                             <option value="3" {{ Input::get('status') == 3 ? 'selected' : '' }}>Active</option>
                                             <option value="4" {{ Input::get('status') == 4 ? 'selected' : '' }}>Expired</option>
+                                            <option value="5" {{ Input::get('status') == 5 ? 'selected' : '' }}>Instructor Sent Upgrade Request</option>
                                         </select>
                                     </div>
                                 </div>
