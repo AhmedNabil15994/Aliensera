@@ -253,6 +253,7 @@ class Course extends Model{
             $data->student_course_count = $source->student_course_count;
         }
         $data->deleted_by = $source->deleted_by;
+        $data->created_at2 = $source->created_at;
         return $data;
     }
 

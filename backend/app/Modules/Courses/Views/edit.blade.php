@@ -118,7 +118,7 @@
                                     <div class="col-lg-3 col-md-4 col-xs-12 col-sm-6">
                                         <div class="form-group">
                                             <label>Start Date</label>
-                                            <input type="text" class="form-control datepicker" placeholder="Enter Start Date" name="start_date" value="{{ $data->data->instructor_price->start_date }}">
+                                            <input type="text" class="form-control datepicker" placeholder="Enter Start Date" name="start_date" value="{{ isset($data->data->instructor_price->start_date) ? $data->data->instructor_price->start_date : $data->data->created_at2 }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-8 col-xs-12 col-sm-6">
@@ -126,13 +126,13 @@
                                             <div class="col-xs-6" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Course Duration (Days)</label>
-                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->course_duration  : 10 }}" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ $data->data->instructor_price->course_duration }}">
+                                                    <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->course_duration  : 10 }}" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ @$data->data->instructor_price->course_duration }}">
                                                 </div>
                                             </div>
                                             <div class="col-xs-6" style="padding: 0;">
                                                 <div class="form-group">
                                                     <label>End Date</label>
-                                                    <input type="text" class="form-control" readonly placeholder="Enter End Date" name="end_date" value="{{ $data->data->instructor_price->end_date }}">
+                                                    <input type="text" class="form-control" readonly placeholder="Enter End Date" name="end_date" value="{{ @$data->data->instructor_price->end_date }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -142,12 +142,12 @@
                                             <div class="col-xs-6" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Uploading Space (GB)</label>
-                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->upload_space  : 2 }}" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ $data->data->instructor_price->upload_space }}">
+                                                    <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->upload_space  : 2 }}" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ @$data->data->instructor_price->upload_space }}">
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <label>Uploading Space Cost</label><br>
-                                                <span class="upload_cost">{{ $data->data->instructor_price->upload_cost }}</span> LE
+                                                <span class="upload_cost">{{ @$data->data->instructor_price->upload_cost }}</span> LE
                                             </div>
                                         </div>
                                     </div>
@@ -156,12 +156,12 @@
                                             <div class="col-xs-6" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Approval # OF Student</label>
-                                                    <input type="number" min="{{ $data->data->status == 3 ? $data->data->instructor_price->approval_number  : 10 }}" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ $data->data->instructor_price->approval_number }}">
+                                                    <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->approval_number  : 10 }}" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ @$data->data->instructor_price->approval_number }}">
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <label>Students' Approval</label><br>
-                                                <span class="upload_cost student_approval">{{ $data->data->instructor_price->approval_cost }}</span> LE
+                                                <span class="upload_cost student_approval">{{ @$data->data->instructor_price->approval_cost }}</span> LE
                                             </div>
                                         </div>
                                     </div>
