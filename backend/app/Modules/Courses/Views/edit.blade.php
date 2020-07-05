@@ -132,7 +132,7 @@
                                             <div class="col-xs-6" style="padding: 0;">
                                                 <div class="form-group">
                                                     <label>End Date</label>
-                                                    <input type="text" class="form-control" readonly placeholder="Enter End Date" name="end_date" value="{{ @$data->data->instructor_price->end_date }}">
+                                                    <input type="text" class="form-control" readonly placeholder="Enter End Date" name="end_date" value="{{ isset($data->data->instructor_price->end_date) ? $data->data->instructor_price->end_date : $data->data->valid_until }}">
                                                 </div>
                                             </div>
                                         </div>
