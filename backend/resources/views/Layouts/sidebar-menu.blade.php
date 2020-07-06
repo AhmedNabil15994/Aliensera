@@ -55,6 +55,9 @@
                     @if(\Helper::checkRules('list-student-requests') && IS_ADMIN)
                     <li class="{{ Active(URL::to('/requests*')) }}"><a><i class="fa fa-info-circle"></i> Manage Requests<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
+                            @if(IS_ADMIN)
+                            <li class="{{ Active(URL::to('/upgrade*')) }}"><a href="{{ URL::to('/upgrade') }}">Upgrade Requests {!! App\Models\Course::getCount2() && IS_ADMIN ? "<span class='badge bg-green'>".App\Models\Course::getCount2()."</span>" :'' !!}</a></li>
+                            @endif
                             @if(\Helper::checkRules('list-student-requests'))
                                 <li class="{{ Active(URL::to('/requests*')) }}"><a href="{{ URL::to('/requests') }}">Student Requests {!! App\Models\StudentRequest::getCount() ? "<span class='badge bg-green'>".App\Models\StudentRequest::getCount()."</span>" :'' !!}</a></li>
                             @endif

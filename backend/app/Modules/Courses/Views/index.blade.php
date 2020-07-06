@@ -131,9 +131,7 @@
                             <th>Field</th>
                             <th width="8%">Valid Until</th>
                             <th width="5%">Price</th>
-                            @if(IS_ADMIN)
-                            <th width="15%">Estimated Cost</th>
-                            @else
+                            @if(!IS_ADMIN)
                             <th>Used Quota</th>
                             @endif
                             <th>Active Students</th>
@@ -152,18 +150,7 @@
                                 <td>{{ $value->field }}</td>
                                 <td>{{ $value->valid_until }}</td>
                                 <td>{{ $value->price }} LE</td>
-                                @if(IS_ADMIN)
-                                <td>
-                                    @if($value->instructor_price != null)
-                                    Start Date: <span class="cost">{{ @$value->instructor_price->updated_start_date }}</span> <br>
-                                    End Date: <span class="cost">{{ @$value->instructor_price->updated_end_date }}</span> <br>
-                                    Upload Space: <span class="cost">{{ @$value->instructor_price->updated_upload_space }} GB</span><br>
-                                    Upload Cost: <span class="cost">{{ @$value->instructor_price->updated_upload_cost }} LE</span><br>
-                                    Students Approvals: <span class="cost">{{ @$value->instructor_price->updated_approval_number }}</span><br>
-                                    Approvals Cost: <span class="cost">{{ @$value->instructor_price->updated_approval_cost }} LE</span><br>
-                                    @endif
-                                </td>
-                                @else
+                                @if(!IS_ADMIN)
                                 <td>{{ $value->quota }} GB</td>
                                 @endif
                                 <td>{{ $value->studentCount }}</td>
@@ -171,10 +158,6 @@
                                 <td>
                                     @if(\Helper::checkRules('edit-course'))
                                         <a href="{{ URL::to('/courses/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                                        @if($value->status == 5)
-                                        <a href="{{ URL::to('/courses/upgrade/' . $value->id.'/1') }}" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Accept Upgrade </a>
-                                        <a href="{{ URL::to('/courses/upgrade/' . $value->id.'/2') }}" class="btn btn-dark btn-xs"><i class="fa fa-times"></i> Refuse Upgrade </a>
-                                        @endif
                                     @endif
                                     @if(\Helper::checkRules('view-course'))
                                         <a href="{{ URL::to('/courses/view/' . $value->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i> View </a>
@@ -195,8 +178,7 @@
                                 @if(!IS_ADMIN)
                                 <td colspan="11">No Data Found</td>
                                 @else
-                                <td colspan="13">No Data Found</td>
-                                <td style="display: none;"></td>
+                                <td colspan="12">No Data Found</td>
                                 <td style="display: none;"></td>
                                 @endif
                                 <td style="display: none;"></td>

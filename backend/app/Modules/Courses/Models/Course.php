@@ -92,7 +92,7 @@ class Course extends Model{
         return $mainViews;
     }
 
-    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null,$status=null) {
+    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null,$status=null,$newSat=null) {
         $input = \Input::all();
 
         $source = self::with('Feedback');
@@ -133,6 +133,9 @@ class Course extends Model{
 
         if ($status != null) {
             $source->where('status' ,'!=', 4);
+        } 
+        if ($newSat != null) {
+            $source->where('status' ,$newSat);
         } 
 
         if(IS_ADMIN == false){
@@ -260,10 +263,15 @@ class Course extends Model{
 
     static function getCount(){
         if(IS_ADMIN){
-            $count = self::NotDeleted()->whereIn('status',[3,5])->count();
+            $count = self::NotDeleted()->where('status',3)->count();
         }else{
             $count = self::NotDeleted()->where('instructor_id',USER_ID)->where('status',1)->count();
         }
+        return $count;
+    }
+
+    static function getCount2(){
+        $count = self::NotDeleted()->where('status',5)->count();
         return $count;
     }
 
