@@ -113,7 +113,7 @@
             </div>
         </form>
         <hr>
-        @if( $data->data->course_status == 3 && ($data->data->status == 1 || IS_ADMIN == true))
+        @if( in_array($data->data->course_status, [3,5]) && ($data->data->status == 1 || IS_ADMIN == true))
         <div class="col-xs-12">
             <div class="row" >
                 <div class="col-xs-12">
@@ -121,6 +121,8 @@
                         <div class="row">
                             @php $count = 12; @endphp
                             @if(\Helper::checkRules('add-lesson-video'))
+                            @if(!IS_ADMIN && $data->quota->hide != 1)
+                            @php $count = 9; @endphp
                             <div class="col-md-3 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
@@ -132,6 +134,9 @@
                                     </div>
                                     <div class="x_content">
                                         <p>Drag multiple files to the box below for multi upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
+                                        @if(!IS_ADMIN && $data->quota->hide == 2)
+                                        <p>{{ $data->quota->message }}</p>
+                                        @endif
                                         <div id="actions" class="row">
                                             <div class="col-lg-7">
                                                 <span class="btn btn-success fileinput-button dz-clickable">
@@ -192,9 +197,10 @@
                                     </div>
                                 </div>
                             </div>
-                            @php $count = 9; @endphp
                             @endif
-                            <div class="col-md-{{ $count }} col-sm-12 col-xs-12" style="padding-left: 0;">
+                            @php $count = 12; @endphp
+                            @endif
+                            <div class="col-md-{{ $count }} col-sm-12 col-xs-12" style="{{ $count == 9 ? 'padding-left: 0;' :'' }}">
                                 <div class="x_panel">
                                     <div class="x_title">
                                         <h2>List Lectures <span>Total:</span><span class="total_videos"> {{ count((array)$data->data->videos) }}</span></h2>

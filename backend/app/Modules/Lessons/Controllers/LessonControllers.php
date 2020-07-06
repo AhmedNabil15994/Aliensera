@@ -53,6 +53,23 @@ class LessonControllers extends Controller {
 
         $data['data'] = Lesson::getData($universityObj);
         $data['courses'] = Course::dataList(null,null,true,true)['data'];
+        if(!IS_ADMIN){
+            $quotaObj = new \stdClass();
+            $quotaObj->main = isset($universityObj->Course->CoursePrice) ? $universityObj->Course->CoursePrice->upload_space * 10^9 : 0;
+            $quotaObj->used = Course::getData($universityObj->Course)->quota;
+            if($quotaObj->main == 0 || $quotaObj->main < $quotaObj->used){
+                $quotaObj->message = 'Your Quota Exceeded The Limit, Please Contact System Adminstrator !!';
+                $quotaObj->hide = 1;
+            }
+
+            if($quotaObj->main > $quotaObj->used ){
+                $diff = (round($quotaObj->main - $quotaObj->used ,3)) * 1000; 
+                $quotaObj->message = 'File Must be less than or equal to '.$diff .' MB';
+                $quotaObj->hide = 2;
+            }
+
+            $data['quota'] = $quotaObj;
+        }
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
@@ -230,7 +247,6 @@ class LessonControllers extends Controller {
             }
 
             $vimeoObj = new \Vimeos();
-
             $fileName = \ImagesHelper::UploadVideo('lessons', $files, $id);
             if($fileName == false){
                 return \TraitsFunc::ErrorMessage('Upload Video Failed !!', 400);
