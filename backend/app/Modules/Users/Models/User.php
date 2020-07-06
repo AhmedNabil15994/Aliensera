@@ -179,6 +179,9 @@ class User extends Model{
             $withQuery->NotDeleted()->whereHas('Course',function($whereQuery){
                 $whereQuery->NotDeleted()->whereIn('status',[3,4]);
             })->where('status',1);
+            if(!IS_ADMIN){
+                $withQuery->where('instructor_id',USER_ID);
+            }
         }])->orderBy('student_course2_count','desc')->take($count)->get();
         return self::generateObj2($source,'student');
     }

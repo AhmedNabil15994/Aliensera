@@ -55,7 +55,6 @@
                                 @endif
                                 <li role="presentation" class="{{ $data->data->group_id == 3 ? '' : 'active' }}"><a href="#tab_content1" role="tab" id="home-tab" data-toggle="tab" aria-expanded="false">Courses ({{ count((array) $data->courses) }})</a></li>
                                 <li role="presentation" class=""><a href="#tab_content2" id="comment-tab" role="tab" data-toggle="tab" aria-expanded="true">Comments ({{ count((array) $data->comments) }})</a></li>
-                                <div class="clearfix"></div>
                                 @if($data->data->group_id == 3)
                                 <li role="presentation" class=""><a href="#tab_content3" role="tab" id="review-tab" data-toggle="tab" aria-expanded="false">Reviews ({{ count((array) $data->reviews) }})</a></li>
                                 @endif

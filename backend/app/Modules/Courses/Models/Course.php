@@ -185,11 +185,12 @@ class Course extends Model{
 
     static function getTopCourses($count){
         $source = self::NotDeleted()->whereIn('status',[3,5]);
-        if(IS_ADMIN == false){
-            $source->where('instructor_id',USER_ID);
-        }
+        
         $source = self::withCount(['StudentCourse'=> function($withQuery){
             $withQuery->where('status',1);
+            if(!IS_ADMIN){
+                $withQuery->where('instructor_id',USER_ID);
+            }
         }])->orderBy('student_course_count','desc')->take($count);
         return self::generateObj($source,true);
     }
