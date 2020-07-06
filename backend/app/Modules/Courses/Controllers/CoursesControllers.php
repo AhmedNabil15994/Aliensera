@@ -322,19 +322,34 @@ class CoursesControllers extends Controller {
         $courseObj->updated_by = USER_ID;
         $courseObj->updated_at = DATE_TIME;
         $courseObj->save();
-
         if($courseObj->status == 3 && !IS_ADMIN){
-            if($coursePriceObj->upload_space != $input['upload_space'] || $coursePriceObj->course_duration != $input['course_duration'] || $coursePriceObj->approval_number != $input['approval_number']){
-                $coursePriceObj->updated_upload_space = $input['upload_space'];
-                $coursePriceObj->updated_upload_cost = $input['upload_space'] * 25;
-                $coursePriceObj->updated_course_duration = $input['course_duration'];
-                $coursePriceObj->updated_start_date = $input['start_date'];
-                $coursePriceObj->updated_end_date = $input['end_date'];
-                $coursePriceObj->updated_approval_number = $input['approval_number'];
-                $coursePriceObj->updated_approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+            if(( isset($coursePriceObj) && $coursePriceObj->upload_space != $input['upload_space'] ) || (isset($coursePriceObj) && $coursePriceObj->approval_number != $input['approval_number']) || ( $input['course_duration'] != \Carbon\Carbon::parse($courseObj->valid_until)->diffInDays(\Carbon\Carbon::parse($courseObj->created_at2)) ) ){
 
-                $coursePriceObj->updated_by = USER_ID;
-                $coursePriceObj->updated_at = DATE_TIME;
+                if(isset($coursePriceObj)){
+                    $coursePriceObj->updated_upload_space = $input['upload_space'];
+                    $coursePriceObj->updated_upload_cost = $input['upload_space'] * 25;
+                    $coursePriceObj->updated_course_duration = $input['course_duration'];
+                    $coursePriceObj->updated_start_date = $input['start_date'];
+                    $coursePriceObj->updated_end_date = $input['end_date'];
+                    $coursePriceObj->updated_approval_number = $input['approval_number'];
+                    $coursePriceObj->updated_approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+                    $coursePriceObj->updated_by = USER_ID;
+                    $coursePriceObj->updated_at = DATE_TIME;
+                }else{
+                    $coursePriceObj = new CoursePrice;
+                    $coursePriceObj->upload_space = $input['upload_space'];
+                    $coursePriceObj->upload_cost = $input['upload_space'] * 25;
+                    $coursePriceObj->course_duration = $input['course_duration'];
+                    $coursePriceObj->start_date = $input['start_date'];
+                    $coursePriceObj->end_date = $input['end_date'];
+                    $coursePriceObj->approval_number = $input['approval_number'];
+                    $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+                    $coursePriceObj->created_by = USER_ID;
+                    $coursePriceObj->created_at = DATE_TIME;
+                }
+
+                $coursePriceObj->instructor_id = $courseObj->instructor_id;
+                $coursePriceObj->course_id = $courseObj->id;               
                 $coursePriceObj->save();
 
                 $courseObj->status = 5;
@@ -342,9 +357,12 @@ class CoursesControllers extends Controller {
             }
 
         }elseif($courseObj->status == 1 && !IS_ADMIN){
+            $coursePriceObj = isset($courseObj->CoursePrice) ? $courseObj->CoursePrice : new CoursePrice; 
             $coursePriceObj->start_date = $input['start_date'];
             $coursePriceObj->end_date = $input['end_date'];
             $coursePriceObj->course_duration = $input['course_duration'];
+            $coursePriceObj->instructor_id = $courseObj->instructor_id;
+            $coursePriceObj->course_id = $courseObj->id;
             $coursePriceObj->upload_space = $input['upload_space'];
             $coursePriceObj->upload_cost = $input['upload_space'] * 25;
             $coursePriceObj->approval_number = $input['approval_number'];

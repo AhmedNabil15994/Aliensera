@@ -126,7 +126,7 @@
                                             <div class="col-xs-6" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Course Duration (Days)</label>
-                                                    <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->course_duration  : 10 }}" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ @$data->data->instructor_price->course_duration }}">
+                                                    <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->course_duration  : 10 }}" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ isset($data->data->instructor_price->course_duration) ? $data->data->instructor_price->course_duration : \Carbon\Carbon::parse($data->data->valid_until)->diffInDays(\Carbon\Carbon::parse($data->data->created_at2)) }}">
                                                 </div>
                                             </div>
                                             <div class="col-xs-6" style="padding: 0;">
