@@ -122,7 +122,7 @@
                             @php $count = 12; @endphp
                                 @if(\Helper::checkRules('add-lesson-video'))
                                     @php $count = 9; @endphp
-                                    @if(!IS_ADMIN && $data->quota->hide != 1)
+                                    @if( (!IS_ADMIN && $data->quota->hide != 1) || IS_ADMIN )
                                     <div class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="x_panel">
                                             <div class="x_title">
