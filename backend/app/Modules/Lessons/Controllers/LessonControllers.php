@@ -55,7 +55,7 @@ class LessonControllers extends Controller {
         $data['courses'] = Course::dataList(null,null,true,true)['data'];
         if(!IS_ADMIN){
             $quotaObj = new \stdClass();
-            $quotaObj->main = isset($universityObj->Course->CoursePrice) ? $universityObj->Course->CoursePrice->upload_space * 10^9 : 0;
+            $quotaObj->main = isset($universityObj->Course->CoursePrice) ? $universityObj->Course->CoursePrice->upload_space : 0;
             $quotaObj->used = Course::getData($universityObj->Course)->quota;
             if($quotaObj->main == 0 || $quotaObj->main < $quotaObj->used){
                 $quotaObj->message = 'Your Quota Exceeded The Limit, Please Contact System Adminstrator !!';
@@ -67,7 +67,6 @@ class LessonControllers extends Controller {
                 $quotaObj->message = 'File Must be less than or equal to '.$diff .' MB';
                 $quotaObj->hide = 2;
             }
-
             $data['quota'] = $quotaObj;
         }
         return view('Lessons.Views.edit')->with('data', (object) $data);      
@@ -241,7 +240,7 @@ class LessonControllers extends Controller {
                     $courseQuery->where('id',$course_id)->where('instructor_id',$instructor_id);
                 })->sum('size');
                 $totalSize = $uploadedSize + $fileData[1];
-                if((!isset($lessonObj->Course->CoursePrice) && $totalSize >= 2000000000) || $totalSize >= $lessonObj->Course->CoursePrice * 10^9 ){
+                if((!isset($lessonObj->Course->CoursePrice) && $totalSize >= 2000000000) || $totalSize >= $lessonObj->Course->CoursePrice * 1000000000 ){
                     return \TraitsFunc::ErrorMessage('Your Quota Exceeded The Limit, Please Contact System Adminstrator !!', 400);
                 }
             }
