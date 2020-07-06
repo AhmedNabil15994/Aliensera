@@ -134,7 +134,7 @@
                             @if(IS_ADMIN)
                             <th width="15%">Estimated Cost</th>
                             @else
-                            <th>Quota</th>
+                            <th>Used Quota</th>
                             @endif
                             <th>Active Students</th>
                             <th>Status</th>

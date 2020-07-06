@@ -60,6 +60,12 @@ class VideoComment extends Model{
             $source->where('course_id',$input['course_id']);
         }
 
+        if(isset($input['lesson_id']) && !empty($input['lesson_id'])){
+            $source->whereHas('Video',function($whereQuery) use ($input) {
+                $whereQuery->where('lesson_id',$input['lesson_id']);
+            });
+        }
+
         if(IS_ADMIN == false){
             $source->whereHas('Course',function($courseQuery) {
                 $courseQuery->where('instructor_id',USER_ID);

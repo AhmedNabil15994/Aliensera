@@ -46,6 +46,17 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-sm-6 col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>Lesson</label>
+                                        <select class="form-control" name="lesson_id">
+                                            <option value="">Select Lesson...</option>
+                                            @foreach($data->lessons as $lesson)
+                                            <option value="{{ $lesson->id }}" {{ $lesson->id == Input::get('lesson_id') ? 'selected' : '' }}>{{ $lesson->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 @if(IS_ADMIN)
                                 <div class="col-sm-6 col-xs-12 col-md-4">
                                     <div class="form-group">

@@ -25,3 +25,17 @@ function deleteRequest($id) {
         })
     });
 }
+
+$('select[name="course_id"]').on('change',function(){
+    $('select[name="lesson_id"]').val('-1]').trigger("change");
+    $('select[name="lesson_id"]').empty();
+    $('select[name="lesson_id"]').append("<option value=''>Select A Lesson...</option>");
+    $course_id = $(this).val();
+    if($course_id){
+        $.get('/courses/getLessons/'+$course_id,function(data) {
+            $.each(data,function(index,item){
+                $('select[name="lesson_id"]').append('<option value="'+item.id+'">'+item.title+'</option>');
+            });
+        })
+    }
+});
