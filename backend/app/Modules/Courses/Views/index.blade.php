@@ -131,9 +131,8 @@
                             <th>Field</th>
                             <th width="8%">Valid Until</th>
                             <th width="5%">Price</th>
-                            @if(!IS_ADMIN)
-                            <th>Used Quota</th>
-                            @endif
+                            <th width="10%">Quota</th>
+                            <th width="10%">Requests</th>
                             <th>Active Students</th>
                             <th>Status</th>
                             <th align="center">Actions</th>
@@ -150,9 +149,8 @@
                                 <td>{{ $value->field }}</td>
                                 <td>{{ $value->valid_until }}</td>
                                 <td>{{ $value->price }} LE</td>
-                                @if(!IS_ADMIN)
-                                <td>{{ $value->quota }} GB</td>
-                                @endif
+                                <td>{{ $value->quota }} GB of {{ $value->main_quota }} GB</td>
+                                <td>{{ $value->requests }} Request of {{ $value->main_requests }} Requests</td>
                                 <td>{{ $value->studentCount }}</td>
                                 <td>{!! $value->statusLabel !!}</td>
                                 <td>
@@ -176,9 +174,11 @@
                             <tr>
                                 <td></td>
                                 @if(!IS_ADMIN)
-                                <td colspan="11">No Data Found</td>
-                                @else
                                 <td colspan="12">No Data Found</td>
+                                <td style="display: none;"></td>
+                                @else
+                                <td colspan="14">No Data Found</td>
+                                <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 @endif
                                 <td style="display: none;"></td>

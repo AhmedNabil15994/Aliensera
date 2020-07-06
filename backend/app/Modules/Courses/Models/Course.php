@@ -250,6 +250,9 @@ class Course extends Model{
         $data->image = self::getPhotoPath($source->id, $source->image);
         $data->rates = self::getRates($source);
         $data->quota = round( ($source->Video()->sum('size') / 1000000000) ,3);
+        $data->main_quota = $source->CoursePrice != null ? $source->CoursePrice->upload_space : 0;
+        $data->requests = $source->StudentCourse()->where('status',1)->count();
+        $data->main_requests = $source->CoursePrice != null ? $source->CoursePrice->approval_number : 0;
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
