@@ -183,15 +183,14 @@ class Course extends Model{
         return $statusLabel;
     }
 
-    static function getTopCourses($count){
-        $source = self::NotDeleted()->whereIn('status',[3,5]);
-        
-        $source = self::withCount(['StudentCourse'=> function($withQuery){
+    static function getTopCourses($count){        
+        $source = self::NotDeleted()->withCount(['StudentCourse'=> function($withQuery){
             $withQuery->where('status',1);
-            if(!IS_ADMIN){
-                $withQuery->where('instructor_id',USER_ID);
-            }
-        }])->orderBy('student_course_count','desc')->take($count);
+        }])->orderBy('student_course_count','desc');
+        if(!IS_ADMIN){
+            $source->where('instructor_id',USER_ID);
+        }
+        $source->take($count);
         return self::generateObj($source,true);
     }
 

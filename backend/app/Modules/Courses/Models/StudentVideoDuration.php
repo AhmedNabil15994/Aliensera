@@ -33,7 +33,7 @@ class StudentVideoDuration extends Model{
         $source = self::NotDeleted();
         if(IS_ADMIN == false){
             $source->whereHas('Course',function($courseQuery){
-                $courseQuery->where('instructor_id',USER_ID);
+                $courseQuery->NotDeleted()->where('instructor_id',USER_ID);
             });
         }
         $source = $source->groupBy('course_id')->orderByRaw('SUM(see_duration) DESC')->take($count)->get();
