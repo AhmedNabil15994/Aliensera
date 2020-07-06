@@ -61,7 +61,7 @@ class StudentRequest extends Model{
             $source->where('student_id', $student_id);
         } 
 
-        return self::generateObj($source,$withPaginate);
+        return self::generateObj($source->orderBy('id','DESC'),$withPaginate);
     }
 
     static function generateObj($source,$withPaginate=false){

@@ -41,6 +41,21 @@ class RequestControllers extends Controller {
             return Redirect('404');
         }
 
+        if(!IS_ADMIN && $status == 1){
+            $course_id = $requestObj->course_id;
+            $instructor_id = $requestObj->Course->instructor_id;
+            if($requestObj->Course->CoursePrice == null){
+                \Session::flash('error', "Alert! Your Quota Exceeded The Limit, Please Contact System Adminstrator !!");
+                return \Redirect::back()->withInput();
+            }
+
+            $uploadedSize = StudentRequest::where('instructor_id',$instructor_id)->where('course_id',$course_id)->where('status',1)->groupBy('student_id')->count();;
+            if( !isset($requestObj->Course->CoursePrice)  || $uploadedSize >= $requestObj->Course->CoursePrice->approval_number ){
+                \Session::flash('error', "Alert! Your Quota Exceeded The Limit, Please Contact System Adminstrator !!");
+                return \Redirect::back()->withInput();
+            }
+        }
+
         $requestObj->status = $status;
         $requestObj->updated_by = USER_ID;
         $requestObj->updated_at = DATE_TIME;
