@@ -240,7 +240,7 @@ class LessonControllers extends Controller {
                     $courseQuery->where('id',$course_id)->where('instructor_id',$instructor_id);
                 })->sum('size');
                 $totalSize = $uploadedSize + $fileData[1];
-                if((!isset($lessonObj->Course->CoursePrice) && $totalSize >= 2000000000) || $totalSize >= $lessonObj->Course->CoursePrice * 1000000000 ){
+                if((!isset($lessonObj->Course->CoursePrice) && $totalSize >= 2000000000) || $totalSize >= $lessonObj->Course->CoursePrice->upload_space * 1000000000 ){
                     return \TraitsFunc::ErrorMessage('Your Quota Exceeded The Limit, Please Contact System Adminstrator !!', 400);
                 }
             }

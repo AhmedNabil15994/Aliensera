@@ -163,7 +163,7 @@ p{
     width: 30%;
   }
   #frame .content{
-    width: 70% !important;
+    width: 70%;
   }
   #frame #sidepanel #profile .wrap p{
     margin-left: 8px;
@@ -577,14 +577,18 @@ p{
   background-color: #FFF;
 }
 @media screen and (max-width: 735px) {
-  #frame .content {
-    width: calc(100% - 58px);
-    min-width: 300px !important;
+  #frame #sidepanel{
+    width: 40% !important;
+  }
+  #frame .content{
+    min-width: 60% !important;
+    width: 60% !important;
   }
 }
 @media screen and (min-width: 900px) {
   #frame .content {
-    width: calc(100% - 450px);
+    max-width: calc(100% - 450px);
+    min-width: calc(100% - 290px);
   }
 }
 #frame .content .contact-profile {
@@ -730,6 +734,23 @@ p{
     margin-top: 17px;
     right: 65px;
   }
+  #frame .content .message-input .wrap{
+    top: 0;
+  }
+  #frame .content .message-input .wrap button{
+    padding: 13px 0 !important;
+    margin-bottom: 0;
+  }
+  .content .chat-loader img{
+    width: 50%;
+  }
+  #frame .content .message-input .wrap input{
+    padding: 13px 5px;
+  }
+  #frame .content .message-input .wrap .attachment{
+    margin-top: 11px;
+    right: 60px;
+  }
 }
 #frame .content .message-input .wrap .attachment:hover {
   opacity: 1;
@@ -787,8 +808,109 @@ li.replies p a{
   height: 200px;
   border-radius: 0;
 }
-@media (max-width: 320px){
+@media (max-width: 400px){
+  #frame{
+    min-width: 100% !important;
+  }
+  #frame #sidepanel #contacts ul li.contact{
+    padding: 0 !important;
+    padding-bottom: 10px !important;
+    border: 0;
+    border-bottom: 1px solid #435f7a;
+  }
+  #frame #sidepanel{
+    width: 40% !important;
+  }
   #frame .content{
-    min-width: unset;
+    min-width: 60% !important;
+    width: 60% !important;
+  }
+  #frame #sidepanel #profile .wrap{
+    display: none;
+  }
+  #contacts h4{
+    font-size: 12px;
+  }
+  #frame #sidepanel #contacts ul li.contact .wrap .meta .name{
+    font-size: 10px;
+  }
+  #frame #sidepanel #contacts ul li.contact .wrap .meta .preview{
+    font-size: 9px;
+  }
+  #frame .content .contact-profile img{
+    display: none;
+  }
+  #frame .content .contact-profile p{
+    margin-left: 20px;
+  }
+  #frame .content .messages{
+    padding: 0;
+  }
+  #frame .content .messages ul{
+    display: block;
+    width: 100%;
+  }
+  #frame .content .messages ul li{
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    margin-top: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  #frame .content .messages ul li.replies img{
+    margin-left: 0;
+  }
+  #frame .content .messages ul li.replies p{
+    margin-top: 5px;
+    padding: 5px;
+    float: right;
+    display: block;
+    max-width: calc(100% - 40px);
+    direction: rtl;
+    text-align: right;
+  }
+  .messages li.replies span{
+    margin-right: 0;
+  }
+  #frame .content .messages ul li.sent{
+    padding: 0;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  #frame .content .messages ul li.sent .row{
+    margin: 0;
+  }
+  #frame .content .messages ul li.sent img{
+    margin-right: 5px;
+  }
+  #frame .content .messages ul li.sent p{
+    margin-top: 10px;
+    padding: 5px;
+    float: left;
+    display: block;
+    max-width: calc(100% - 40px);
+    direction: rtl;
+    text-align: left;
+  }
+  .messages li.sent span{
+    margin-left: 0;
+  }
+  #frame .content .message-input .wrap{
+    top: 0;
+  }
+  #frame .content .message-input .wrap button{
+    padding: 13px 0;
+    margin-bottom: 0;
+  }
+  .content .chat-loader img{
+    width: 50%;
+  }
+  #frame .content .message-input .wrap input{
+    padding: 13px 5px;
+  }
+  #frame .content .message-input .wrap .attachment{
+    margin-top: 11px;
+    right: 60px;
   }
 }
