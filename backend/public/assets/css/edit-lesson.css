@@ -36,6 +36,10 @@ div#previews{
 .panel_toolbox>li{
     float: right;
 }
+.bold-p{
+    font-weight: bold;
+    font-size: 15px;
+}
 div.playlist,
 div.quiz{
     border: 1px solid #ddd;

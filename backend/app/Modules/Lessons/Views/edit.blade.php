@@ -121,8 +121,8 @@
                         <div class="row">
                             @php $count = 12; @endphp
                                 @if(\Helper::checkRules('add-lesson-video'))
-                                    @if(!IS_ADMIN && $data->quota->hide != 1)
                                     @php $count = 9; @endphp
+                                    @if(!IS_ADMIN && $data->quota->hide != 1)
                                     <div class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="x_panel">
                                             <div class="x_title">
@@ -135,7 +135,7 @@
                                             <div class="x_content">
                                                 <p>Drag multiple files to the box below for multi upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
                                                 @if(!IS_ADMIN && $data->quota->hide == 2)
-                                                <p>{{ $data->quota->message }}</p>
+                                                <p class="bold-p">{{ $data->quota->message }}</p>
                                                 @endif
                                                 <div id="actions" class="row">
                                                     <div class="col-lg-7">
@@ -194,6 +194,21 @@
                                                         <div class="clearfix"></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @elseif(!IS_ADMIN && $data->quota->hide == 1)
+                                    <div class="col-md-3 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <h2>Lesson Lectures</h2>
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+                                                <p class="bold-p">{{ $data->quota->message }}</p>
                                             </div>
                                         </div>
                                     </div>

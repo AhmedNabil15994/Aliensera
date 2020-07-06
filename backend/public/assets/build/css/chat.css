@@ -787,3 +787,8 @@ li.replies p a{
   height: 200px;
   border-radius: 0;
 }
+@media (max-width: 320px){
+  #frame .content{
+    min-width: unset;
+  }
+}
