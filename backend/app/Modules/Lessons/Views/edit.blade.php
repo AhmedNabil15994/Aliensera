@@ -120,86 +120,85 @@
                     <div class="row">
                         <div class="row">
                             @php $count = 12; @endphp
-                            @if(\Helper::checkRules('add-lesson-video'))
-                            @if(!IS_ADMIN && $data->quota->hide != 1)
-                            @php $count = 9; @endphp
-                            <div class="col-md-3 col-sm-12 col-xs-12">
-                                <div class="x_panel">
-                                    <div class="x_title">
-                                        <h2>Lesson Lectures</h2>
-                                        <ul class="nav navbar-right panel_toolbox">
-                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                        </ul>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="x_content">
-                                        <p>Drag multiple files to the box below for multi upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
-                                        @if(!IS_ADMIN && $data->quota->hide == 2)
-                                        <p>{{ $data->quota->message }}</p>
-                                        @endif
-                                        <div id="actions" class="row">
-                                            <div class="col-lg-7">
-                                                <span class="btn btn-success fileinput-button dz-clickable">
-                                                    <i class="glyphicon glyphicon-plus"></i>
-                                                    <span>Add Videos...</span>
-                                                </span>
-                                                <button type="submit" class="btn btn-primary start">
-                                                    <i class="glyphicon glyphicon-upload"></i>
-                                                    <span>Start Upload</span>
-                                                </button>
-                                                <button type="reset" class="btn btn-warning cancel">
-                                                    <i class="glyphicon glyphicon-ban-circle"></i>
-                                                    <span>Cancel Upload</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="col-lg-5">
-                                                <span class="fileupload-process">
-                                                    <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress=""></div>
-                                                    </div>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <!-- HTML heavily inspired by http://blueimp.github.io/jQuery-File-Upload/ -->
-                                        <div class="table table-striped" class="files" id="previews">
-                                            <div id="template" class="file-row">
-                                                <div>
-                                                    <span class="preview"><img data-dz-thumbnail /></span>
-                                                </div>
-                                                <div>
-                                                    <p class="name" data-dz-name></p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                                <div>
-                                                    <p class="size" data-dz-size></p>
-                                                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                      <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <button class="btn btn-primary start">
-                                                        <i class="glyphicon glyphicon-upload"></i>
-                                                        <span>Start</span>
-                                                    </button>
-                                                    <button data-dz-remove class="btn btn-warning cancel">
-                                                        <i class="glyphicon glyphicon-ban-circle"></i>
-                                                        <span>Cancel</span>
-                                                    </button>
-                                                    <button data-dz-remove class="btn btn-danger delete">
-                                                        <i class="glyphicon glyphicon-trash"></i>
-                                                        <span>Delete</span>
-                                                    </button>
-                                                </div>
+                                @if(\Helper::checkRules('add-lesson-video'))
+                                    @if(!IS_ADMIN && $data->quota->hide != 1)
+                                    @php $count = 9; @endphp
+                                    <div class="col-md-3 col-sm-12 col-xs-12">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <h2>Lesson Lectures</h2>
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                                </ul>
                                                 <div class="clearfix"></div>
                                             </div>
+                                            <div class="x_content">
+                                                <p>Drag multiple files to the box below for multi upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
+                                                @if(!IS_ADMIN && $data->quota->hide == 2)
+                                                <p>{{ $data->quota->message }}</p>
+                                                @endif
+                                                <div id="actions" class="row">
+                                                    <div class="col-lg-7">
+                                                        <span class="btn btn-success fileinput-button dz-clickable">
+                                                            <i class="glyphicon glyphicon-plus"></i>
+                                                            <span>Add Videos...</span>
+                                                        </span>
+                                                        <button type="submit" class="btn btn-primary start">
+                                                            <i class="glyphicon glyphicon-upload"></i>
+                                                            <span>Start Upload</span>
+                                                        </button>
+                                                        <button type="reset" class="btn btn-warning cancel">
+                                                            <i class="glyphicon glyphicon-ban-circle"></i>
+                                                            <span>Cancel Upload</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="col-lg-5">
+                                                        <span class="fileupload-process">
+                                                            <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress=""></div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- HTML heavily inspired by http://blueimp.github.io/jQuery-File-Upload/ -->
+                                                <div class="table table-striped" class="files" id="previews">
+                                                    <div id="template" class="file-row">
+                                                        <div>
+                                                            <span class="preview"><img data-dz-thumbnail /></span>
+                                                        </div>
+                                                        <div>
+                                                            <p class="name" data-dz-name></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                        <div>
+                                                            <p class="size" data-dz-size></p>
+                                                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <button class="btn btn-primary start">
+                                                                <i class="glyphicon glyphicon-upload"></i>
+                                                                <span>Start</span>
+                                                            </button>
+                                                            <button data-dz-remove class="btn btn-warning cancel">
+                                                                <i class="glyphicon glyphicon-ban-circle"></i>
+                                                                <span>Cancel</span>
+                                                            </button>
+                                                            <button data-dz-remove class="btn btn-danger delete">
+                                                                <i class="glyphicon glyphicon-trash"></i>
+                                                                <span>Delete</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            @endif
-                            @php $count = 12; @endphp
-                            @endif
+                                    @endif
+                                @endif
                             <div class="col-md-{{ $count }} col-sm-12 col-xs-12" style="{{ $count == 9 ? 'padding-left: 0;' :'' }}">
                                 <div class="x_panel">
                                     <div class="x_title">
