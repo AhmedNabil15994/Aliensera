@@ -246,6 +246,7 @@ class Course extends Model{
         $data->instructor_price = $source->CoursePrice != null ? CoursePrice::getData($source->CoursePrice) : [];
         $data->image = self::getPhotoPath($source->id, $source->image);
         $data->rates = self::getRates($source);
+        $data->quota = round( ($source->Video()->sum('size') / 1000000000) ,3);
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);

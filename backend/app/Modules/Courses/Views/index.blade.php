@@ -133,6 +133,8 @@
                             <th width="5%">Price</th>
                             @if(IS_ADMIN)
                             <th width="15%">Estimated Cost</th>
+                            @else
+                            <th>Quota</th>
                             @endif
                             <th>Active Students</th>
                             <th>Status</th>
@@ -161,6 +163,8 @@
                                     Approvals Cost: <span class="cost">{{ @$value->instructor_price->updated_approval_cost }} LE</span><br>
                                     @endif
                                 </td>
+                                @else
+                                <td>{{ $value->quota }} GB</td>
                                 @endif
                                 <td>{{ $value->studentCount }}</td>
                                 <td>{!! $value->statusLabel !!}</td>
@@ -191,7 +195,8 @@
                                 @if(!IS_ADMIN)
                                 <td colspan="11">No Data Found</td>
                                 @else
-                                <td colspan="12">No Data Found</td>
+                                <td colspan="13">No Data Found</td>
+                                <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                                 @endif
                                 <td style="display: none;"></td>

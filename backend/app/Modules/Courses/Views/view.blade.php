@@ -76,6 +76,7 @@
                                 @if($data->data->course_type == 2)
                                 <p>University : <span>{{ $data->data->university }}</span></p>
                                 @endif
+                                <p>Quota : <span>{{ $data->data->quota }} GB</span></p>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <p>Price : <span class="price">{{ $data->data->price }} $</span></p>
