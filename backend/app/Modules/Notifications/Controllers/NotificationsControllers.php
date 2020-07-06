@@ -3,6 +3,7 @@
 use App\Models\Devices;
 use App\Models\Course;
 use App\Models\Field;
+use App\Models\User;
 use App\Models\StudentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -48,11 +49,9 @@ class NotificationsControllers extends Controller {
     }
 
     public function index() {
-
         $groupsList['fields'] = Field::where('status',1)->get();
-        if(!IS_ADMIN){
-            $groupsList['courses'] = Course::dataList(null,null,true)['data'];
-        }
+        $groupsList['courses'] = Course::dataList(null,null,true)['data'];
+        $groupsList['instructors'] = User::getUsersByType(2);
         return view('Notifications.Views.add')
             ->with('data', (Object) $groupsList);
     }
@@ -104,6 +103,12 @@ class NotificationsControllers extends Controller {
                 }elseif($input['course_type'] == 2){
                     $courseQuery->whereIn('status',[3,5])->where('university_id',$input['university_id'])->where('faculty_id',$input['faculty_id'])->where('year',$input['year']);
                 }        
+                if(isset($input['instructor_id']) && !empty($input['instructor_id'])){
+                    $courseQuery->where('instructor_id',$input['instructor_id']);
+                }
+                if(isset($input['course_id']) && !empty($input['course_id'])){
+                    $courseQuery->where('course_id',$input['course_id']);
+                }
             })->where('status',1)->pluck('student_id');
             $tokens = Devices::getDevicesBy($users);
             $tokens = reset($tokens);

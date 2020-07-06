@@ -93,6 +93,36 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-4 col-xs-12 col-sm-6">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>Course</label>
+                                                <select name="course_id" class="form-control">
+                                                    <option value="">Select A Course...</option>
+                                                    @foreach($data->courses as $course)
+                                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-12 col-sm-6">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>Instructor</label>
+                                                <select name="course_id" class="form-control">
+                                                    <option value="">Select An Instructor...</option>
+                                                    @foreach($data->instructors as $instructor)
+                                                    <option value="{{ $instructor->id }}">{{ $instructor->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-xs-12">
                                     <div class="row" >
                                         <div class="col-xs-12">
