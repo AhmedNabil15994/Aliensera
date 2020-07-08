@@ -39,7 +39,10 @@ class DashboardControllers extends Controller {
             }
             $datesArray[$daysCount] = $end;  
         }else{
-            $datesArray[1] = $end;  
+            // $datesArray[1] = $end;  
+            for($i=1;$i<24;$i++){
+                $datesArray[$i] = date('Y-m-d H:i:s',strtotime($start.'+'.$i." hour") );
+            }
         }
 
         $chartData = [];
@@ -48,18 +51,20 @@ class DashboardControllers extends Controller {
         for($i=0;$i<$dataCount;$i++){
             if(IS_ADMIN == true){
                 $students = StudentCourse::where('status',1)->pluck('student_id');
-                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$daysCount){
+                $activeStudents = ApiAuth::where('created_at','<',date('Y-m-d H:i:s',strtotime($end.'+1 second')))->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$daysCount){
                     if($daysCount > 2){
                         if($i < 6){
                             $whereQuery->where('created_at','<',$datesArray[$i+1]);
                         }
                     }else{
-                        $whereQuery->whereBetween('created_at', [$datesArray[0],$datesArray[1]]);
+                        if($i < count($datesArray)-1){
+                            $whereQuery->where('created_at','<',$datesArray[$i+1]);
+                        }
                     }
                 })->count();
             }else{
                 $students = StudentCourse::where('instructor_id',USER_ID)->where('status',1)->pluck('student_id');
-                $activeStudents = User::where('is_active')->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$dataCount){
+                $activeStudents = ApiAuth::where('created_at','<',date('Y-m-d H:i:s',strtotime($end.'+1 second')))->whereIn('user_id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray,$dataCount){
                     if($i < $dataCount-1){
                         $whereQuery->where('created_at','<',$datesArray[$i+1]);
                     }
@@ -72,16 +77,16 @@ class DashboardControllers extends Controller {
     }
 
     public function Dashboard() {
-    	if(IS_ADMIN == true){
+        if(IS_ADMIN == true){
             $dataList['allStudents'] = User::getUsersByType(3)->count();
             $dataList['totalStudents'] = User::getUsersByType(3,true)->count();
             
             $dataList['allInstructors'] = User::getUsersByType(2,true)->count();
-	    	$dataList['totalInstructors'] = User::getUsersByType(2,true)->count();
+            $dataList['totalInstructors'] = User::getUsersByType(2,true)->count();
             
             $dataList['allCourses'] = Course::NotDeleted()->whereIn('status',[3,5])->count();
-	    	$dataList['totalCourses'] = Course::NotDeleted()->count();
-	    	
+            $dataList['totalCourses'] = Course::NotDeleted()->count();
+            
             $dataList['allVideos'] = LessonVideo::NotDeleted()->count();
             $dataList['freeVideos'] = LessonVideo::NotDeleted()->where('free',1)->count();
 
@@ -91,27 +96,23 @@ class DashboardControllers extends Controller {
             })->sum(\DB::raw('upload_cost + approval_cost'));;;
             $dataList['allDuration'] = StudentVideoDuration::getAllDuration();
 
-    		$dataList['topCourses'] = Course::getTopCourses(5)['data'];
-    		$dataList['topStudents'] = User::getTopStudents(5);
-    		$dataList['topInstructors'] = User::getTopInstructors(5);
+            $dataList['topCourses'] = Course::getTopCourses(5)['data'];
+            $dataList['topStudents'] = User::getTopStudents(5);
+            $dataList['topInstructors'] = User::getTopInstructors(5);
         }else{
 
-            $dataList['allStudents'] = StudentCourse::NotDeleted()->where('status',1)->whereHas('Course',function($whereQuery){
-                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
-            })->where('instructor_id',USER_ID)->groupBy('student_id')->count();
-        	
-            $dataList['totalStudents'] = StudentCourse::NotDeleted()->whereHas('Course',function($whereQuery){
-                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
-            })->where('instructor_id',USER_ID)->groupBy('student_id')->count();
+            $dataList['allStudents'] = StudentCourse::NotDeleted()->where('instructor_id',USER_ID)->where('status',1)->groupBy('student_id')->get()->count();
+            
+            $dataList['totalStudents'] = StudentCourse::NotDeleted()->where('instructor_id',USER_ID)->groupBy('student_id')->get()->count();
             
             $dataList['totalCourses'] = Course::NotDeleted()->where('instructor_id',USER_ID)->count();
-            $dataList['allCourses'] = Course::NotDeleted()->where('instructor_id',USER_ID)->where('status',4)->count();
+            $dataList['allCourses'] = Course::NotDeleted()->where('instructor_id',USER_ID)->whereIn('status',[3,5])->count();
             $dataList['expiredCourses'] = Course::NotDeleted()->where('instructor_id',USER_ID)->whereIn('status',[3,5])->count();
             
             $dataList['comments'] = VideoComment::NotDeleted()->whereHas('Course',function($courseQuery){
                 $courseQuery->NotDeleted()->where('instructor_id',USER_ID);
             })->where('status',1)->count();
-	    	
+            
             $dataList['allVideos'] = LessonVideo::NotDeleted()->whereHas('Course',function($courseQuery){
                 $courseQuery->NotDeleted()->where('instructor_id',USER_ID);
             })->count();
@@ -131,35 +132,32 @@ class DashboardControllers extends Controller {
             $dataList['topCourses'] = Course::getTopCourses(5)['data'];
             $dataList['topStudents'] = User::getTopStudents(5);
             $dataList['topSeenCourses'] = StudentVideoDuration::getTopSeenCourses(5);
-        }    	
+        }       
 
-        $now = date('Y-m-d');
+        $now = date('Y-m-d H:i:s');
         $datesArray = [];
         $datesArray[0] = $now;
-        for($i=1;$i<10;$i++){
-            $datesArray[$i] = date('Y-m-d',strtotime('-'.$i."week") );
+        for($i=1;$i<24;$i++){
+            $datesArray[$i] = date('Y-m-d H:i:s',strtotime($now.'+'.$i." hour") );
         }
         $chartData = [];
-        $datesArray = array_reverse($datesArray);
         for($i=0;$i<count($datesArray);$i++){
             if(IS_ADMIN == true){
-                $students = StudentCourse::where('status',1)->pluck('student_id');
-                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
-                    if($i < 9){
+                $activeStudents = ApiAuth::where('created_at','<',date('Y-m-d H:i:s',strtotime($now.'+1 day')))->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                    if($i < count($datesArray)-1){
                         $whereQuery->where('created_at','<',$datesArray[$i+1]);
                     }
                 })->count();
             }else{
                 $students = StudentCourse::where('instructor_id',USER_ID)->where('status',1)->pluck('student_id');
-                $activeStudents = User::where('is_active',1)->whereIn('id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
-                    if($i < 9){
+                $activeStudents = ApiAuth::where('created_at','<',date('Y-m-d H:i:s',strtotime($now.'+1 day')))->whereIn('user_id',$students)->where('created_at','>=',$datesArray[$i])->where(function($whereQuery) use ($i,$datesArray){
+                    if($i < count($datesArray)-1){
                         $whereQuery->where('created_at','<',$datesArray[$i+1]);
                     }
                 })->count();
             }
             $chartData[$i] = [$datesArray[$i] , $activeStudents];
         }
-
         $dataList['chartData'] = $chartData;
         
         return view('Dashboard.Views.dashboard')->with('data', (Object) $dataList);
