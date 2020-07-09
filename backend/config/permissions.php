@@ -18,6 +18,8 @@ return [
     'CoursesControllers@sortLesson' => 'general',
     'CoursesControllers@sortVideo' => 'general',
     'CoursesControllers@getLessons' => 'general',
+    'CertificateControllers@index' => 'general',
+    'CertificateControllers@download' => 'general',
     'LessonControllers@removeAttachment' => 'general',
     'ChatControllers@uploadAttachment' => 'general',
     'AuthControllers@login' => 'login',

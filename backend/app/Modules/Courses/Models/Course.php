@@ -46,6 +46,10 @@ class Course extends Model{
         return $this->hasMany('App\Models\Lesson', 'course_id','id');
     }
 
+    function LessonQuestion(){
+        return $this->hasMany('App\Models\LessonQuestion', 'course_id','id');
+    }
+
     function Video(){
         return $this->hasMany('App\Models\LessonVideo', 'course_id','id');
     }

@@ -44,11 +44,12 @@
                     </li>
                     @endif
 
-                    <li class="{{ Active(URL::to('/notifications*')) }}"><a><i class="fa fa-certificate"></i> Engage<span class="fa fa-chevron-down"></span></a>
+                    <li class="{{ Active(URL::to('/notifications*')) }} {{ Active(URL::to('/messages*')) }} {{ Active(URL::to('/notifications*')) }} {{ Active(URL::to('/certificates*')) }}"><a><i class="fa fa-certificate"></i> Engage<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li class="{{ Active(URL::to('/messages*')) }}"><a href="{{ URL::to('/messages') }}">Messages</a></li>
                             <li class="{{ Active(URL::to('/comments*')) }}"><a href="{{ URL::to('/comments') }}">Comments</a></li>
                             <li class="{{ Active(URL::to('/notifications*')) }}"><a href="{{ URL::to('/notifications') }}">Notifications</a></li>
+                            <li class="{{ Active(URL::to('/certificates*')) }}"><a href="{{ URL::to('/certificates') }}">Certificates</a></li>
                         </ul>
                     </li>  
 

@@ -30,6 +30,10 @@ class StudentScore extends Model{
         return $this->belongsTo('App\Models\User','student_id','id');
     }
 
+    public function Corrects(){
+        return $this->where('correct',1);
+    }
+
     static function getOne($id){
         $source = self::NotDeleted()
             ->where('id', $id);

@@ -165,6 +165,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Watson\Active\ActiveServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */
@@ -229,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'Active' => Watson\Active\Facades\Active::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         
     ],
 

@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        'App\Console\Commands\ActiveLessonHourly'
+        'App\Console\Commands\SetCertificateHourly'
     ];
 
     /**
@@ -26,6 +26,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('active:lesson')
+                 ->hourly();
+
+        $schedule->command('set:certificate')
                  ->hourly();
     }
 
