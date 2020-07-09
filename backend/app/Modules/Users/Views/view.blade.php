@@ -45,6 +45,10 @@
                             <li><i class="fa fa-clock-o user-profile-icon"></i> {{ $session->created_at }}</li>
                             @endforeach
                         </ul>
+                        @elseif($data->data->group_id == 2)
+                        <div class="row last">
+                            <h4>Certificate Logo:</h4> <img src="{{ $data->data->logo }}">
+                        </div>
                         @endif
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">

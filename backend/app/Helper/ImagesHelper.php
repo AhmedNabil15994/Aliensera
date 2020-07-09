@@ -45,6 +45,11 @@ class ImagesHelper {
                 $checkFile = $checkFile . '/notifications/' . $filename;
                 return is_file($checkFile) ? $fullPath : $default;
                 break;
+            case "logos":
+                $fullPath = $path . 'uploads' . '/logos/' . $filename;
+                $checkFile = $checkFile . '/logos/' . $filename;
+                return is_file($checkFile) ? $fullPath : $default;
+                break;
         }
 
         return $default;
@@ -104,6 +109,10 @@ class ImagesHelper {
 
         if ($strAction == 'notifications') {
             $directory = $path . 'notifications/';
+        }
+
+        if ($strAction == 'logos') {
+            $directory = $path . 'logos/';
         }
 
         $fileName_full = $fileName . '.' . $extension;

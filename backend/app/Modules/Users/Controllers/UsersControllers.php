@@ -205,7 +205,7 @@ class UsersControllers extends Controller {
         $userObj->save();
 
         User::saveProfile($userObj);
-
+       
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
     }
@@ -325,6 +325,18 @@ class UsersControllers extends Controller {
         $profileObj->show_student_id = isset($input['show']) ? 1 : 0;
         $profileObj->address = $input['address'];
         $profileObj->save();
+
+        if ($request->hasFile('logo')) {
+            $files = $request->file('logo');
+            $fileName = \ImagesHelper::UploadImage('logos', $files, $id);
+            if($fileName == false){
+                \Session::flash('error', "Upload images Failed");
+                return \Redirect::back()->withInput();
+            }
+
+            $profileObj->logo = $fileName;
+            $profileObj->save();
+        }
 
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();

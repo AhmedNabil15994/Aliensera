@@ -40,6 +40,10 @@ class User extends Model{
         return \ImagesHelper::GetImagePath('users', $id, $photo);
     }
 
+    static function getLogoPath($id, $photo) {
+        return \ImagesHelper::GetImagePath('logos', $id, $photo);
+    }
+
     static function usersList() {
         $input = \Input::all();
 
@@ -244,6 +248,7 @@ class User extends Model{
         $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
         $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
         $data->active = $source->is_active == 1 ? "Yes" : "No";
+        $data->logo =  $source->Profile->logo != null ? self::getLogoPath($source->id, $source->Profile->logo) : '';
         $data->is_active = $source->is_active;
         $data->show_student_id = $source->Profile->show_student_id;
         if($source->Profile->group_id == 2){

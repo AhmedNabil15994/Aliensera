@@ -99,6 +99,7 @@
                             @if(Input::get('course_id') != 0)
                             <th>View Duration</th>
                             @endif
+                            <th>Certificate Logo (Instructors Only)</th>
                             <th style="padding-left: 50px">Actions</th>
                         </tr>
                         </thead>
@@ -113,6 +114,13 @@
                                     {{ $value->viewDuration }} of {{ \App\Models\Course::getData(\App\Models\Course::getOne(Input::get('course_id')))->allTime }}
                                 </td>
                                 @endif
+                                <td>
+                                    @if($value->logo != '')
+                                    <img src="{{ $value->logo }}" alt="">
+                                    @else
+                                    -----
+                                    @endif
+                                </td>
                                 <td class="actions" width="15%" align="left">
                                     @if(\Helper::checkRules('edit-user'))
                                         <a href="{{ URL::to('/users/edit/' . $value->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
@@ -142,6 +150,7 @@
                                 @if(Input::get('course_id') != 0)
                                 <td style="display: none;"></td>
                                 @endif
+                                <td style="display: none;"></td>
                                 <td style="display: none;"></td>
                             </tr>    
                         @endif

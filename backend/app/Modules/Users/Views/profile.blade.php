@@ -17,34 +17,33 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
-                        <div class="profile_img">
-                            <div id="crop-avatar">
-                                <!-- Current avatar -->
-                                <img class="img-responsive avatar-view" src="{{ $data->image }}" alt="Avatar" title="Change the avatar">
+                    <form class="form-horizontal form-label-left" method="post" action="{{ URL::to('/updateProfile') }}" enctype="multipart/form-data">
+                        <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <img class="img-responsive avatar-view" src="{{ $data->image }}" alt="Avatar" title="Change the avatar">
+                                </div>
                             </div>
+                            <h3>{{ $data->name }}</h3>
+                            <ul class="list-unstyled user_data">
+                                <li><i class="fa fa-map-marker user-profile-icon"></i> {{$data->address}}</li>
+                                <li><i class="fa fa-user"></i> {{ $data->gender == 1 ? 'Male' : 'Female' }}</li>
+                                <li class="m-top-xs"><i class="fa fa-phone"></i> {{ $data->phone }}</li>
+                                <li class="m-top-xs"><i class="fa fa-envelope"></i> {{ $data->email }}</li>
+                            </ul>
+                            <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Change Image</a>
                         </div>
-                        <h3>{{ $data->name }}</h3>
-                        <ul class="list-unstyled user_data">
-                            <li><i class="fa fa-map-marker user-profile-icon"></i> {{$data->address}}</li>
-                            <li><i class="fa fa-user"></i> {{ $data->gender == 1 ? 'Male' : 'Female' }}</li>
-                            <li class="m-top-xs"><i class="fa fa-phone"></i> {{ $data->phone }}</li>
-                            <li class="m-top-xs"><i class="fa fa-envelope"></i> {{ $data->email }}</li>
-                        </ul>
-                        <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Change Image</a>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><small>User Information</small></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <br>
-                                <form class="form-horizontal form-label-left" method="post" action="{{ URL::to('/updateProfile') }}" enctype="multipart/form-data">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2><small>User Information</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
                                         <div class="col-md-4 col-sm-4 col-xs-6">
@@ -110,6 +109,12 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Certificate Logo</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <input id="fileUpload" name="logo" type="file">
+                                        </div>
+                                    </div>
                                     @endif
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
@@ -118,10 +123,10 @@
                                             <button type="submit" class="btn btn-success">Submit</button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -58,6 +58,13 @@ i.fa-star{
 .profile_left{
     border-right: 1px solid #DDD;
 }
+.profile_left .row.last{
+    margin: 0;
+}
+.profile_left .row.last img{
+    width: 100%;
+    margin-top: 10px;
+}
 div.empty{
     border-bottom: 1px dotted #e6e6e6;
     padding: 8px 0;
