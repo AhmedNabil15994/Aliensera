@@ -220,10 +220,9 @@ class Course extends Model{
         $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
         $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
-        if($type == 1){
-            $controllerObj = new \App\Http\Controllers\CourseControllers();
-            $data->certificate = $controllerObj->getCertificate($source->id)->original->link;   
-        }
+        $certificateObj = Certificate::NotDeleted()->where('student_id',USER_ID)->where('course_id',$source->id)->first();
+        $data->certificate_code = $certificateObj!=null? $certificateObj->code : '';   
+        
         return $data;
     }
 

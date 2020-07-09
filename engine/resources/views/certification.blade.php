@@ -220,11 +220,13 @@
                     <div class="row text-center first-row">
                         <div class="col-xs-12 data">
                             <div class="col-xs-6 text-left code">
-                                Code: #123123
+                                Code: #{{ $code }}
                             </div>
                             <div class="col-xs-6 second">
                                 <img src="{{ URL::to('/images/logo.jpeg') }}" alt="">
-                                <img src="{{ URL::to('/images/logo.jpeg') }}" alt="">
+                                @if($logo != '')
+                                <img src="{{ $logo }}" alt="">
+                                @endif
                             </div>
                         </div>
                         <div class="col-xs-12">

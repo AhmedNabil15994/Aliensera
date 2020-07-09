@@ -30,6 +30,10 @@ class User extends Model{
         return \ImagesHelper::GetImagePath('users', $id, $photo);
     }
 
+    static function getLogoPath($id, $photo) {
+        return \ImagesHelper::GetImagePath('logos', $id, $photo);
+    }
+
     static function generateUsername($slug, $id) {
         $userObj = self::NotDeleted()
             ->with('Profile')
@@ -160,6 +164,7 @@ class User extends Model{
         $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
+        $data->certificate_logo =  $source->Profile->logo != null ? self::getLogoPath($source->id, $source->Profile->logo) : '';
         if($source->Profile->group_id == 2){
             $data->show_student_id = $source->Profile->show_student_id;
         }

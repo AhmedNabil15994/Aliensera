@@ -44,6 +44,11 @@ class ImagesHelper {
                 $checkFile = $checkFile . '/chat/' . $filename;
                 return is_file($checkFile) ? $fullPath : $default;
                 break;
+            case "logos":
+                $fullPath = $path . 'uploads' . '/logos/' . $filename;
+                $checkFile = $checkFile . '/logos/' . $filename;
+                return is_file($checkFile) ? $fullPath : $default;
+                break;
         }
 
         return $default;
