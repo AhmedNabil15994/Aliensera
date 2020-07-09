@@ -14,21 +14,21 @@
                 font-family: 'Cairo', sans-serif;
                 position: relative;
             }
-
             p {
                 margin: 0 0 2px !important;
             }
-
-            #bannerProp {
-                width: 75px;
+             #bannerProp{
+                width: 40px;
                 height: 890px;
+                background-color: #343F80;
             }
-
+            #bannerProp2{
+                height: 75px;
+            }
             .header-large{
-                font-size: 350%;
+                font-size: 50px;
                 font-weight: 600;
-                color: #967726;
-                padding-top: 100px !important;
+                color: #6b5316;
             }
 
             .light-bold {
@@ -38,15 +38,15 @@
 
             p.certifies,
             p.details{
-                font-size: 24px;
-                color: #967726;
+                font-size: 28px;
+                color: #6b5316;
             }
 
             p.name{
-                font-size: 36px;
+                font-size: 40px;
                 font-weight: bold;
                 letter-spacing: 2px;
-                color: #22637d;
+                color: #123d4e;
                 display: block;
                 width: 500px;
                 margin: auto !important;
@@ -54,10 +54,11 @@
                 margin-bottom: 40px !important;
                 border-bottom: 1px solid #DDD;
                 padding-bottom: 8px;
+                text-transform: capitalize;
             }
 
             p.course{
-                margin-bottom: 80px !important;
+                margin-bottom: 0 !important;
             }
 
             .medium-font{
@@ -95,20 +96,20 @@
             }
 
             b.first{
-                padding-bottom: 8px;
-                border-bottom: 1px solid #DDD;
+                padding-top: 8px;
+                border-top: 1px solid #DDD;
                 display: block;
-                width: 150px;
+                width: 200px;
                 margin: auto;
                 margin-bottom: 10px;
-                font-size: 20px;
-                color: #22637d;
+                font-size: 24px;
+                color: #123d4e;
             }
 
             b.second{
-                font-size: 24px;
+                font-size: 28px;
                 width: 150px;
-                color: #967726;
+                color: #6b5316;
             }
 
             .col-xs-1{
@@ -116,32 +117,116 @@
             }
 
             .container-fluid{
-                border: 3px solid #DDD;
                 border-radius: 5px;
                 position: relative;
                 height: 890px;
                 overflow: hidden;
+                position: relative;
             }
-            
-            .col-xs-11{
+            .col-xs-1.text-right{
+                padding-right: 0;
+                direction: rtl;
+            }
+            .col-xs-10{
                 height: 890px;
             }
 
             .first-row .footer{
                 position: absolute;
-                top: calc(100% - 20px);
-                bottom: 20px;
+                bottom: 70px;
+            }
+            .row.first{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                z-index: 1;
+                margin: 0;
+                color: #FFF;
+                border: 0;
+                top: 80px;
+            }
+            .row.first img.image{
+                display: block;
+                height: 600px;
+                width: 600px;
+                margin: auto;
+                background-repeat: no-repeat;
+                background-size: contain;
+                opacity: 0.2;
+                border: 0;
+                color: #FFF;
+                border: 0;
+            }
+            .row.main,
+            .row.main2{
+                position: fixed;
+                background-color: #343F80;
+                left: 0;
+                /*z-index: 3;*/
+                width: 100%;
+                height: 40px;
+                background-size: contain;
+                margin: 0;
+            }
+            .row.main{
+                top: 0;
+            }
+            .row.main2{
+                bottom: 25px;
+                background-color: #343F80;
+            }
+            .row.main .col-xs-12{
+                padding: 0;
+            }
+            .row.last{
+                position: absolute;
+                z-index: 2;
+                margin-right: 1px;
+                border: 25px solid #343F80;
+                height: 100%;
+            }
+            div.data{
+                height: 100px;
+                display: block;
+                width: 100%;
+                margin-top: 20px;
+            }
+            div.data img{
+                width: 75px;
+                height: 75px;
+                display: block;
+            }
+            div.data .col-xs-6.second{
+                direction: rtl;
+            }
+            div.code{
+                padding-top: 10px;
+                font-weight: bold;
+                font-size: 22px;
+                color: #6b5316;
             }
         </style>
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
+            <div class="row first">
+                <img class="image" src="{{ URL::to('/images/logo.jpeg') }}" alt="">
+            </div>
+            <div class="row last">
                 <div class="col-xs-1">
-                    <img id="bannerProp" src="{{ URL::to('/images/left_banner.png') }}">
                 </div>
-                <div class="col-xs-11">
+                <div class="col-xs-10">
                     <div class="row text-center first-row">
+                        <div class="col-xs-12 data">
+                            <div class="col-xs-6 text-left code">
+                                Code: #123123
+                            </div>
+                            <div class="col-xs-6 second">
+                                <img src="{{ URL::to('/images/logo.jpeg') }}" alt="">
+                                <img src="{{ URL::to('/images/logo.jpeg') }}" alt="">
+                            </div>
+                        </div>
                         <div class="col-xs-12">
                             <p class="header-large">Certificate of Completion</p>
                         </div>
@@ -157,17 +242,19 @@
                             <p class="course name">the {{ $course }} Exams</p>
                         </div>
                         <div class="col-xs-12 footer">
-                            <div class="col-xs-6">
-                                <b class="first">{{ $date }}</b>
+                            <div class="col-xs-4">
                                 <b class="second">Date</b>
+                                <b class="first">{{ $date }}</b>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <b class="second">Provided By</b>
                                 <b class="first">{{ $instructor }}</b>
-                                <b class="second">Instructor Name</b>
                             </div>
-                            <img class="pull-right" id="footerLogo" src="{{ URL::to('/images/logo.jpeg') }}">
                         </div>
                     </div>
+                </div>
+                <div class="col-xs-1 text-right">
                 </div>
             </div>
         </div>
