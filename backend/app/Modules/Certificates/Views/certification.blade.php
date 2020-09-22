@@ -4,14 +4,10 @@
         <title>Aliensera - Certification</title>
         <link href="{{ URL::to('/assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
         <style type="text/css" media="screen">
-            @font-face {
-                font-family: Cairo;
-                src: url("{{ URL::to('/assets/fonts/Cairo-Regular.ttf') }}") /* TTF file for CSS3 browsers */
-            }
             body,
             html {
                 background-color: #fff;
-                font-family: 'Cairo', sans-serif;
+                /*font-family: 'Cairo', sans-serif;*/
                 position: relative;
             }
             p {
