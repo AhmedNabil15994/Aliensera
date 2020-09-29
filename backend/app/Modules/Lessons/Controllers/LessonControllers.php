@@ -188,7 +188,9 @@ class LessonControllers extends Controller {
                 $universityObj->status = 2;
             }
         }
-        $universityObj->active_at = $input['active_at'].':00:00';
+        if(isset($input['active_at'])){
+            $universityObj->active_at = date('Y-m-d H:i:s',strtotime($input['active_at']));
+        }
         $universityObj->sort = $lessonsCount != null ?  $lessonsCount->sort+1 : 1;
         $universityObj->created_by = USER_ID;
         $universityObj->created_at = DATE_TIME;
