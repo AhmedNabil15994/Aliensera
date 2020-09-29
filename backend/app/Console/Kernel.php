@@ -27,10 +27,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('active:lesson')
-                 ->hourly();
+                 ->everyMinute();
 
         $schedule->command('set:certificate')
-                 ->hourly();
+                 ->everyMinute();
     }
 
     /**
