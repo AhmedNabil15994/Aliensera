@@ -4,7 +4,7 @@ return [
 
 
     // 'IMAGE_BASE' => env('IMAGE_BASE', 'http://aliensera.com/backend/'),
-    'IMAGE_BASE' => env('IMAGE_BASE', 'https://backend.aliensera.com/'),
+    'IMAGE_BASE' => env('IMAGE_BASE', 'http://backend.aliensera.loc/'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -166,7 +166,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Watson\Active\ActiveServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-        
+
         /*
          * Package Service Providers...
          */
@@ -232,7 +232,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'Active' => Watson\Active\Facades\Active::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-        
+
+
     ],
 
 ];
