@@ -114,7 +114,7 @@ class LessonControllers extends Controller {
             $universityObj->questions_sort = $input['questions_sort'];
         }
         if(isset($input['active_at'])){
-            $universityObj->active_at = $input['active_at'].':00:00';
+            $universityObj->active_at = date('Y-m-d H:i:s',strtotime($input['active_at']));
         }
         $universityObj->updated_by = USER_ID;
         $universityObj->updated_at = DATE_TIME;
