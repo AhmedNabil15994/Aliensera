@@ -16,7 +16,7 @@ class CertificateControllers extends Controller {
         $dataList['data'] = (object) Certificate::dataList();
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['students'] = User::getUsersByType(3);
-        $dataList['courses'] = Course::dataList(null,null,true)['data'];
+        $dataList['courses'] = Course::latest()->get();
         return view('Certificates.Views.index')->with('data', (Object) $dataList);
     }
 

@@ -12,7 +12,7 @@ class UpgradeControllers extends Controller {
     use \TraitsFunc;
 
     public function index() {
-        $dataList['data'] = (object) Course::dataList(null,null,null,null,5);
+        $dataList['data'] = (object) Course::dataList(null,null,null,null,5,'instructor_price');
         $dataList['instructors'] = User::getUsersByType(2);
         return view('Upgrade.Views.index')->with('data', (Object) $dataList);
     }

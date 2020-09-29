@@ -231,37 +231,39 @@ class User extends Model{
         return $data;
     }
 
-    static function getData($source) {
+    static function getData($source,$viewDets=null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
-        $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
-        $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
         $data->image = self::selectImage($source);
-        $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
-        $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
-        $data->phone = $source->Profile != null ? $source->Profile->phone: '';
-        $data->address = $source->Profile != null ? $source->Profile->address: '';
-        $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
         $data->email = $source->email;
         $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
         $data->extra_rules = unserialize($source->Profile->extra_rules) != null || unserialize($source->Profile->extra_rules) != '' ? unserialize($source->Profile->extra_rules) : [];
         $data->active = $source->is_active == 1 ? "Yes" : "No";
-        $data->logo =  $source->Profile->logo != null ? self::getLogoPath($source->id, $source->Profile->logo) : '';
         $data->is_active = $source->is_active;
-        $data->show_student_id = $source->Profile->show_student_id;
-        if($source->Profile->group_id == 2){
-            $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
-            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('student_id')->count() :0;
-            $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('course_id')->count() :0;
-            $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
-            $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
-        }
-        if($source->StudentViewDuration){
-            $data->viewDuration = $source->StudentViewDuration->sum('see_duration') != 0 ? self::getDuration($source->StudentViewDuration->sum('see_duration')) : 0;
-        }
+        $data->logo =  $source->Profile->logo != null ? self::getLogoPath($source->id, $source->Profile->logo) : '';
         $data->deleted_by = $source->deleted_by;
+        if($viewDets != null){
+            $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
+            $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
+            $data->group = $source->Profile->Group != null ? $source->Profile->Group->title : '';
+            $data->gender = $source->Profile != null ? $source->Profile->gender : '';
+            $data->phone = $source->Profile != null ? $source->Profile->phone: '';
+            $data->address = $source->Profile != null ? $source->Profile->address: '';
+            $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
+            $data->show_student_id = $source->Profile->show_student_id;
+            if($data->group_id == 2){
+                $data->rateCount = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->count() :0;
+                $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('student_id')->count() :0;
+                $data->courseCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->groupBy('course_id')->count() :0;
+                $data->rateSum = $source->InstructorRate != null ? $source->InstructorRate()->NotDeleted()->sum('rate') :0;
+                $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
+            }
+            if($source->StudentViewDuration){
+                $data->viewDuration = $source->StudentViewDuration->sum('see_duration') != 0 ? self::getDuration($source->StudentViewDuration->sum('see_duration')) : 0;
+            }
+        }
         return $data;
     }
 

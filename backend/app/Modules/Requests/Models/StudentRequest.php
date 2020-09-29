@@ -88,11 +88,11 @@ class StudentRequest extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->course_id = $source->course_id;
-        $data->course = Course::getData($source->Course);
+        $data->course = $source->Course->title;
         $data->instructor_id = $source->instructor_id;
-        $data->instructor = User::getData($source->Instructor);
+        $data->instructor = $source->Instructor->name;
         $data->student_id = $source->student_id;
-        $data->student = User::getData($source->Student);
+        $data->student = $source->Student->name;
         $data->status = $source->status;
         return $data;
     }

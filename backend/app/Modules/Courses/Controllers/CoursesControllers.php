@@ -45,7 +45,7 @@ class CoursesControllers extends Controller {
     }
 
     public function index() {
-        $dataList = Course::dataList();
+        $dataList = Course::dataList(null,null,null,null,null,'courses');
         $dataList['fields'] = Field::where('status',1)->get();
         $dataList['instructors'] = User::getUsersByType(2);
         return view('Courses.Views.index')
@@ -76,7 +76,7 @@ class CoursesControllers extends Controller {
             return Redirect('404');
         }
 
-        $data['data'] = Course::getData($courseObj);
+        $data['data'] = Course::getData($courseObj,'course');
         $data['fields'] = Field::where('status',1)->get();
         $data['universities'] = University::where('status',1)->get();
         $data['faculties'] = Faculty::where('status',1)->where('university_id',$courseObj->university_id)->get();
@@ -93,7 +93,7 @@ class CoursesControllers extends Controller {
         }
 
         $data = CourseDiscussion::dataList($id,true);
-        $data['course'] = Course::getData($courseObj);
+        $data['course'] = Course::getData($courseObj,true);
         return view('Courses.Views.discussion')->with('data', (object) $data);      
     }
 

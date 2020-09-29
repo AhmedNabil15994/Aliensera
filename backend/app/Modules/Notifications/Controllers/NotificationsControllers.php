@@ -50,7 +50,7 @@ class NotificationsControllers extends Controller {
 
     public function index() {
         $groupsList['fields'] = Field::where('status',1)->get();
-        $groupsList['courses'] = Course::dataList(null,null,true)['data'];
+        $groupsList['courses'] = Course::latest()->get();
         $groupsList['instructors'] = User::getUsersByType(2);
         return view('Notifications.Views.add')
             ->with('data', (Object) $groupsList);

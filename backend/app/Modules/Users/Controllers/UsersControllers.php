@@ -89,7 +89,7 @@ class UsersControllers extends Controller {
 
     public function index() {
         $usersList = User::usersList();
-        $usersList['courses'] = Course::dataList(null,null,true)['data'];
+        $usersList['courses'] = Course::latest()->get();
         return view('Users.Views.index')
             ->with('data', (Object) $usersList);
     }
@@ -113,7 +113,7 @@ class UsersControllers extends Controller {
 
         $data['groups'] = Group::getList();
         $data['permissions'] = array_diff(array_unique(config('permissions')), ['general','doLogin','login','logout']);
-        $data['data'] = User::getData($userObj);
+        $data['data'] = User::getData($userObj,true);
         return view('Users.Views.edit')->with('data', (object) $data);
     }
 
@@ -141,19 +141,19 @@ class UsersControllers extends Controller {
             return redirect()->back();
         }
 
-        $data['data'] = User::getData($userObj);
+        $data['data'] = User::getData($userObj,true);
         $data['comments'] = VideoComment::dataList(null,null,null,$userObj->id);
         $profileObj = $userObj->Profile;
 
         if($profileObj->group_id == 2){
-            $data['courses'] = Course::dataList($userObj->id,null,true)['data'];
+            $data['courses'] = Course::dataList($userObj->id,null,true,null,null,'users')['data'];
             $data['rates'] = InstructorRate::dataList($userObj->id);
         }elseif($profileObj->group_id == 3){
-            $data['courses'] = Course::dataList(null,$userObj->id,true)['data'];
+            $data['courses'] = Course::dataList(null,$userObj->id,true,null,null,'users')['data'];
             $data['reviews'] = CourseFeedback::dataList(null,$userObj->id);
             $data['rates'] = InstructorRate::dataList(null,$userObj->id);
             $data['scores'] = StudentScore::dataList($id);
-            $data['requests'] = StudentRequest::dataList($id)['data'];
+            $data['requests'] = StudentRequest::dataList(null,$id)['data'];
             $data['sessions'] = ApiAuth::where('user_id',$id)->orderBy('id','desc')->get()->take(5);
         }
         return view('Users.Views.view')->with('data', (object) $data);

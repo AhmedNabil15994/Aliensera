@@ -53,15 +53,15 @@ class QuizControllers extends Controller {
 
     public function index() {
         $dataList = Quiz::dataList();
-        $dataList['courses'] = Course::dataList(null,null,true)['data'];
-        $dataList['lessons'] = Lesson::dataList(null,true)['data'];
+        $dataList['courses'] = Course::latest()->get();
+        $dataList['lessons'] = Lesson::latest()->get();
         return view('Quizes.Views.index')
             ->with('data', (Object) $dataList);
     }
 
     public function add() {
-        $dataList['courses'] = Course::dataList(null,null,true)['data'];
-        $dataList['lessons'] = Lesson::dataList(null,true)['data'];
+        $dataList['courses'] = Course::latest()->get();
+        $dataList['lessons'] = Lesson::latest()->get();
         return view('Quizes.Views.add')->with('data', (object) $dataList);
     }
 
@@ -130,8 +130,8 @@ class QuizControllers extends Controller {
         }
 
         $data['data'] = Quiz::getData($universityObj);
-        $data['courses'] = Course::dataList(null,null,true)['data'];
-        $data['lessons'] = Lesson::dataList(null,true)['data'];
+        $data['courses'] = Course::latest()->get();
+        $data['lessons'] = Lesson::latest()->get();
         return view('Quizes.Views.edit')->with('data', (object) $data);      
     }
 

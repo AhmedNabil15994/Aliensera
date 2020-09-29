@@ -13,8 +13,8 @@ class CommentControllers extends Controller {
 
     public function index() {
         $dataList = VideoComment::dataList(null,null,null,null,true);
-        $dataList['courses'] = Course::dataList(null,null,true)['data'];
-        $dataList['lessons'] = Lesson::dataList(null,true)['data'];
+        $dataList['courses'] = Course::latest()->get();
+        $dataList['lessons'] = Lesson::latest()->get();
         $dataList['instructors'] = User::getUsersByType(2);
         if(IS_ADMIN){
         	$dataList['students'] = User::getUsersByType(3);

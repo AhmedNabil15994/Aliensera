@@ -35,7 +35,7 @@ class Lesson extends Model{
         return $source->first();
     }
 
-    static function dataList($course_id=null,$paginate=false) {
+    static function dataList($course_id=null,$paginate=false,$withDets=null) {
         $input = \Input::all();
 
         $source = self::NotDeleted();
@@ -63,10 +63,10 @@ class Lesson extends Model{
         }
 
         $source->orderBy('id','DESC')->orderBy('sort','ASC');
-        return self::generateObj($source,$paginate);
+        return self::generateObj($source,$paginate,$withDets);
     }
 
-    static function generateObj($source,$paginate){
+    static function generateObj($source,$paginate,$withDets){
         if($paginate == true){
             $sourceArr = $source->get();
         }else{
@@ -76,7 +76,7 @@ class Lesson extends Model{
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
-            $list[$key] = self::getData($value);
+            $list[$key] = self::getData($value,$withDets);
         }
 
         if($paginate != true){
@@ -87,7 +87,7 @@ class Lesson extends Model{
         return $data;
     }
 
-    static function getData($source) {
+    static function getData($source,$withDets=null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
@@ -96,15 +96,17 @@ class Lesson extends Model{
         $data->quiz_duration = $source->quiz_duration;
         $data->pass_quiz = $source->pass_quiz;
         $data->course = $source->Course->title;
-        $data->course_status = $source->Course->status;
         $data->description = $source->description;
         $data->valid_until = $source->valid_until;
-        $data->active_at = $source->active_at;
-        $data->studentScores = StudentScore::getByLesson($source->id);
-        $data->videos = LessonVideo::dataList($source->id);
-        $data->questions = LessonQuestion::dataList($source->id);
+        $data->active_at = $source->active_at; 
         $data->status = $source->status;
         $data->sort = $source->sort;
+        if($withDets != null){
+            $data->studentScores = StudentScore::getByLesson($source->id);
+            $data->videos = LessonVideo::dataList($source->id);
+            $data->course_status = $source->Course->status;
+            $data->questions = LessonQuestion::dataList($source->id);
+        }
         return $data;
     }
 

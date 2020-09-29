@@ -133,14 +133,14 @@
                                 <td>
                                     {{-- <img src="{{ $value->student->image }}" alt=""> --}}
                                     <div class="course-data">
-                                        <a href="{{ URL::to('/users/view/'.$value->student_id) }}" target="_blank">{{ $value->student->name }}</a>
+                                        <a href="{{ URL::to('/users/view/'.$value->student_id) }}" target="_blank">{{ $value->student }}</a>
                                     </div>
                                 </td>
 
                                 <td>
                                     {{-- <img src="{{ $value->course->image }}" alt=""> --}}
                                     <div class="course-data">
-                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course->title }}</a>
+                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course }}</a>
                                         {{-- <p>{{ $value->course->description }}</p> --}}
                                     </div>
                                 </td>
@@ -148,7 +148,7 @@
                                 <td>
                                     {{-- <img src="{{ $value->instructor->image }}" alt=""> --}}
                                     <div class="course-data">
-                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor->name }}</a>
+                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor }}</a>
                                     </div>
                                 </td>
                                 @endif

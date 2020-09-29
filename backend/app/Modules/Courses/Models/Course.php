@@ -96,7 +96,7 @@ class Course extends Model{
         return $mainViews;
     }
 
-    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null,$status=null,$newSat=null) {
+    static function dataList($instructor_id=null,$student_id=null,$withPaginate=null,$status=null,$newSat=null,$withDets=null) {
         $input = \Input::all();
 
         $source = self::with('Feedback');
@@ -147,10 +147,10 @@ class Course extends Model{
         }
 
         $source->orderBy('id','DESC');
-        return self::generateObj($source,$withPaginate);
+        return self::generateObj($source,$withPaginate,$withDets);
     }
 
-    static function generateObj($source,$withPaginate){
+    static function generateObj($source,$withPaginate,$withDets){
         if($withPaginate != null){
             $sourceArr = $source->get();
         }else{
@@ -164,7 +164,7 @@ class Course extends Model{
                 $value->status = 4;
                 $value->save();
             }
-            $list[$key] = self::getData($value);
+            $list[$key] = self::getData($value,$withDets);
         }
         if($withPaginate == null){
             $data['pagination'] = \Helper::GeneratePagination($sourceArr);
@@ -198,7 +198,7 @@ class Course extends Model{
             $source->where('instructor_id',USER_ID);
         }
         $source->take($count);
-        return self::generateObj($source,true);
+        return self::generateObj($source,true,null);
     }
 
     static function getDuration($duration){
@@ -217,11 +217,8 @@ class Course extends Model{
         return $result;
     }
 
-    static function getData($source) {
+    static function getData($source,$withDets=null) {
         $data = new  \stdClass();
-        if($source->StudentDuration != null){
-            $data->seeDuration = self::getDuration($source->StudentDuration->sum('see_duration'));
-        }
         $data->id = $source->id;
         $data->title = $source->title;
         $data->description = $source->description;
@@ -230,10 +227,7 @@ class Course extends Model{
         $data->course_type = $source->course_type;
         $data->courseType = $source->course_type == 1 ? 'General' : 'University';
         $data->university_id = $source->university_id;
-        $data->university = $source->University != null ? $source->University->title : '';
-        $data->faculty = $source->Faculty != null ? $source->Faculty->title : '';
         $data->faculty_id = $source->faculty_id;
-        $data->field = $source->Field != null ? $source->Field->title : '';
         $data->field_id = $source->field_id;
         $data->price = $source->price;
         $data->year = $source->year;
@@ -241,30 +235,57 @@ class Course extends Model{
         $data->requirements = $source->requirements;
         $data->valid_until = $source->valid_until;
         $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
-        $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id,true)['data'] : [];
-        $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
-        $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->count() : 0;
-        $data->videosCount = $source->Video != null ? $source->Video()->NotDeleted()->count() : 0;
-        $data->allTime = $source->Video != null ? self::getDuration($source->Video()->NotDeleted()->sum('duration')) : 0;
-        $data->rateCount = $source->Feedback != null ? $source->Feedback()->NotDeleted()->count() :0;
-        $data->rateSum = $source->Feedback != null ? $source->Feedback()->NotDeleted()->sum('rate') :0;
-        $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
-        $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
-        $data->instructor_price = $source->CoursePrice != null ? CoursePrice::getData($source->CoursePrice) : [];
         $data->image = self::getPhotoPath($source->id, $source->image);
-        $data->rates = self::getRates($source);
-        $data->quota = round( ($source->Video()->sum('size') / 1000000000) ,3);
-        $data->main_quota = $source->CoursePrice != null ? $source->CoursePrice->upload_space : 0;
-        $data->requests = $source->StudentCourse()->where('status',1)->count();
-        $data->main_requests = $source->CoursePrice != null ? $source->CoursePrice->approval_number : 0;
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
+        $data->deleted_by = $source->deleted_by;
+        $data->created_at2 = $source->created_at;
         if(isset($source->student_course_count)){
             $data->student_course_count = $source->student_course_count;
         }
-        $data->deleted_by = $source->deleted_by;
-        $data->created_at2 = $source->created_at;
+
+        if($withDets == 'instructor_price'){
+            $data->instructor_price = $source->CoursePrice != null ? CoursePrice::getData($source->CoursePrice) : [];
+        }
+
+        if($withDets != null || $withDets != 'instructor_price'){
+            
+            $data->university = $source->University != null ? $source->University->title : '';
+            $data->faculty = $source->Faculty != null ? $source->Faculty->title : '';
+            $data->field = $source->Field != null ? $source->Field->title : '';
+
+            if($withDets == 'users'){
+                if($source->StudentDuration != null){
+                    $data->seeDuration = self::getDuration($source->StudentDuration->sum('see_duration'));
+                }
+                $data->allTime = $source->Video != null ? self::getDuration($source->Video()->NotDeleted()->sum('duration')) : 0;
+            }
+
+            if($withDets == 'course'){
+                $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id,true,true)['data'] : [];
+                $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
+                $data->lessonsCount = $source->Lesson != null ? $source->Lesson()->NotDeleted()->count() : 0;
+                $data->videosCount = $source->Video != null ? $source->Video()->NotDeleted()->count() : 0;
+                $data->rateCount = $source->Feedback != null ? $source->Feedback()->NotDeleted()->count() :0;
+                $data->rateSum = $source->Feedback != null ? $source->Feedback()->NotDeleted()->sum('rate') :0;
+                $data->totalRate = $data->rateCount!= 0 ? round(($data->rateSum / ( 5 * $data->rateCount)) * 5 ,1) : 0;
+                $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
+                $data->rates = self::getRates($source);
+                $data->allTime = $source->Video != null ? self::getDuration($source->Video()->NotDeleted()->sum('duration')) : 0;
+                $data->quota = round( ($source->Video()->sum('size') / 1000000000) ,3);
+                $data->main_quota = $source->CoursePrice != null ? $source->CoursePrice->upload_space : 0;
+                $data->requests = $source->StudentCourse()->where('status',1)->count();
+                $data->main_requests = $source->CoursePrice != null ? $source->CoursePrice->approval_number : 0;
+            }
+
+            if($withDets == 'courses'){
+                $data->quota = round( ($source->Video()->sum('size') / 1000000000) ,3);
+                $data->main_quota = $source->CoursePrice != null ? $source->CoursePrice->upload_space : 0;
+                $data->requests = $source->StudentCourse()->where('status',1)->count();
+                $data->main_requests = $source->CoursePrice != null ? $source->CoursePrice->approval_number : 0;
+            }
+        }        
         return $data;
     }
 

@@ -39,7 +39,7 @@ class LessonControllers extends Controller {
 
     public function index() {
         $dataList = Lesson::dataList();
-        $dataList['courses'] = Course::dataList(null,null,true)['data'];
+        $dataList['courses'] = Course::latest()->get();
         return view('Lessons.Views.index')
             ->with('data', (Object) $dataList);
     }
@@ -51,8 +51,8 @@ class LessonControllers extends Controller {
             return Redirect('404');
         }
 
-        $data['data'] = Lesson::getData($universityObj);
-        $data['courses'] = Course::dataList(null,null,true,true)['data'];
+        $data['data'] = Lesson::getData($universityObj,true);
+        $data['courses'] = Course::latest()->get();
         if(!IS_ADMIN){
             $quotaObj = new \stdClass();
             $quotaObj->main = isset($universityObj->Course->CoursePrice) ? $universityObj->Course->CoursePrice->upload_space : 0;
@@ -113,7 +113,9 @@ class LessonControllers extends Controller {
             }
             $universityObj->questions_sort = $input['questions_sort'];
         }
-        $universityObj->active_at = $input['active_at'].':00:00';
+        if(isset($input['active_at'])){
+            $universityObj->active_at = $input['active_at'].':00:00';
+        }
         $universityObj->updated_by = USER_ID;
         $universityObj->updated_at = DATE_TIME;
         $universityObj->save();
@@ -149,7 +151,7 @@ class LessonControllers extends Controller {
     }
 
     public function add() {
-        $data['courses'] = Course::dataList(null,null,true,true)['data'];
+        $data['courses'] = Course::latest()->get();
         return view('Lessons.Views.add')->with('data', (object) $data);
     }
 

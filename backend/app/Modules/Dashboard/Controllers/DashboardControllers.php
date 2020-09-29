@@ -81,7 +81,7 @@ class DashboardControllers extends Controller {
             $dataList['allStudents'] = User::getUsersByType(3)->count();
             $dataList['totalStudents'] = User::getUsersByType(3,true)->count();
             
-            $dataList['allInstructors'] = User::getUsersByType(2,true)->count();
+            $dataList['allInstructors'] = User::getUsersByType(2)->count();
             $dataList['totalInstructors'] = User::getUsersByType(2,true)->count();
             
             $dataList['allCourses'] = Course::NotDeleted()->whereIn('status',[3,5])->count();
