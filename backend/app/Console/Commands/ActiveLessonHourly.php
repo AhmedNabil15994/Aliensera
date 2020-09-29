@@ -45,7 +45,7 @@ class ActiveLessonHourly extends Command
             ['valid_until','>=',$now],
             ['status','=',0],
             ['active_at','!=',null],
-            ['active_at','<=',$now],
+            ['active_at',$now],
         ])->whereHas('Course',function($courseQuery){
             $courseQuery->whereIn('status',[3,5]);
         })->update(['status'=>1,'updated_at'=> $now]);
