@@ -198,7 +198,7 @@ class Course extends Model{
         $data->what_learn = $source->what_learn;
         $data->requirements = $source->requirements;
         $data->durationBySeconds = $source->Video != null ? $source->Video()->NotDeleted()->sum('duration') : 0;
-        if($user_id != null){
+        if($user_id == null){
             if($source->StudentDuration()->where('student_id',USER_ID) != null){
                 $data->seeDuration = $source->StudentDuration()->where('student_id',USER_ID)->sum('see_duration');
             }
