@@ -121,7 +121,7 @@ class StudentCourse extends Model{
             }elseif ($type == 'instructor') {
                 $list[$key] = self::getInstructorData($value);
             }elseif ($type == 'myCourses') {
-                $list[$key] = Course::getData($value->Course);
+                $list[$key] = Course::getData($value->Course,'none');
             }
         }
         if($type == 'myCourses'){

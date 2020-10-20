@@ -30,4 +30,14 @@ class HomeControllers extends Controller {
         
     }
 
+    public function getHomeIOS() {
+        $dataList['myCourses'] = [];
+        $dataList['popularCourses'] = StudentCourse::getTopCourses(3);
+        $dataList['topRatedCourses'] = CourseFeedback::getTopRatedCourses(3);
+        $dataList['categories'] = Field::dataList();
+        $dataList['status'] = \TraitsFunc::SuccessResponse();
+        return \Response::json((object) $dataList);
+        
+    }
+
 }

@@ -5,6 +5,7 @@ User Auth
 ----------------------------------------------------------*/
 Route::group(['prefix' => '/'] , function () {
     Route::post('login', 'AuthController@login');
+    Route::get('getHome', 'HomeControllers@getHomeIOS');
     Route::post('social', 'AuthController@social');
     Route::post('register', 'AuthController@register');
     Route::get('/certificates/{id}/downloadCertificate', 'CertificateControllers@download');

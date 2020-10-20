@@ -178,7 +178,7 @@ class Course extends Model{
         return $result;
     }
 
-    static function getData($source,$type=null) {
+    static function getData($source,$type=null,$user_id = null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
@@ -198,12 +198,18 @@ class Course extends Model{
         $data->what_learn = $source->what_learn;
         $data->requirements = $source->requirements;
         $data->durationBySeconds = $source->Video != null ? $source->Video()->NotDeleted()->sum('duration') : 0;
-        if($source->StudentDuration()->where('student_id',USER_ID) != null){
-            $data->seeDuration = $source->StudentDuration()->where('student_id',USER_ID)->sum('see_duration');
+        if($user_id != null){
+            if($source->StudentDuration()->where('student_id',USER_ID) != null){
+                $data->seeDuration = $source->StudentDuration()->where('student_id',USER_ID)->sum('see_duration');
+            }
+            $data->isOwned = StudentCourse::checkOwned($source->id,USER_ID);
+            $data->isFavourite = Favourites::checkFav($source->id,USER_ID);
+            $data->isInCart = Cart::checkCart($source->id,USER_ID);
+            $certificateObj = Certificate::NotDeleted()->where('student_id',USER_ID)->where('course_id',$source->id)->first();
+            $data->certificate_code = $certificateObj!=null? $certificateObj->code : '';   
+            $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
+            $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
         }
-        $data->isOwned = StudentCourse::checkOwned($source->id,USER_ID);
-        $data->isFavourite = Favourites::checkFav($source->id,USER_ID);
-        $data->isInCart = Cart::checkCart($source->id,USER_ID);
         $data->valid_until = $source->valid_until;
         $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
         $data->commentsCount = $source->Comment != null ? $source->Comment()->NotDeleted()->count() : 0;
@@ -217,11 +223,7 @@ class Course extends Model{
         $data->feedback = $source->Feedback != null ? CourseFeedback::dataList($source->id) : [];
         $data->discussion = $source->Discussion != null ? CourseDiscussion::dataList($source->id) : [];
         $data->image = $source->image != null ? self::getPhotoPath($source->id, $source->image) : '';
-        $data->instructor = $source->Instructor != null ? User::getInstructorData($source->Instructor,1) : '';
         $data->created_at = \Helper::formatDateForDisplay($source->created_at);
-        $data->lessons = $source->Lesson != null ? Lesson::dataList($source->id)['data'] : [];
-        $certificateObj = Certificate::NotDeleted()->where('student_id',USER_ID)->where('course_id',$source->id)->first();
-        $data->certificate_code = $certificateObj!=null? $certificateObj->code : '';   
         
         return $data;
     }
