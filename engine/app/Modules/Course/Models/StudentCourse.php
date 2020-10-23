@@ -137,7 +137,7 @@ class StudentCourse extends Model{
         $data->student_id = $source->student_id;
         $data->instructor_id = $source->instructor_id;
         $data->course_title = $source->Course != null ? $source->Course->title : '';
-        $data->myCourse = $source->Course != null ? Course::getData($source->Course) : [];
+        $data->myCourse = $source->Course != null ? Course::getData($source->Course,null,'none') : [];
         $data->instructor = $source->Instructor != null ? $source->Instructor->name : '';
         $data->student = $source->Student != null ? $source->Student->name : '';
         $data->status = $source->status;
