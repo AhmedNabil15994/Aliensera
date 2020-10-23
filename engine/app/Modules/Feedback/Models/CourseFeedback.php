@@ -54,7 +54,7 @@ class CourseFeedback extends Model{
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
             if($type == 'myCourses'){
-                $list[$key] = Course::getData($value->Course);
+                $list[$key] = Course::getData($value->Course,null,'none');
             }else{
                 $list[$key] = self::getData($value);
             }
