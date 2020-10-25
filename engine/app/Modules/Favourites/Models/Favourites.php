@@ -19,12 +19,19 @@ class Favourites extends Model {
     }
 
     static function getOne($id){
-        return self::NotDeleted()->where('course_id',$id)->where('student_id',USER_ID)->first();
+        return self::NotDeleted()->whereHas('course',function($courseQuery){
+            $courseQuer->whereIn('status',[3,5])->where(function($whereQuery){
+                $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
+            });
+        })->where('course_id',$id)->where('student_id',USER_ID)->first();
     }
 
     static function favouriteList() {
-        $source = self::NotDeleted()
-                ->where('student_id',USER_ID);
+        $source = self::NotDeleted()->whereHas('course',function($courseQuery){
+            $courseQuer->whereIn('status',[3,5])->where(function($whereQuery){
+                $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
+            });
+        })->where('student_id',USER_ID);
         
         return self::getFavouriteObj($source);
     }
