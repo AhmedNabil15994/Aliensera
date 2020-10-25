@@ -20,7 +20,7 @@ class Favourites extends Model {
 
     static function getOne($id){
         return self::NotDeleted()->whereHas('course',function($courseQuery){
-            $courseQuer->whereIn('status',[3,5])->where(function($whereQuery){
+            $courseQuery->whereIn('status',[3,5])->where(function($whereQuery){
                 $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
             });
         })->where('course_id',$id)->where('student_id',USER_ID)->first();
@@ -28,7 +28,7 @@ class Favourites extends Model {
 
     static function favouriteList() {
         $source = self::NotDeleted()->whereHas('course',function($courseQuery){
-            $courseQuer->whereIn('status',[3,5])->where(function($whereQuery){
+            $courseQuery->whereIn('status',[3,5])->where(function($whereQuery){
                 $whereQuery->where('valid_until',null)->orWhere('valid_until','>=',date('Y-m-d'));
             });
         })->where('student_id',USER_ID);
