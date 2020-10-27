@@ -408,14 +408,23 @@ class CoursesControllers extends Controller {
         if($status == 1){
             $courseObj->valid_until = $coursePriceObj->updated_end_date;
             $courseObj->save();
-            
-            $coursePriceObj->start_date = $coursePriceObj->updated_start_date;
-            $coursePriceObj->end_date = $coursePriceObj->updated_end_date;
-            $coursePriceObj->course_duration = $coursePriceObj->updated_course_duration;
-            $coursePriceObj->upload_space = $coursePriceObj->updated_upload_space;
-            $coursePriceObj->upload_cost = $coursePriceObj->updated_upload_cost;
-            $coursePriceObj->approval_number = $coursePriceObj->updated_approval_number;
-            $coursePriceObj->approval_cost = $coursePriceObj->updated_approval_cost;
+            if(!empty($coursePriceObj->updated_start_date)){
+                $coursePriceObj->start_date = $coursePriceObj->updated_start_date;
+            }
+            if(!empty($coursePriceObj->updated_end_date)){
+                $coursePriceObj->end_date = $coursePriceObj->updated_end_date;
+            }
+            if(!empty($coursePriceObj->updated_course_duration)){
+                $coursePriceObj->course_duration = $coursePriceObj->updated_course_duration;
+            }
+            if(!empty($coursePriceObj->updated_upload_space) && !empty($coursePriceObj->updated_upload_cost)){
+                $coursePriceObj->upload_space = $coursePriceObj->updated_upload_space;
+                $coursePriceObj->upload_cost = $coursePriceObj->updated_upload_cost;
+            }
+            if(!empty($coursePriceObj->updated_approval_number) && !empty($coursePriceObj->updated_approval_cost)){
+                $coursePriceObj->approval_number = $coursePriceObj->updated_approval_number;
+                $coursePriceObj->approval_cost = $coursePriceObj->updated_approval_cost;
+            }
         }
 
         $coursePriceObj->updated_start_date = null;
