@@ -56,7 +56,7 @@ class LessonControllers extends Controller {
         if(!IS_ADMIN){
             $quotaObj = new \stdClass();
             $quotaObj->main = isset($universityObj->Course->CoursePrice) ? $universityObj->Course->CoursePrice->upload_space : 0;
-            $quotaObj->used = Course::getData($universityObj->Course)->quota;
+            $quotaObj->used = Course::getData($universityObj->Course,'course')->quota;
             if($quotaObj->main == 0 || $quotaObj->main < $quotaObj->used){
                 $quotaObj->message = 'Your Quota Exceeded The Limit, Please Contact System Adminstrator !!';
                 $quotaObj->hide = 1;
