@@ -120,7 +120,7 @@ class User extends Model{
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
-            $list[$key] = self::getData($value);
+            $list[$key] = self::getData($value,'none');
         }
 
         $data['groups'] = Group::getList();
