@@ -111,7 +111,7 @@
                                 <td width="3%" align="left"><span class="btn {{ $value->is_active == 1 ? "btn-success" : "btn-danger" }} btn-xs"> {{ $value->active }}</span></td>
                                 @if(Input::get('course_id') != 0)
                                 <td align="left">
-                                    {{ $value->viewDuration }} of {{ \App\Models\Course::getData(\App\Models\Course::getOne(Input::get('course_id')))->allTime }}
+                                    {{ $value->viewDuration }} of {{ \App\Models\Course::getData(\App\Models\Course::getOne(Input::get('course_id')),'course')->allTime }}
                                 </td>
                                 @endif
                                 <td>
