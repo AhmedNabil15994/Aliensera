@@ -91,13 +91,13 @@
                                                 <td width="3%">{{ $value->id }}</td>
                                                 <td width="20%">
                                                     <div class="course-data">
-                                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course->title }}</a>
+                                                        <a href="{{ URL::to('/courses/view/'.$value->course_id) }}" target="_blank">{{ $value->course }}</a>
                                                     </div>
                                                 </td>
                                                 @if(IS_ADMIN)
                                                 <td>
                                                     <div class="course-data">
-                                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor->name }}</a>
+                                                        <a href="{{ URL::to('/users/view/'.$value->instructor_id) }}" target="_blank">{{ $value->instructor }}</a>
                                                     </div>
                                                 </td>
                                                 @endif
