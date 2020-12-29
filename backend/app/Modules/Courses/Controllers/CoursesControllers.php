@@ -332,7 +332,7 @@ class CoursesControllers extends Controller {
                     $coursePriceObj->updated_start_date = $input['start_date'];
                     $coursePriceObj->updated_end_date = $input['end_date'];
                     $coursePriceObj->updated_approval_number = $input['approval_number'];
-                    $coursePriceObj->updated_approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+                    $coursePriceObj->updated_approval_cost = round((2/3) * $input['course_duration'] * $input['approval_number']);
                     $coursePriceObj->updated_by = USER_ID;
                     $coursePriceObj->updated_at = DATE_TIME;
                 }else{
@@ -343,7 +343,7 @@ class CoursesControllers extends Controller {
                     $coursePriceObj->start_date = $input['start_date'];
                     $coursePriceObj->end_date = $input['end_date'];
                     $coursePriceObj->approval_number = $input['approval_number'];
-                    $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+                    $coursePriceObj->approval_cost = round((2/3) * $input['course_duration'] * $input['approval_number']);
                     $coursePriceObj->created_by = USER_ID;
                     $coursePriceObj->created_at = DATE_TIME;
                 }
@@ -366,7 +366,7 @@ class CoursesControllers extends Controller {
             $coursePriceObj->upload_space = $input['upload_space'];
             $coursePriceObj->upload_cost = $input['upload_space'] * 25;
             $coursePriceObj->approval_number = $input['approval_number'];
-            $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+            $coursePriceObj->approval_cost = round((2/3) * $input['course_duration'] * $input['approval_number']);
             $coursePriceObj->save();
         }
 
@@ -545,7 +545,7 @@ class CoursesControllers extends Controller {
             $coursePriceObj->upload_space = $input['upload_space'];
             $coursePriceObj->upload_cost = $input['upload_space'] * 25;
             $coursePriceObj->approval_number = $input['approval_number'];
-            $coursePriceObj->approval_cost = (1/2) * $input['course_duration'] * $input['approval_number'];
+            $coursePriceObj->approval_cost = round((2/3) * $input['course_duration'] * $input['approval_number']);
             $coursePriceObj->created_by = USER_ID;
             $coursePriceObj->created_at = DATE_TIME;
             $coursePriceObj->save();

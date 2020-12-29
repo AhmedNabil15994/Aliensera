@@ -212,7 +212,7 @@ $(function(){
             var startDate = moment($('input[name="start_date"]').val()).format('YYYY-MM-DD');
             var endDate = moment(startDate).add('days',$('input[name="course_duration"]').val());
             $('input[name="end_date"]').val(moment(endDate).format('YYYY-MM-DD')); 
-            $('span.upload_cost.student_approval').html($(this).val() * .5 * $('input[name="approval_number"]').val());
+            $('span.upload_cost.student_approval').html(Math.round($(this).val() * (2/3) * $('input[name="approval_number"]').val()));
         }
     })
 
@@ -227,7 +227,7 @@ $(function(){
     });
 
     $('input[name="approval_number"]').on('change',function(){
-        $('span.upload_cost.student_approval').html($(this).val() * .5 * $('input[name="course_duration"]').val());
+        $('span.upload_cost.student_approval').html(Math.round($(this).val() * (2/3) * $('input[name="course_duration"]').val()));
     });
 
 
