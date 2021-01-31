@@ -261,7 +261,7 @@ class UsersControllers extends Controller {
     }
 
     public function getProfile(){
-        $usersList = User::getData(User::getOne(USER_ID));
+        $usersList = User::getData(User::getOne(USER_ID),true);
         return view('Users.Views.profile')
             ->with('data', (Object) $usersList);
     }
