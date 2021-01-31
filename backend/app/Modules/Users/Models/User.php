@@ -210,7 +210,7 @@ class User extends Model{
         $data->gender = $source->Profile != null ? $source->Profile->gender : '';
         $data->group_id = $source->Profile->group_id;
         $data->phone = $source->Profile != null ? $source->Profile->phone: '';
-        $data->address = $source->Profile != null ? $source->Profile->address: '';
+        $data->address = $source->Profile != null ? ($source->Profile->address != null ? $source->Profile->address : '') : '';
         $data->mac_address = $source->Profile != null ? $source->Profile->mac_address: '';
         $data->email = $source->email;
         $data->last_login = \Helper::formatDateForDisplay($source->last_login, true);
