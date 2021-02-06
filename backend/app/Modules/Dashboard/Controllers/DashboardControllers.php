@@ -173,71 +173,51 @@ class DashboardControllers extends Controller {
     }
 
     public function stats() {   
+        $input = \Input::all();
         $data = [];
-        $universities = University::NotDeleted()->where('status',1)->get();
-        foreach ($universities as $value) {
-            $data[$value->id] = [];
-        }
-
         $studentCourseObj = StudentCourse::NotDeleted()->whereHas('Student',function($studentQuery){
             $studentQuery->where('is_active',1);
         })->whereHas('Instructor',function($instructorQuery){
             $instructorQuery->where('is_active',1);
-        })->whereHas('Course',function($courseQuery){
-            $courseQuery->whereIn('status',[3,5])->where('course_type',2);
+        })->whereHas('Course',function($courseQuery) use ($input){
+            $courseQuery->where('course_type',2);
+            if(isset($input['university_id']) && !empty($input['university_id'])){
+                $courseQuery->where('university_id',$input['university_id']);
+            }
+            if(isset($input['faculty_id']) && !empty($input['faculty_id'])){
+                $courseQuery->where('faculty_id',$input['faculty_id']);
+            }
+            if(isset($input['year']) && !empty($input['year'])){
+                $courseQuery->where('year',$input['year']);
+            }
+            if(isset($input['course_id']) && !empty($input['course_id'])){
+                $courseQuery->where('id',$input['course_id']);
+            }
         })->where('status',1)->groupBy('course_id')->selectRaw(\DB::raw('count(*) as counts, course_id'))->orderBy('counts','DESC')->get();
 
         foreach ($studentCourseObj as $value) {
             $courseObj = Course::getOne($value->course_id);
-            if($courseObj->year > 0){
-                $data[$courseObj->university_id][$courseObj->faculty_id][$courseObj->year] = [$value->counts,$value->course_id]; 
-            }else{
-                $data[$courseObj->university_id][$courseObj->faculty_id][1] = [$value->counts,$value->course_id];
-            }
+            $data[] =[
+                'university' => $courseObj->University->title,
+                'faculty' => $courseObj->Faculty->title,
+                'year' => $courseObj->year,
+                'course' => $courseObj->title,
+                'university_id' => $courseObj->university_id,
+                'faculty_id' => $courseObj->faculty_id,
+                'course_id' => $courseObj->id,
+                'studentCount' => $value->counts,
+            ];
         }
 
-        $myData = [];
-        foreach ($data as $university => $value) {
-            if(!empty($university))
-                $universityObj = University::getOne($university);
-                foreach ($value as $faculty => $facValue) {
-                    foreach ($facValue as $year => $yearValue) {
-                        $facultyObj = Faculty::getOne($faculty);
-                        $courseObj = Course::getOne($yearValue[1]);
-                        $myData[] = [
-                            'university' => $universityObj->title,
-                            'faculty' => $facultyObj->title,
-                            'year' => $year,
-                            'course' => $courseObj->title,
-                            'university_id' => $universityObj->id,
-                            'faculty_id' => $facultyObj->id,
-                            'course_id' => $courseObj->id,
-                            'studentCount' => $yearValue[0],
-                        ];
-                    }
-                }
-        }
-
-        $dataList['data'] = $myData;
+        $dataList['data'] = $data;
+        $dataList['courses'] = Course::latest()->get();
+        $dataList['universities'] = University::NotDeleted()->get();
+        $dataList['faculties'] = Faculty::NotDeleted()->get();
         return view('Dashboard.Views.stats')->with('data', (Object) $dataList);
     }
 
-    public function downloadStats($university,$faculty,$year,$course){
-        $university = (int) $university;
-        $faculty = (int) $faculty;
-        $year = (int) $year;
-
-        $universityObj = University::getOne($university);
-        if($universityObj == null){
-            \Session::flash('error','This University Is Not Found ');
-            return redirect()->back();
-        }
-
-        $facultyObj = Faculty::getOne($faculty);
-        if($facultyObj == null){
-            \Session::flash('error','This Faculty Is Not Found ');
-            return redirect()->back();
-        }
+    public function downloadStats($course){
+        $course = (int) $course;
 
         $courseObj = Course::getOne($course);
         if($courseObj == null){
@@ -245,14 +225,7 @@ class DashboardControllers extends Controller {
             return redirect()->back();
         }
 
-        if(!in_array($year, [1,2,3,4,5,6,7])){
-            \Session::flash('error','This Year Is Not Found ');
-            return redirect()->back();
-        }
-
-        $queryData = StudentCourse::NotDeleted()->whereHas('Course',function($whereQuery) use ($university,$faculty,$year){
-            $whereQuery->where('university_id',$university)->where('faculty_id',$faculty)->where('year',$year)->whereIn('status',[3,5]);
-        })->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
+        $queryData = StudentCourse::NotDeleted()->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
 
         $student_id = reset($queryData);
         
@@ -279,13 +252,15 @@ class DashboardControllers extends Controller {
         return view('Dashboard.Views.sendNotification');
     }
 
-    public function postSendNotification($university,$faculty,$year,$course,Request $request) {
+    public function postSendNotification($course,Request $request) {
         $input = \Input::all();
+
         $validate = $this->validateNotification($input);
         if($validate->fails()){
             \Session::flash('error', $validate->messages()->first());
             return redirect()->back();
         }
+
         $notfImage = '';
         if ($request->hasFile('image')) {
             $files = $request->file('image');
@@ -297,9 +272,7 @@ class DashboardControllers extends Controller {
             $notfImage = \ImagesHelper::GetImagePath('notifications',0,$fileName);            
         }
 
-        $queryData = StudentCourse::NotDeleted()->whereHas('Course',function($whereQuery) use ($university,$faculty,$year){
-            $whereQuery->where('university_id',$university)->where('faculty_id',$faculty)->where('year',$year)->whereIn('status',[3,5]);
-        })->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
+        $queryData = StudentCourse::NotDeleted()->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
 
         $users = reset($queryData);
 

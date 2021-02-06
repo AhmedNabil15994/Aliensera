@@ -8,7 +8,7 @@ Route::group(['prefix' => '/'] , function () {
     Route::post('/getChartData', 'DashboardControllers@getChartData');
 	Route::post('/language', 'DashboardControllers@changeLang');
 	Route::get('/stats', 'DashboardControllers@stats');
-	Route::get('/downloadStats/{university}/{faculty}/{year}/{course}', 'DashboardControllers@downloadStats');
-	Route::get('/stats/{university}/{faculty}/{year}/{course}/sendNotification', 'DashboardControllers@sendNotification');
-	Route::post('/stats/{university}/{faculty}/{year}/{course}/sendNotification', 'DashboardControllers@postSendNotification');
+	Route::get('/downloadStats/{course}', 'DashboardControllers@downloadStats');
+	Route::get('/stats/{course}/sendNotification', 'DashboardControllers@sendNotification');
+	Route::post('/stats/{course}/sendNotification', 'DashboardControllers@postSendNotification');
 });
