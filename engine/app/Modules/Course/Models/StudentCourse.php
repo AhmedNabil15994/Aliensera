@@ -174,7 +174,9 @@ class StudentCourse extends Model{
         $source = self::NotDeleted()
                     ->where('student_id',$student_id)
                     ->where('course_id',$course_id)
-                    ->where('status',1)
+                    ->whereHas('Course',function($whereQuery){
+                        $whereQuery->whereIn('status',[3,5]);
+                    })->where('status',1)
                     ->first();
         if($source != null){
             return 1;
