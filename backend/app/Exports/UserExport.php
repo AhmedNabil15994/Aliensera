@@ -16,7 +16,7 @@ class UserExport implements FromView,WithColumnWidths
     public function view() : View
     {	
     	return view('Dashboard.Views.statsTable', [
-            'data' => User::generateObj(User::NotDeleted()->whereIn('id',$this->student_id))['data']
+            'data' => User::generateObj(User::NotDeleted()->whereIn('id',$this->student_id),true)['data']
         ]);
     }
 

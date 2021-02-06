@@ -117,9 +117,12 @@ class User extends Model{
         })->orderBy('id','DESC')->get();
     }
 
-    static function generateObj($source){
-        $sourceArr = $source->paginate(PAGINATION);
-
+    static function generateObj($source,$withPaginate=null){
+        if($withPaginate != null){
+            $sourceArr = $source->get();
+        }else{
+            $sourceArr = $source->paginate(PAGINATION);
+        }
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
@@ -127,7 +130,9 @@ class User extends Model{
         }
 
         $data['groups'] = Group::getList();
-        $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        if($withPaginate == null){
+            $data['pagination'] = \Helper::GeneratePagination($sourceArr);
+        }
         $data['data'] = $list;
 
         return $data;
