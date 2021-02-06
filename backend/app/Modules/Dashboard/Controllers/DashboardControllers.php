@@ -197,16 +197,18 @@ class DashboardControllers extends Controller {
 
         foreach ($studentCourseObj as $value) {
             $courseObj = Course::getOne($value->course_id);
-            $data[] =[
-                'university' => $courseObj->University->title,
-                'faculty' => $courseObj->Faculty->title,
-                'year' => $courseObj->year,
-                'course' => $courseObj->title,
-                'university_id' => $courseObj->university_id,
-                'faculty_id' => $courseObj->faculty_id,
-                'course_id' => $courseObj->id,
-                'studentCount' => $value->counts,
-            ];
+            if($courseObj){
+                $data[] =[
+                    'university' => $courseObj->University->title,
+                    'faculty' => $courseObj->Faculty->title,
+                    'year' => $courseObj->year,
+                    'course' => $courseObj->title,
+                    'university_id' => $courseObj->university_id,
+                    'faculty_id' => $courseObj->faculty_id,
+                    'course_id' => $courseObj->id,
+                    'studentCount' => $value->counts,
+                ];
+            }
         }
 
         $dataList['data'] = $data;
