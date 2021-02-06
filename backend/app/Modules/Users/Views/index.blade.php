@@ -12,7 +12,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <div align="right">
                                 <button type="submit" class="btn btn-primary" style="width:110px;"><i class="fa fa fa-search"></i> Search ..</button>
-                                @if(Input::has('name') || Input::has('email') || Input::has('phone') || Input::has('group_id') || Input::has('course_id'))
+                                @if(Input::has('id') || Input::has('name') || Input::has('email') || Input::has('phone') || Input::has('group_id') || Input::has('course_id'))
                                     <a href="{{ URL::to('/users') }}" type="submit" class="btn btn-danger" style="color: black;"><i class="fa fa fa-refresh"></i></a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -24,8 +24,14 @@
                         <div class="row">
                             <div class="col-xs-6 col-md-4">
                                 <div class="form-group">
-                                    <label>Name / ID</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Name / ID" value="{{ Input::get('name') }}">
+                                    <label>ID</label>
+                                    <input type="number" class="form-control" name="id" placeholder="ID" value="{{ Input::get('id') }}">
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-md-4">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="Name" value="{{ Input::get('name') }}">
                                 </div>
                             </div>
                             <div class="col-xs-6 col-md-4">

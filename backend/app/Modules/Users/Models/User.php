@@ -51,8 +51,10 @@ class User extends Model{
             ->whereHas('Profile', function($queryProfile) use ($input) {
                 if (isset($input['name']) && !empty($input['name'])) {
                     $queryProfile->where('first_name', 'LIKE', '%' . $input['name'] . '%')
-                        // ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%')
-                        ->orWhere('id','=',(int)$input['name']);
+                        ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%');
+                }
+                if (isset($input['id']) && !empty($input['id'])) {
+                    $queryProfile->where('id', $input['id']);
                 }
                 if (isset($input['group_id']) && $input['group_id'] != 0) {
                     $queryProfile->where('group_id', $input['group_id']);
@@ -66,7 +68,7 @@ class User extends Model{
             $source->where('email', 'LIKE', '%' . $input['email'] . '%');
         }
 
-        if (isset($input['course_id']) && !empty($input['course_id'])  && $input['course_id'] != 0) {
+        if (isset($input['course_id']) && !empty($input['course_id'])) {
             if (isset($input['group_id']) && $input['group_id'] != 0) {
                 if($input['group_id'] == 3){ // Student
                     $source->whereHas('StudentCourse2',function($whereHas) use ($input) {
