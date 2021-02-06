@@ -113,7 +113,7 @@
             </div>
         </form>
         <hr>
-        @if( in_array($data->data->course_status, [3,5]) && ($data->data->status == 1 || IS_ADMIN == true))
+        @if( (in_array($data->data->course_status, [3,5]) && ($data->data->status == 1 ) || IS_ADMIN == true))
         <div class="col-xs-12">
             <div class="row" >
                 <div class="col-xs-12">
