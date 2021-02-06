@@ -1,6 +1,6 @@
 
 <div class="x_content x_content_table">
-    <table id="tableList" class="table table-striped table-bordered">
+    <table>
         <thead>
         <tr>
             <th>Student ID</th>
