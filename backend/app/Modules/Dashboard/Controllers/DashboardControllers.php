@@ -8,11 +8,16 @@ use App\Models\LessonVideo;
 use App\Models\ApiAuth;
 use App\Models\StudentCourse;
 use App\Models\Group;
+use App\Models\Faculty;
+use App\Models\University;
+use App\Models\Devices;
 use App\Models\StudentVideoDuration;
 use App\Models\VideoComment;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Excel;
+use App\Exports\UserExport;
 
 class DashboardControllers extends Controller {
 
@@ -167,4 +172,151 @@ class DashboardControllers extends Controller {
         return view('Dashboard.Views.dashboard')->with('data', (Object) $dataList);
     }
 
+    public function stats() {   
+        $data = [];
+        $universities = University::NotDeleted()->where('status',1)->get();
+        foreach ($universities as $value) {
+            $data[$value->id] = [];
+        }
+
+        $studentCourseObj = StudentCourse::NotDeleted()->whereHas('Student',function($studentQuery){
+            $studentQuery->where('is_active',1);
+        })->whereHas('Instructor',function($instructorQuery){
+            $instructorQuery->where('is_active',1);
+        })->whereHas('Course',function($courseQuery){
+            $courseQuery->whereIn('status',[3,5])->where('course_type',2);
+        })->where('status',1)->groupBy('course_id')->selectRaw(\DB::raw('count(*) as counts, course_id'))->orderBy('counts','DESC')->get();
+
+        foreach ($studentCourseObj as $value) {
+            $courseObj = Course::getOne($value->course_id);
+            if($courseObj->year > 0){
+                $data[$courseObj->university_id][$courseObj->faculty_id][$courseObj->year] = [$value->counts,$value->course_id]; 
+            }else{
+                $data[$courseObj->university_id][$courseObj->faculty_id][1] = [$value->counts,$value->course_id];
+            }
+        }
+
+        $myData = [];
+        foreach ($data as $university => $value) {
+            if(!empty($university))
+                $universityObj = University::getOne($university);
+                foreach ($value as $faculty => $facValue) {
+                    foreach ($facValue as $year => $yearValue) {
+                        $facultyObj = Faculty::getOne($faculty);
+                        $courseObj = Course::getOne($yearValue[1]);
+                        $myData[] = [
+                            'university' => $universityObj->title,
+                            'faculty' => $facultyObj->title,
+                            'year' => $year,
+                            'course' => $courseObj->title,
+                            'university_id' => $universityObj->id,
+                            'faculty_id' => $facultyObj->id,
+                            'course_id' => $courseObj->id,
+                            'studentCount' => $yearValue[0],
+                        ];
+                    }
+                }
+        }
+
+        $dataList['data'] = $myData;
+        return view('Dashboard.Views.stats')->with('data', (Object) $dataList);
+    }
+
+    public function downloadStats($university,$faculty,$year,$course){
+        $university = (int) $university;
+        $faculty = (int) $faculty;
+        $year = (int) $year;
+
+        $universityObj = University::getOne($university);
+        if($universityObj == null){
+            \Session::flash('error','This University Is Not Found ');
+            return redirect()->back();
+        }
+
+        $facultyObj = Faculty::getOne($faculty);
+        if($facultyObj == null){
+            \Session::flash('error','This Faculty Is Not Found ');
+            return redirect()->back();
+        }
+
+        $courseObj = Course::getOne($course);
+        if($courseObj == null){
+            \Session::flash('error','This Course Is Not Found ');
+            return redirect()->back();
+        }
+
+        if(!in_array($year, [1,2,3,4,5,6,7])){
+            \Session::flash('error','This Year Is Not Found ');
+            return redirect()->back();
+        }
+
+        $queryData = StudentCourse::NotDeleted()->whereHas('Course',function($whereQuery) use ($university,$faculty,$year){
+            $whereQuery->where('university_id',$university)->where('faculty_id',$faculty)->where('year',$year)->whereIn('status',[3,5]);
+        })->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
+
+        $student_id = reset($queryData);
+        
+        return Excel::download(new UserExport($student_id), 'statistics.xlsx');
+    }
+
+    protected function validateNotification($input){
+        $rules = [
+            'title' => 'required',
+            'description' => 'required',
+        ];
+
+        $message = [
+            'title.required' => "Sorry Title Required",
+            'description.required' => "Sorry Body Required",
+        ];
+
+        $validate = \Validator::make($input, $rules, $message);
+
+        return $validate;
+    }
+
+    public function sendNotification(){
+        return view('Dashboard.Views.sendNotification');
+    }
+
+    public function postSendNotification($university,$faculty,$year,$course,Request $request) {
+        $input = \Input::all();
+        $validate = $this->validateNotification($input);
+        if($validate->fails()){
+            \Session::flash('error', $validate->messages()->first());
+            return redirect()->back();
+        }
+        $notfImage = '';
+        if ($request->hasFile('image')) {
+            $files = $request->file('image');
+            $fileName = \ImagesHelper::UploadImage('notifications', $files, 0);
+            if ($fileName == false) {
+                \Session::flash('error', "Upload images Failed");
+                return \Redirect::back()->withInput();
+            }
+            $notfImage = \ImagesHelper::GetImagePath('notifications',0,$fileName);            
+        }
+
+        $queryData = StudentCourse::NotDeleted()->whereHas('Course',function($whereQuery) use ($university,$faculty,$year){
+            $whereQuery->where('university_id',$university)->where('faculty_id',$faculty)->where('year',$year)->whereIn('status',[3,5]);
+        })->where('course_id',$course)->where('status',1)->groupBy('student_id')->pluck('student_id');
+
+        $users = reset($queryData);
+
+        $tokens = Devices::getDevicesBy($users);
+        $tokens = reset($tokens);
+        foreach ($tokens as $value) {
+            $this->sendNots($value,$input['title'],$input['description'],$notfImage);
+        }   
+        \Session::flash('success', "Alert! Notification Sent Successfully");
+        return redirect()->back();
+    }
+
+    public function sendNots($tokens,$title,$msg,$image){
+        $fireBase = new \FireBase();
+        $metaData = ['title' => $title, 'body' => $msg,];
+        $myData = ['type' => 4, 'image'=>$image,'title' => $title, 'body' => $msg,];
+        $fireBase->send_android_notification($tokens,$metaData,$myData);
+        return true;
+    }
 }

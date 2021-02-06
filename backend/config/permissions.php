@@ -27,6 +27,11 @@ return [
     'AuthControllers@logout' => 'logout',
     'AuthControllers@register' => 'register',
 
+    'DashboardControllers@stats' => 'list-stats',
+    'DashboardControllers@downloadStats' => 'list-stats',
+    'DashboardControllers@sendNotification' => 'list-stats',
+    'DashboardControllers@postSendNotification' => 'list-stats',
+
     'UsersControllers@index' => 'list-users',
     'UsersControllers@edit' => 'edit-user',
     'UsersControllers@view' => 'view-user',
