@@ -66,7 +66,7 @@ class User extends Model{
             $source->where('email', 'LIKE', '%' . $input['email'] . '%');
         }
 
-        if (isset($input['course_id']) && !empty($input['course_id'])) {
+        if (isset($input['course_id']) && !empty($input['course_id'])  && $input['course_id'] != 0) {
             if (isset($input['group_id']) && $input['group_id'] != 0) {
                 if($input['group_id'] == 3){ // Student
                     $source->whereHas('StudentCourse2',function($whereHas) use ($input) {
