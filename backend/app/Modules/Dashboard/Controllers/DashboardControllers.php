@@ -231,7 +231,7 @@ class DashboardControllers extends Controller {
 
         $student_id = reset($queryData);
         
-        return Excel::download(new UserExport($student_id), 'statistics.xlsx');
+        return Excel::download(new UserExport($student_id), $courseObj->title.' statistics.xlsx');
     }
 
     protected function validateNotification($input){
