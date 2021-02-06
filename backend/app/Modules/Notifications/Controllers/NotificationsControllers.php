@@ -80,10 +80,10 @@ class NotificationsControllers extends Controller {
                     \Session::flash('error', "Sorry Faculty Required");
                     return \Redirect::back()->withInput();
                 }
-                if(empty($input['year'])){
-                    \Session::flash('error', "Sorry Year Required");
-                    return \Redirect::back()->withInput();
-                }
+                // if(empty($input['year'])){
+                //     \Session::flash('error', "Sorry Year Required");
+                //     return \Redirect::back()->withInput();
+                // }
             }
 
             $notfImage = '';
@@ -101,7 +101,10 @@ class NotificationsControllers extends Controller {
                 if($input['course_type'] == 1){
                     $courseQuery->whereIn('status',[3,5])->where('field_id',$input['field_id']);
                 }elseif($input['course_type'] == 2){
-                    $courseQuery->whereIn('status',[3,5])->where('university_id',$input['university_id'])->where('faculty_id',$input['faculty_id'])->where('year',$input['year']);
+                    $courseQuery->whereIn('status',[3,5])->where('university_id',$input['university_id'])->where('faculty_id',$input['faculty_id']);
+                    if(!empty($input['year'])){
+                        $courseQuery->where('year',$input['year']);
+                    }
                 }        
                 if(isset($input['instructor_id']) && !empty($input['instructor_id'])){
                     $courseQuery->where('instructor_id',$input['instructor_id']);
@@ -141,7 +144,6 @@ class NotificationsControllers extends Controller {
             })->where('status',1)->pluck('student_id');
             $tokens = Devices::getDevicesBy($users);
             $tokens = reset($tokens);
-            // $this->sendNotification2($tokens,$input['title'],$input['description'],$notfImage);
             foreach ($tokens as $value) {
                 $this->sendNotification2($value,$input['title'],$input['description'],$notfImage);
             }   
