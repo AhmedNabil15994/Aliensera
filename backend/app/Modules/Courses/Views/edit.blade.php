@@ -80,8 +80,16 @@
                             </div>
                             <div class="col-md-3 col-xs-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>Year</label>
-                                    <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ $data->data->year }}" {{ $data->data->course_type == 1 ? 'disabled':'' }}>
+                                    <label>Level</label>
+                                    <select name="year" class="form-control">
+                                        <option value="">Select A Level...</option>
+                                        <option value="1" {{ $data->data->year == 1 ? 'selected' : '' }}>Level 1</option>
+                                        <option value="2" {{ $data->data->year == 2 ? 'selected' : '' }}>Level 2</option>
+                                        <option value="3" {{ $data->data->year == 3 ? 'selected' : '' }}>Level 3</option>
+                                        <option value="4" {{ $data->data->year == 4 ? 'selected' : '' }}>Level 4</option>
+                                        <option value="5" {{ $data->data->year == 5 ? 'selected' : '' }}>Level 5</option>
+                                        <option value="6" {{ $data->data->year == 6 ? 'selected' : '' }}>Level 6</option>
+                                    </select>
                                 </div>
                             </div>
                             @if(IS_ADMIN == true)

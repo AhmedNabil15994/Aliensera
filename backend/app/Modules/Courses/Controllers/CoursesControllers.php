@@ -273,6 +273,11 @@ class CoursesControllers extends Controller {
                 return redirect()->back()->withInput();
             }
 
+            if(empty($input['year']) || !isset($input['year'])){
+                \Session::flash('error', 'Sorry Level Required');
+                return redirect()->back()->withInput();
+            }
+
             $universityObj = University::getOne($input['university_id']);
             if($universityObj == null) {
                 return Redirect('404');
@@ -472,6 +477,11 @@ class CoursesControllers extends Controller {
 
             if(empty($input['faculty_id']) || !isset($input['faculty_id'])){
                 \Session::flash('error', 'Sorry Faculty Required');
+                return redirect()->back()->withInput();
+            }
+
+            if(empty($input['year']) || !isset($input['year'])){
+                \Session::flash('error', 'Sorry Level Required');
                 return redirect()->back()->withInput();
             }
 

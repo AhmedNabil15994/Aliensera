@@ -163,9 +163,9 @@ $(function(){
         $('select[name="faculty_id"]').append("<option value=''>Select A Faculty</option>");
         var course_type = $(this).val();
         if(course_type == 1){
-            $('select[name="university_id"],select[name="faculty_id"],input[name="year"]').attr('disabled','disabled');
+            $('select[name="university_id"],select[name="faculty_id"],select[name="year"]').attr('disabled','disabled');
         }else if(course_type == 2){
-            $('select[name="university_id"],select[name="faculty_id"],input[name="year"]').removeAttr('disabled');
+            $('select[name="university_id"],select[name="faculty_id"],select[name="year"]').removeAttr('disabled');
             $.get('/courses/getUniversities',function(data) {
                 $.each(data,function(index,item){
                     $('select[name="university_id"]').append('<option value="'+item.id+'">'+item.title+'</option>');

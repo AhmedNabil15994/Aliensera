@@ -95,8 +95,16 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 col-sm-6">
                                     <div class="form-group">
-                                        <label>Year</label>
-                                        <input type="text" class="form-control" placeholder="Enter Year" name="year" value="{{ old('year') }}">
+                                        <label>Level</label>
+                                        <select name="year" {{ $data->data->course_type == 1 ? 'disabled':'' }} class="form-control">
+                                            <option value="">Select A Level...</option>
+                                            <option value="1">Level 1</option>
+                                            <option value="2">Level 2</option>
+                                            <option value="3">Level 3</option>
+                                            <option value="4">Level 4</option>
+                                            <option value="5">Level 5</option>
+                                            <option value="6">Level 6</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-xs-12 col-sm-12">
