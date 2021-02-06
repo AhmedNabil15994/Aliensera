@@ -51,7 +51,7 @@ class User extends Model{
             ->whereHas('Profile', function($queryProfile) use ($input) {
                 if (isset($input['name']) && !empty($input['name'])) {
                     $queryProfile->where('first_name', 'LIKE', '%' . $input['name'] . '%')
-                        ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%')
+                        // ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%')
                         ->orWhere('id','=',(int)$input['name']);
                 }
                 if (isset($input['group_id']) && $input['group_id'] != 0) {
