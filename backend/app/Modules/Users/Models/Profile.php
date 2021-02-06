@@ -15,5 +15,9 @@ class Profile extends Model{
         return $this->belongsTo('App\Models\Group', 'group_id');
     }
 
+    function User(){
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
 
 }

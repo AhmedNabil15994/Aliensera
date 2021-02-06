@@ -150,7 +150,7 @@ class Course extends Model{
         return self::generateObj($source,$withPaginate,$withDets);
     }
 
-    static function generateObj($source,$withPaginate,$withDets){
+    static function generateObj($source,$withPaginate,$withDets,$withOutStudentCount=null){
         if($withPaginate != null){
             $sourceArr = $source->get();
         }else{
@@ -164,7 +164,7 @@ class Course extends Model{
                 $value->status = 4;
                 $value->save();
             }
-            $list[$key] = self::getData($value,$withDets);
+            $list[$key] = self::getData($value,$withDets,$withOutStudentCount);
         }
         if($withPaginate == null){
             $data['pagination'] = \Helper::GeneratePagination($sourceArr);
@@ -198,7 +198,7 @@ class Course extends Model{
             $source->where('instructor_id',USER_ID);
         }
         $source->take($count);
-        return self::generateObj($source,true,null);
+        return self::generateObj($source,true,null,true);
     }
 
     static function getDuration($duration){
@@ -217,7 +217,7 @@ class Course extends Model{
         return $result;
     }
 
-    static function getData($source,$withDets=null) {
+    static function getData($source,$withDets=null,$withOutStudentCount = null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
@@ -234,7 +234,9 @@ class Course extends Model{
         $data->what_learn = $source->what_learn;
         $data->requirements = $source->requirements;
         $data->valid_until = $source->valid_until;
-        $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
+        if( $withOutStudentCount == null){
+            $data->studentCount = $source->StudentCourse != null ? $source->StudentCourse()->NotDeleted()->where('status',1)->count() : 0;
+        }
         $data->image = self::getPhotoPath($source->id, $source->image);
         $data->instructor_id = $source->instructor_id;
         $data->instructor = $source->instructor != null ? $source->instructor->name : '';

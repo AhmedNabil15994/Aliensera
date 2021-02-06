@@ -169,28 +169,23 @@ class User extends Model{
     }
 
     static function getTopInstructors($count){
-        $source = self::NotDeleted()->where('is_active',1)->whereHas('Profile',function($whereQuery){
-            $whereQuery->where('group_id',2);
-        })->withCount(['StudentCourse'=>function($withQuery){
-            $withQuery->NotDeleted()->whereHas('Course',function($whereQuery){
-                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
-            })->where('status',1);
-        }])->orderBy('student_course_count','desc')->take($count)->get();
-        return self::generateObj2($source,'instructor');
+        $source = StudentCourse::NotDeleted()->where('status',1)->groupBy('instructor_id')->selectRaw(\DB::raw('count(*) as student_course_count, instructor_id'))->orderBy('student_course_count','DESC')->take($count)->get();
+        return self::generateUserDataBasedOnCount($source,'instructor');
     }
 
     static function getTopStudents($count){
-        $source = self::NotDeleted()->where('is_active',1)->whereHas('Profile',function($whereQuery){
-            $whereQuery->where('group_id',3);
-        })->withCount(['StudentCourse2'=>function($withQuery){
-            $withQuery->NotDeleted()->whereHas('Course',function($whereQuery){
-                $whereQuery->NotDeleted()->whereIn('status',[3,4]);
-            })->where('status',1);
-            if(!IS_ADMIN){
-                $withQuery->where('instructor_id',USER_ID);
-            }
-        }])->orderBy('student_course2_count','desc')->take($count)->get();
-        return self::generateObj2($source,'student');
+        $source = StudentCourse::NotDeleted()->groupBy('student_id')->selectRaw(\DB::raw('count(*) as student_course2_count, student_id'))->orderBy('student_course2_count','DESC')->take($count)->get();
+        return self::generateUserDataBasedOnCount($source,'student');
+    }
+
+    static function generateUserDataBasedOnCount($source,$type=null){
+        $list = [];
+        foreach($source as $key => $value) {
+            $list[$key] = new \stdClass();
+            $userObj = self::getOne($value->{$type.'_id'});
+            $list[$key] = self::getData2($userObj,$type,$value->student_course2_count);
+        }
+        return (object) $list;
     }
 
     static function generateObj2($source,$type=null){
@@ -202,7 +197,7 @@ class User extends Model{
         return (object) $list;
     }
 
-    static function getData2($source,$type) {
+    static function getData2($source,$type,$count=null) {
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->name = $source->Profile != null ? ucwords($source->Profile->display_name) : '';
@@ -223,12 +218,10 @@ class User extends Model{
         $data->deleted_by = $source->deleted_by;
 
         if($type == 'instructor'){
-            $data->studentCount = $source->StudentCourse()->NotDeleted()->where('status',1)->whereHas('Course',function($whereHasQuery){
-                $whereHasQuery->NotDeleted()->whereIn('status',[3,4]);
-            })->groupBy('student_id')->get()->count();
+            $data->studentCount = $count;
             $data->courseCount = $source->Courses()->NotDeleted()->whereIn('status',[3,4])->count();
         }else{
-            $data->courseCount = $source->student_course2_count;
+            $data->courseCount = $count;
         }
 
         return $data;

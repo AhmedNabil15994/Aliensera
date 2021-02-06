@@ -78,11 +78,15 @@ class DashboardControllers extends Controller {
 
     public function Dashboard() {
         if(IS_ADMIN == true){
-            $dataList['allStudents'] = User::getUsersByType(3)->count();
-            $dataList['totalStudents'] = User::getUsersByType(3,true)->count();
+            $dataList['allStudents'] = Profile::where('group_id',3)->count();//$usersData['allStudents'];//User::getUsersByType(3)->count();
+            $dataList['totalStudents'] = Profile::whereHas('User',function($whereQuery){
+                $whereQuery->where('is_active',1);
+            })->where('group_id',3)->count();//User::getUsersByType(3,true)->count();
             
-            $dataList['allInstructors'] = User::getUsersByType(2)->count();
-            $dataList['totalInstructors'] = User::getUsersByType(2,true)->count();
+            $dataList['allInstructors'] = Profile::where('group_id',2)->count();//User::getUsersByType(2)->count();
+            $dataList['totalInstructors'] = Profile::whereHas('User',function($whereQuery){
+                $whereQuery->where('is_active',1);
+            })->where('group_id',2)->count();//User::getUsersByType(2,true)->count();
             
             $dataList['allCourses'] = Course::NotDeleted()->whereIn('status',[3,5])->count();
             $dataList['totalCourses'] = Course::NotDeleted()->count();
