@@ -53,9 +53,6 @@ class User extends Model{
                     $queryProfile->where('first_name', 'LIKE', '%' . $input['name'] . '%')
                         ->orWhere('last_name', 'LIKE', '%' . $input['name'] . '%');
                 }
-                if (isset($input['id']) && !empty($input['id'])) {
-                    $queryProfile->where('id', $input['id']);
-                }
                 if (isset($input['group_id']) && $input['group_id'] != 0) {
                     $queryProfile->where('group_id', $input['group_id']);
                 }
@@ -63,6 +60,10 @@ class User extends Model{
                     $queryProfile->where('phone', $input['phone']);
                 }
             });
+
+        if (isset($input['id']) && !empty($input['id'])) {
+            $source->where('id',$input['id']);
+        }
 
         if (isset($input['email']) && !empty($input['email'])) {
             $source->where('email', 'LIKE', '%' . $input['email'] . '%');
