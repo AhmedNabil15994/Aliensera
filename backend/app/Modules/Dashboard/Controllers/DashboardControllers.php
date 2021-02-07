@@ -198,6 +198,9 @@ class DashboardControllers extends Controller {
         foreach ($studentCourseObj as $value) {
             $courseObj = Course::getOne($value->course_id);
             if($courseObj){
+                $totalCount = StudentCourse::NotDeleted()->whereHas('Course',function($courseQuery) use ($courseObj,$input){
+                        $courseQuery->where('university_id',$courseObj->university_id)->where('faculty_id',$courseObj->faculty_id)->where('year',$courseObj->year);
+                    })->where('status',1)->groupBy('student_id')->selectRaw(\DB::raw('count(*) as counts'))->orderBy('counts','DESC')->get();
                 $data[] =[
                     'university' => $courseObj->University->title,
                     'faculty' => $courseObj->Faculty->title,
@@ -207,6 +210,7 @@ class DashboardControllers extends Controller {
                     'faculty_id' => $courseObj->faculty_id,
                     'course_id' => $courseObj->id,
                     'studentCount' => $value->counts,
+                    'totalCount' => count($totalCount),
                 ];
             }
         }

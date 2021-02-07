@@ -63,8 +63,16 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-6">
                                     <div class="form-group">
-                                        <label>Year</label>
-                                        <input class="form-control" type="number" placeholder="Year" value="{{ Input::get('year') }}">
+                                        <label>Level</label>
+                                        <select class="form-control" name="year">
+                                            <option value="">Select Level...</option>
+                                            <option value="1" {{ 1 == Input::get('faculty_id') ? 'selected' : '' }}>Level 1</option>
+                                            <option value="2" {{ 2 == Input::get('faculty_id') ? 'selected' : '' }}>Level 2</option>
+                                            <option value="3" {{ 3 == Input::get('faculty_id') ? 'selected' : '' }}>Level 3</option>
+                                            <option value="4" {{ 4 == Input::get('faculty_id') ? 'selected' : '' }}>Level 4</option>
+                                            <option value="5" {{ 5 == Input::get('faculty_id') ? 'selected' : '' }}>Level 5</option>
+                                            <option value="6" {{ 6 == Input::get('faculty_id') ? 'selected' : '' }}>Level 6</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-6">
@@ -108,9 +116,10 @@
                         <tr>
                             <th>University</th>
                             <th>Faculty</th>
-                            <th>Year</th>
+                            <th>Level</th>
+                            <th>University - Faculty - Level Students Count</th>
                             <th>Course</th>
-                            <th>Student Count</th>
+                            <th>Course Students Count</th>
                             <th style="padding-left: 50px">Actions</th>
                         </tr>
                         </thead>
@@ -121,11 +130,12 @@
                                 <td>{{ $value['university'] }}</td>
                                 <td>{{ $value['faculty'] }}</td>
                                 <td>{{ $value['year'] }}</td>
+                                <td>{{ $value['totalCount'] }} Student</td>
                                 <td>{{ $value['course'] }}</td>
                                 <td>{{ $value['studentCount'] }} Student</td>
                                 <td width="150px" align="center">
-                                    <a href="{{ URL::to('/downloadStats/'.$value['course_id']) }}" class="btn btn-success btn-xs"><i class="fa fa-print"></i> Print Users Data </a>
-                                    <a href="{{ URL::to('/stats/'.$value['course_id'].'/sendNotification') }}" class="btn btn-primary btn-xs"><i class="fa fa-send"></i> Send Notification </a>
+                                    <a href="{{ URL::to('/downloadStats/'.$value['course_id']) }}" class="btn btn-success btn-xs"><i class="fa fa-print"></i> Print Course Students Data </a>
+                                    <a href="{{ URL::to('/stats/'.$value['course_id'].'/sendNotification') }}" class="btn btn-primary btn-xs"><i class="fa fa-send"></i> Send Notification For Course Students </a>
                                 </td>
                             </tr>
                         @endforeach
