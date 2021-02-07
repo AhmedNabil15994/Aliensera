@@ -449,7 +449,6 @@ class CoursesControllers extends Controller {
 
     public function add() {
         $dataList['instructors'] = User::getUsersByType(2);
-        dd($dataList['instructors']);
         $dataList['fields'] = Field::where('status',1)->get();
         return view('Courses.Views.add')->with('data', (Object) $dataList);
     }
