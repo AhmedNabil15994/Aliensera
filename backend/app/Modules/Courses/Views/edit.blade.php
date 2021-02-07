@@ -81,7 +81,7 @@
                             <div class="col-md-3 col-xs-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Level</label>
-                                    <select name="year" class="form-control">
+                                    <select name="year" {{ $data->data->course_type == 1 ? 'disabled':'' }} class="form-control">
                                         <option value="">Select A Level...</option>
                                         <option value="1" {{ $data->data->year == 1 ? 'selected' : '' }}>Level 1</option>
                                         <option value="2" {{ $data->data->year == 2 ? 'selected' : '' }}>Level 2</option>
