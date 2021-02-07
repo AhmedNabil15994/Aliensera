@@ -62,7 +62,7 @@ class Lesson extends Model{
             });
         }
 
-        $source->orderBy('id','DESC')->orderBy('sort','ASC');
+        $source->orderBy('sort','ASC');
         return self::generateObj($source,$paginate,$withDets);
     }
 
