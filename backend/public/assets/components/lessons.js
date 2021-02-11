@@ -5,6 +5,10 @@
 console.log("[x] Loading Lesson js .... Done");
 var elemIndex2 = 0;
 
+$('input.datepicker').datetimepicker({
+    format: 'YYYY-MM-DD',
+});
+
 $(document).on('click','.row.results a.btn.btn-warning',function(){
     var lesson_id = $(this).data('area');
     var course_id = $(this).data('plot');
