@@ -203,6 +203,7 @@ class Course extends Model{
                 $data->seeDuration = $source->StudentDuration()->where('student_id',USER_ID)->sum('see_duration');
             }
             $data->isOwned = StudentCourse::checkOwned($source->id,USER_ID);
+            $data->hasRequest = StudentCourse::checkRequest($source->id,USER_ID);
             $data->isFavourite = Favourites::checkFav($source->id,USER_ID);
             $data->isInCart = Cart::checkCart($source->id,USER_ID);
             $certificateObj = Certificate::NotDeleted()->where('student_id',USER_ID)->where('course_id',$source->id)->first();

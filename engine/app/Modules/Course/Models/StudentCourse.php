@@ -185,4 +185,17 @@ class StudentCourse extends Model{
         }
     }
 
+    static function checkRequest($course_id,$student_id){
+        $source = self::NotDeleted()
+                    ->where('student_id',$student_id)
+                    ->where('course_id',$course_id)
+                    ->first();
+        if($source != null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+
 }
