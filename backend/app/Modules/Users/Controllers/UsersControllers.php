@@ -121,7 +121,7 @@ class UsersControllers extends Controller {
         $id = (int) $id;
 
         if(IS_ADMIN == false){
-            $instructorUser = StudentCourse::where('status',1)->where('instructor_id',USER_ID)->where('student_id',$id)->first();
+            $instructorUser = StudentCourse::where('instructor_id',USER_ID)->where('student_id',$id)->first();
             if($instructorUser == null) {
                 return Redirect('404');
             }
