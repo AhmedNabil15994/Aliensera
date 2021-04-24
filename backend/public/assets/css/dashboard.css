@@ -50,3 +50,9 @@
 .add-more .dropdown-toggle:hover i.fa{
   color: #FFF;
 }
+
+@media(max-width: 767px){
+  .chartData{
+    display: none;
+  }
+}

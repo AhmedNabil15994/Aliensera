@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row chartData">
       <div class="col-xs-12">
         <div class="x_panel">
           <div class="x_title">
