@@ -20,7 +20,8 @@
                         </div>
                         <div class="x_content">
                             <div class="row" >
-                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                <input type="hidden" name="student_id" value="{{ Input::has('student_id') ?  Input::get('student_id') : '' }}">
+                                {{-- <div class="col-xs-12 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>Student</label>
                                         <select class="form-control" name="student_id">
@@ -31,7 +32,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-6 col-md-4">
+ --}}                                <div class="col-xs-12 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label>Course</label>
                                         <select class="form-control" name="course_id">

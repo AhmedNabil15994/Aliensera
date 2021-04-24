@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-xs-4 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
-                                @if(\Helper::checkRules('add-request'))
+                                @if(\Helper::checkRules('add-student-request'))
                                     <a href="{{URL::to('/requests/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

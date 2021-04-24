@@ -71,7 +71,7 @@ class RequestControllers extends Controller {
         }
 
         \Session::flash('success', "Alert! Update Successfully");
-        return \Redirect::back()->withInput();
+        return \Redirect::to('/users/view/'.$input['student_id']);
     }
 
     public function update($id,$status) {

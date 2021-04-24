@@ -128,6 +128,8 @@ return [
     'PagesControllers@delete' => 'delete-page',
     
     'RequestControllers@index' => 'list-student-requests',
+    'RequestControllers@add' => 'add-student-request',
+    'RequestControllers@create' => 'add-student-request',
     'RequestControllers@update' => 'edit-student-request',
     'RequestControllers@delete' => 'delete-student-request',
 

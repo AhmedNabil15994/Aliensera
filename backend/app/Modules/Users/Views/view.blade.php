@@ -11,6 +11,9 @@
                 <div class="x_title">
                     <h2>{{ $data->data->group }}: <small>{{ $data->data->name }}</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
+                        @if($data->data->group_id == 3 && \Helper::checkRules('add-student-request'))
+                            <a href="{{URL::to('/requests/add?student_id='.$data->data->id)}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Assign To Course</a>
+                        @endif
                         <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <div class="clearfix"></div>
