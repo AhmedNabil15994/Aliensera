@@ -147,30 +147,30 @@
                                     </div>
                                     <div class="col-lg-3 col-xs-12 col-sm-6">
                                         <div class="col-xs-12" style="padding: 0">
-                                            <div class="col-xs-6" style="padding-left: 0;">
+                                            <div class="col-xs-12" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Uploading Space (GB)</label>
                                                     <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->upload_space  : 2 }}" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ @$data->data->instructor_price->upload_space }}">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-6">
+                                            {{-- <div class="col-xs-6">
                                                 <label>Uploading Space Cost</label><br>
                                                 <span class="upload_cost">{{ @$data->data->instructor_price->upload_cost }}</span> LE
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-xs-12 col-sm-6">
                                         <div class="col-xs-12" style="padding: 0">
-                                            <div class="col-xs-6" style="padding-left: 0;">
+                                            <div class="col-xs-12" style="padding-left: 0;">
                                                 <div class="form-group">
                                                     <label>Approval # OF Student</label>
                                                     <input type="number" min="{{ $data->data->status == 3 ? @$data->data->instructor_price->approval_number  : 10 }}" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ @$data->data->instructor_price->approval_number }}">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-6">
+                                            {{-- <div class="col-xs-6">
                                                 <label>Students' Approval</label><br>
                                                 <span class="upload_cost student_approval">{{ @$data->data->instructor_price->approval_cost }}</span> LE
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>

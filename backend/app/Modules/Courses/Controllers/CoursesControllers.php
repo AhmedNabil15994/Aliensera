@@ -60,7 +60,7 @@ class CoursesControllers extends Controller {
             return Redirect('404');
         }
 
-        $data['data'] = Course::getData($courseObj);
+        $data['data'] = Course::getData($courseObj,true);
         $data['fields'] = Field::where('status',1)->get();
         $data['universities'] = University::where('status',1)->get();
         $data['faculties'] = Faculty::where('status',1)->where('university_id',$courseObj->university_id)->get();
