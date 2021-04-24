@@ -21,13 +21,58 @@ class RequestControllers extends Controller {
         }else{
             $dataList = StudentRequest::dataList(USER_ID,null,true);
         }
-        $dataList['courses'] = Course::latest()->get();
+        $dataList['courses'] = Course::NotDeleted()->orderBy('id','DESC')->get();
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['students'] = User::getUsersByType(3);
         return view('Requests.Views.index')
             ->with('data', (Object) $dataList);
     }
 
+    public function add() {
+        $dataList['courses'] = Course::NotDeleted()->whereIn('status',[3,5])->with('Instructor')->orderBy('id','DESC')->get();
+        $dataList['students'] = User::getUsersByType(3);
+        return view('Requests.Views.add')
+            ->with('data', (Object) $dataList);
+    }
+
+    public function create() {
+        $input = \Input::all();
+
+        $studentObj = User::getOne($input['student_id']);
+        if($studentObj == null) {
+            return Redirect('404');
+        }
+
+        $courseObj = Course::getOne($input['course_id']);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+
+        $requestObj = new StudentRequest;
+        $requestObj->student_id = $input['student_id'];
+        $requestObj->course_id = $input['course_id'];
+        $requestObj->instructor_id = $courseObj->instructor_id;
+        $requestObj->status = $input['status'];
+        $requestObj->created_by = USER_ID;
+        $requestObj->created_at = DATE_TIME;
+        $requestObj->save();
+
+        $msg = '';
+        if($input['status'] == 0){
+            $msg = "Your Request For Joining ".$courseObj->title." Is Refused";
+        }elseif($input['status'] == 1){
+            $msg = "Your Request For Joining ".$courseObj->title." Is Accepted";
+            Cart::where('student_id',$input['student_id'])->where('course_id',$input['course_id'])->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
+            Favourites::where('student_id',$input['student_id'])->where('course_id',$input['course_id'])->update(['deleted_by'=>USER_ID,'deleted_at'=>DATE_TIME]);
+        }
+        $tokens = Devices::getDevicesBy($input['student_id'],true);
+        if(!empty($tokens) && isset($tokens[0])){
+            $this->sendNotification($tokens[0],$msg,$input['course_id']);
+        }
+
+        \Session::flash('success', "Alert! Update Successfully");
+        return \Redirect::back()->withInput();
+    }
 
     public function update($id,$status) {
         $id = (int) $id;

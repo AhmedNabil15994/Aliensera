@@ -107,7 +107,7 @@ class Course extends Model{
         if (isset($input['instructor_id']) && !empty($input['instructor_id'])) {
             $source->where('instructor_id', $input['instructor_id']);
         } 
-        if (isset($input['status']) && !empty($input['status'])) {
+        if (isset($input['status']) && $input['status'] != null) {
             $source->NotDeleted()->where('status', $input['status']);
         } 
         if (isset($input['course_type']) && !empty($input['course_type'])) {

@@ -44,7 +44,7 @@
                                         <select class="form-control" name="status">
                                             <option value="">Select Status...</option>
                                             <option value="2" {{ Input::has('status') && Input::get('status') == 2 ? 'selected' : '' }}>Instructor Send Request</option>
-                                            <option value="0" {{ Input::has('status') && Input::get('status') == 0 ? 'selected' : '' }}>In-Active</option>
+                                            <option value="0" {{ Input::has('status') && Input::get('status') != null && Input::get('status') == 0 ? 'selected' : '' }}>In-Active</option>
                                             <option value="1" {{ Input::has('status') && Input::get('status') == 1 ? 'selected' : '' }}>Active</option>
                                         </select>
                                     </div>

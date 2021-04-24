@@ -139,7 +139,7 @@
                                                 <div class="col-xs-6" style="padding-left: 0;">
                                                     <div class="form-group">
                                                         <label>Course Duration (Days)</label>
-                                                        <input type="number" min="10" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ old('course_duration') != null ? old('course_duration') : '10' }}">
+                                                        <input type="number" min="10" class="form-control" placeholder="Enter Course Duration" name="course_duration" value="{{ old('course_duration') }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6" style="padding: 0;">
@@ -155,12 +155,12 @@
                                                 <div class="col-xs-6" style="padding-left: 0;">
                                                     <div class="form-group">
                                                         <label>Uploading Space (GB)</label>
-                                                        <input type="number" min="2" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ old('upload_space') != null ? old('upload_space')  : '2'}}">
+                                                        <input type="number" min="2" class="form-control" placeholder="Enter Uploading Space" name="upload_space" value="{{ old('upload_space') }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <label>Uploading Space Cost</label><br>
-                                                    <span class="upload_cost">50</span> LE
+                                                    <span class="upload_cost">00</span> LE
                                                 </div>
                                             </div>
                                         </div>
@@ -169,12 +169,12 @@
                                                 <div class="col-xs-6" style="padding-left: 0;">
                                                     <div class="form-group">
                                                         <label>Approval # OF Student</label>
-                                                        <input type="number" min="10" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ old('approval_number') != null ? old('approval_number')  : '10'}}">
+                                                        <input type="number" min="10" class="form-control" placeholder="Enter Approval Number" name="approval_number" step="5" value="{{ old('approval_number') }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <label>Students' Approval</label><br>
-                                                    <span class="upload_cost student_approval">50</span> LE
+                                                    <span class="upload_cost student_approval">00</span> LE
                                                 </div>
                                             </div>
                                         </div>

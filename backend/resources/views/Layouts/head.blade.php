@@ -54,11 +54,12 @@
             /*margin-top: -25px;*/
         }
         .child_menu li a span.badge{
-            width: 20px;
-            height: 20px;
+            width: 32px;
+            height: 32px;
             padding: 3px;
             border-radius: 50%;
             margin-left: 5px;
+            padding-top: 9px;
         }
         .imagesHolder figure {
             float: left;

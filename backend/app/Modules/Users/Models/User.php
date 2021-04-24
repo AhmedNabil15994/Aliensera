@@ -100,11 +100,11 @@ class User extends Model{
 
     static function getUsersByType($user_type,$active=null){
         if($active == true){
-            return self::NotDeleted()->with('Profile')->whereHas('Profile',function($queryProfile) use ($user_type){
+            return self::NotDeleted()->whereHas('Profile',function($queryProfile) use ($user_type){
                 $queryProfile->where('group_id',$user_type);
             })->orderBy('id','DESC')->get();
         }else{
-            return self::NotDeleted()->where('is_active',1)->with('Profile')->whereHas('Profile',function($queryProfile) use ($user_type){
+            return self::NotDeleted()->where('is_active',1)->whereHas('Profile',function($queryProfile) use ($user_type){
                 $queryProfile->where('group_id',$user_type);
             })->orderBy('id','DESC')->get();
         }

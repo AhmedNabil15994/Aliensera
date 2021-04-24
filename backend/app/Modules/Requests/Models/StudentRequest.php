@@ -35,7 +35,7 @@ class StudentRequest extends Model{
             $instructorQuery->where('is_active',1);
         })->whereHas('Course',function($courseQuery){
             $courseQuery->whereIn('status',[3,5]);
-        });
+        })->with(['Student','Instructor','Course']);
 
         if (isset($input['course_id']) && !empty($input['course_id'])) {
             $source->where('course_id', $input['course_id']);
@@ -49,7 +49,7 @@ class StudentRequest extends Model{
             $source->where('instructor_id', $input['instructor_id']);
         } 
 
-        if (isset($input['status']) && !empty($input['status'])) {
+        if (isset($input['status']) && $input['status'] != null) {
             $source->where('status', $input['status']);
         } 
 

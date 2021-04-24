@@ -457,6 +457,15 @@ class CoursesControllers extends Controller {
         $input = \Input::all();
         if(IS_ADMIN == false){
             $input['instructor_id'] = USER_ID;
+            if(!isset($input['course_duration']) || empty($input['course_duration'])){
+                $input['course_duration'] = 10;
+            }
+            if(!isset($input['upload_space']) || empty($input['upload_space'])){
+                $input['upload_space'] = 2;
+            }
+            if(!isset($input['approval_number']) || empty($input['approval_number'])){
+                $input['approval_number'] = 10;
+            }
             $input['status'] = 1;
             $input['approval_number'] = $input['approval_number'] % 5 != 0 ? floor($input['approval_number'] / 5) * 5 : $input['approval_number'];
 

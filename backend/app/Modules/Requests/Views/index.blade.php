@@ -79,9 +79,9 @@
                                         <label>Status</label>
                                         <select class="form-control" name="status">
                                             <option value="">Select Status...</option>
-                                            <option value="0">In Active</option>
-                                            <option value="1">Active</option>
-                                            <option value="2">Student Sent Request</option>
+                                            <option value="0" {{ Input::has('status') && Input::get('status') != null && Input::get('status') == 0 ? 'selected' : '' }}>In Active</option>
+                                            <option value="1" {{ Input::has('status') && Input::get('status') == 1 ? 'selected' : '' }}>Active</option>
+                                            <option value="2" {{ Input::has('status') && Input::get('status') == 2 ? 'selected' : '' }}>Student Sent Request</option>
                                         </select>
                                     </div>
                                 </div>
@@ -103,6 +103,9 @@
                         </div>
                         <div class="col-xs-4 text-right">
                             <ul class="nav navbar-right " style="padding-top: 1%">
+                                @if(\Helper::checkRules('add-request'))
+                                    <a href="{{URL::to('/requests/add')}}" class="btn btn-default" style="color: black;"><i class="fa fa fa-plus"></i> Add New</a>
+                                @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </ul>
                         </div>
