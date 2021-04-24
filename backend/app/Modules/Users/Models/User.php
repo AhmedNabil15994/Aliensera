@@ -44,7 +44,7 @@ class User extends Model{
         return \ImagesHelper::GetImagePath('logos', $id, $photo);
     }
 
-    static function usersList() {
+    static function usersList($viewDets=null) {
         $input = \Input::all();
 
         $source = self::orderBy('last_login', 'desc')->with('Profile')
@@ -95,7 +95,7 @@ class User extends Model{
             
         }
 
-        return self::generateObj($source);
+        return self::generateObj($source,null,$viewDets);
     }
 
     static function getUsersByType($user_type,$active=null){
@@ -117,7 +117,7 @@ class User extends Model{
         })->orderBy('id','DESC')->get();
     }
 
-    static function generateObj($source,$withPaginate=null){
+    static function generateObj($source,$withPaginate=null,$withDets=null){
         if($withPaginate != null){
             $sourceArr = $source->get();
         }else{
@@ -126,7 +126,7 @@ class User extends Model{
         $list = [];
         foreach($sourceArr as $key => $value) {
             $list[$key] = new \stdClass();
-            $list[$key] = self::getData($value,'none');
+            $list[$key] = self::getData($value,$withDets != null ? 'none' : null);
         }
 
         $data['groups'] = Group::getList();

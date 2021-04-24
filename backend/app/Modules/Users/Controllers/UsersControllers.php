@@ -88,8 +88,8 @@ class UsersControllers extends Controller {
     }
 
     public function index() {
-        $usersList = User::usersList();
-        $usersList['courses'] = Course::latest()->get();
+        $usersList = User::usersList(null);
+        $usersList['courses'] = Course::NotDeleted()->orderBy('id','DESC')->get();
         return view('Users.Views.index')
             ->with('data', (Object) $usersList);
     }
