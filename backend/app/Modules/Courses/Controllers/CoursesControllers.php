@@ -375,6 +375,20 @@ class CoursesControllers extends Controller {
             $coursePriceObj->save();
         }
 
+        if(IS_ADMIN){
+            $coursePriceObj = $courseObj->CoursePrice; 
+            $coursePriceObj->start_date = $input['start_date'];
+            $coursePriceObj->end_date = $input['end_date'];
+            $coursePriceObj->course_duration = $input['course_duration'];
+            $coursePriceObj->instructor_id = $courseObj->instructor_id;
+            $coursePriceObj->course_id = $courseObj->id;
+            $coursePriceObj->upload_space = $input['upload_space'];
+            $coursePriceObj->upload_cost = $input['upload_space'] * 25;
+            $coursePriceObj->approval_number = $input['approval_number'];
+            $coursePriceObj->approval_cost = round((2/3) * $input['course_duration'] * $input['approval_number']);
+            $coursePriceObj->save();   
+        }
+
         if ($request->hasFile('image')) {
             $files = $request->file('image');
             $images = self::addImage($files, $courseObj->id);
