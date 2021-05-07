@@ -224,6 +224,7 @@ class LessonControllers extends Controller {
     }
 
     public function uploadVideo(Request $request , $id) {
+        set_time_limit(10800);
         $lessonObj = Lesson::getOne($id);
         if($lessonObj == null){
             return \TraitsFunc::ErrorMessage('This Lesson Not Found !!', 400);
