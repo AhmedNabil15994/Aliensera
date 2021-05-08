@@ -16,7 +16,7 @@
                 <td>{{ $value->id }}</td>
                 <td>{{ $value->name }}</td>
                 <td>{{ $value->email }}</td>
-                <td>{{ @$value->phone }}</td>
+                <td>{{ $value->phone }}</td>
             </tr>
         @endforeach
         </tbody>

@@ -245,6 +245,7 @@ class User extends Model{
         $data->is_active = $source->is_active;
         $data->logo =  $source->Profile->logo != null ? self::getLogoPath($source->id, $source->Profile->logo) : '';
         $data->deleted_by = $source->deleted_by;
+        $data->phone = $source->Profile != null ? $source->Profile->phone: '';
         if($viewDets != null){
             $data->first_name = $source->Profile != null ? $source->Profile->first_name : '';
             $data->last_name = $source->Profile != null ? $source->Profile->last_name : '';
