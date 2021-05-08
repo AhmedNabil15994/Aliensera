@@ -72,6 +72,48 @@ class LessonControllers extends Controller {
         return view('Lessons.Views.edit')->with('data', (object) $data);      
     }
 
+    public function moveToAnotherCourse(){
+        $input = \Input::all();
+
+        $oldLessonObj = Lesson::getOne($input['old_lesson_id']);
+        if($oldLessonObj == null) {
+            return Redirect('404');
+        }
+        $videoObj = LessonVideo::getOne($input['video_id']);
+        if($videoObj == null) {
+            return Redirect('404');
+        }
+        $courseObj = Course::getOne($input['course_id']);
+        if($courseObj == null) {
+            return Redirect('404');
+        }
+        $lessonObj = Lesson::getOne($input['lesson_id']);
+        if($lessonObj == null) {
+            return Redirect('404');
+        }
+        
+        $videosCount = LessonVideo::NotDeleted()->where('lesson_id',$input['lesson_id'])->orderBy('sort','DESC')->first();
+        $lessonVideoObj = new LessonVideo;
+        $lessonVideoObj->video = $videoObj->video;
+        $lessonVideoObj->video_id = $videoObj->video_id;
+        $lessonVideoObj->course_id = $input['course_id'];
+        $lessonVideoObj->lesson_id = $input['lesson_id'];
+        $lessonVideoObj->title = $videoObj->title;
+        $lessonVideoObj->duration = $videoObj->duration;
+        $lessonVideoObj->size = $videoObj->size;
+        $lessonVideoObj->free = $videoObj->free;
+        $lessonVideoObj->sort =  $videosCount != null ?  $videosCount->sort+1 : 1;
+        $lessonVideoObj->created_by = USER_ID;
+        $lessonVideoObj->created_at = date('Y-m-d H:i:s');
+        $lessonVideoObj->save();
+
+        // LessonVideo::where('id',$input['video_id'])->where('lesson_id',$input['old_lesson_id'])->update(['lesson_id'=>$input['lesson_id']]);
+        // StudentVideoDuration::where('video_id',$input['video_id'])->where('lesson_id',$input['old_lesson_id'])->update(['lesson_id'=>$input['lesson_id']]);
+
+        \Session::flash('success', "Moving Video Success !!");
+        return 1;
+    }
+
     public function sendNotification($tokens,$msg,$id){
         $fireBase = new \FireBase();
         $metaData = ['title' => "New Lesson", 'body' => $msg,];

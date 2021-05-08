@@ -14,6 +14,7 @@ Route::group(['prefix' => '/lessons'] , function () {
     Route::get('add', 'LessonControllers@add');
     Route::post('create', 'LessonControllers@create');
     Route::get('delete/{id}', 'LessonControllers@delete');
+    Route::post('/moveToAnotherCourse','LessonControllers@moveToAnotherCourse');
 });
 
 Route::group(['prefix' => '/videos'] ,function(){

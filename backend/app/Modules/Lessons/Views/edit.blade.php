@@ -250,6 +250,7 @@
                                                     <a href="{{ URL::to('/videos/'.$video->id.'/changeStatus') }}" class="btn btn-success btn-xs"><i class="fa fa-video-camera"></i> Toggle Free</a>
                                                     @endif
                                                     <a class="btn btn-warning btn-xs" target="_blank" data-tab="{{ $video->id }}" data-area="{{ $video->lesson_id }}" data-plot="{{ $video->course_id }}"><i class="fa fa-share"></i> Move To Another Lesson</a>
+                                                    <a class="btn btn-dark course btn-xs" target="_blank" data-tab="{{ $video->id }}" data-area="{{ $video->lesson_id }}" data-plot="{{ $video->course_id }}"><i class="fa fa-copy"></i> Copy To Another Course</a>
                                                     @if(\Helper::checkRules('add-video-attachment'))
                                                     @if($video->attachment == '')
                                                     <input id="fileUpload" class="hidden" name="attachment" type="file">
@@ -422,6 +423,7 @@
 </div>
 @include('Partials.videoPlayer')
 @include('Partials.move_to_another_lesson')
+@include('Partials.move_to_another_course')
 @stop()
 @section('script')
 <script src="{{ asset('assets/components/lessons.js') }}" type="text/javascript"></script>

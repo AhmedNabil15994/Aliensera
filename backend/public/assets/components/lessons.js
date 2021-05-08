@@ -45,6 +45,58 @@ $(document).on('click','.row.results a.btn.btn-warning',function(){
 
 });
 
+$('#move_to_another_course select[name="course_id"]').on('change',function(){
+    $('#move_to_another_course select[name="lesson_id"]').val('-1').trigger("change");
+    $('#move_to_another_course select[name="lesson_id"]').empty();
+    $('#move_to_another_course select[name="lesson_id"]').append("<option value=''>Select A Lesson...</option>");
+    $course_id = $(this).val();
+    if($course_id){
+        $.get('/courses/getLessons/'+$course_id,function(data) {
+            $.each(data,function(index,item){
+                $('#move_to_another_course select[name="lesson_id"]').append('<option value="'+item.id+'">'+item.title+'</option>');
+            });
+        })
+    }
+});
+
+$(document).on('click','.row.results a.btn.btn-dark.course',function(){
+    var lesson_id = $(this).data('area');
+    var video_id = $(this).data('tab');
+    $('#move_to_another_course h5.modal-title span.my-title').empty();
+    $('#move_to_another_course select[name="lesson_id"]').empty();
+    $('#move_to_another_course select[name="lesson_id"]').append("<option value=''>Select A Lesson...</option>");
+    $('#move_to_another_course .btn-success').attr('data-area',lesson_id);
+    $('#move_to_another_course .btn-success').attr('data-role',video_id);
+    var title = $(this).parent('div.col-xs-3').siblings('div.col-xs-2.title').text();
+    $('#move_to_another_course h5.modal-title span.my-title').html(title);
+    $('#move_to_another_course').modal('show');
+});
+    
+$('#move_to_another_course .btn-success').on('click',function(e){
+    var lesson_id = $(this).data('area');
+    var video_id = $(this).data('role');
+
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+    $.ajax({
+        type:'post',
+        url: '/lessons/moveToAnotherCourse',
+        data:{
+            '_token': $('meta[name="csrf-token"]').attr('content'),
+            'old_lesson_id': lesson_id,
+            'video_id': video_id,
+            'lesson_id': $('#move_to_another_course select[name="lesson_id"]').val(),
+            'course_id': $('#move_to_another_course select[name="course_id"]').val(),
+        },
+        success:function(data){
+            if(data == 1){
+                $('#move_to_another_course').modal('hide');
+                location.reload();
+            }
+        }
+    }); 
+
+});
+
 $('#move_to_another_lesson .btn-success').on('click',function(e){
     var lesson_id = $(this).data('area');
     var video_id = $(this).data('role');
