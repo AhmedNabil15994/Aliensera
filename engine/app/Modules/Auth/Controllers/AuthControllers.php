@@ -298,7 +298,7 @@ class AuthController extends Controller {
             return \TraitsFunc::ErrorMessage($validate->messages()->first(), 400);
         }
             
-        $checkPhone = Profile::NotDeleted()->where('phone',$input['phone'])->first();
+        $checkPhone = Profile::where('phone',$input['phone'])->first();
         if($checkPhone != null) {
             return \TraitsFunc::ErrorMessage("This phone exist, Please choose another phone!", 400);
         }
