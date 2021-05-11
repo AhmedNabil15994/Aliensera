@@ -86,7 +86,7 @@ class User extends Model{
     }
 
     static function checkUserByPhone($phone, $notId = false){
-        $dataObj = self::NotDeleted()
+        $dataObj = self::NotDeleted()->with('Profile')
             ->whereHas('Profile', function($profileQuery) use($phone) {
                 $profileQuery->where('phone',$phone);
             });
