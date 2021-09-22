@@ -68,7 +68,7 @@
 
     <!-- editor-->
     <script src="{{ asset('assets/plugins/summernote/dist/summernote.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/fancybox/jquery.fancybox.pack.js')}}"></script>
+    <script src="{{ asset('assets/js/lib/fancybox/jquery.fancybox.js')}}"></script>
     <script src="{{ asset('assets/plugins/lou-multi-select/js/jquery.multi-select.js')}}"></script>
     <script src="{{ asset('assets/plugins/quicksearch/jquery.quicksearch.js')}}"></script>
     <script src="{{ asset('assets/plugins/select2/select2.min.js') }}" type="text/javascript"></script>
