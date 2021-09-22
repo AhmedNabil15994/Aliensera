@@ -3463,7 +3463,7 @@
     },
 
     vimeo: {
-      matcher: /^.+vimeo.com\/(.*\/)?([\d]+)(.*)?/,
+      matcher : /(?:vimeo(?:pro)?.com)\/(?:[^\d]+)?(\d+)(?:.*)/,
       params: {
         autoplay: 1,
         hd: 1,
@@ -3474,8 +3474,8 @@
       },
       paramPlace: 3,
       type: "iframe",
-      url: "//player.vimeo.com/video/$2"
-    },
+      url  : '//player.vimeo.com/video/$1'
+	},
 
     instagram: {
       matcher: /(instagr\.am|instagram\.com)\/p\/([a-zA-Z0-9_\-]+)\/?/i,
