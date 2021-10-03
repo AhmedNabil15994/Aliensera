@@ -159,6 +159,38 @@ class UsersControllers extends Controller {
         return view('Users.Views.view')->with('data', (object) $data);
     }
 
+    public function unsetDevices($id) {
+        $id = (int) $id;
+
+        if(IS_ADMIN == false){
+            $instructorUser = StudentCourse::where('instructor_id',USER_ID)->where('student_id',$id)->first();
+            if($instructorUser == null) {
+                return Redirect('404');
+            }
+        }
+
+        $userObj = User::NotDeleted()
+            ->with('Profile')
+            ->whereHas('Profile', function() {})
+            ->find($id);
+
+        if($userObj == null || $id == 1) {
+            return Redirect('404');
+        }
+
+        if (GROUP_ID != 1 && $userObj->group_id == 1) {
+            \Session::flash('error', "Sorry you cant edit this user");
+            return redirect()->back();
+        }
+
+        $profileObj = $userObj->Profile;
+        $profileObj->mac_address = null;
+        $profileObj->save();
+
+        \Session::flash('success', "Alert! Update Successfully");
+        return \Redirect::back()->withInput();
+    }
+
     public function update($id) {
         $id = (int) $id;
 

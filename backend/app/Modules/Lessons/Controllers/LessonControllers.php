@@ -306,7 +306,8 @@ class LessonControllers extends Controller {
             $courseObj->video = $fileName[0];
             $courseObj->title = $fileName[1];
             $courseObj->lesson_id = $id;
-            $courseObj->video_id = $video_id;
+            $courseObj->video_id = $video_id[0];
+            $courseObj->url = $video_id[1];
             $courseObj->course_id = $lessonObj->course_id;
             $courseObj->duration = $fileData[0];
             $courseObj->size = $fileData[1];

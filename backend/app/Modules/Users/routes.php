@@ -7,6 +7,7 @@ Route::group(['prefix' => '/users'] , function () {
     Route::get('/', 'UsersControllers@index');
     Route::get('edit/{id}', 'UsersControllers@edit');
     Route::get('view/{id}', 'UsersControllers@view');
+    Route::get('unsetDevices/{id}', 'UsersControllers@unsetDevices');
     Route::post('update/{id}', 'UsersControllers@update');
     Route::get('add', 'UsersControllers@add');
     Route::post('create', 'UsersControllers@create');

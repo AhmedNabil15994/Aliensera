@@ -139,6 +139,11 @@
                                             <a href="{{ URL::to('/users/view/' . $value->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i> View </a>
                                         @endif
                                     @endif
+
+                                    @if($value->group_id == 3)
+                                        <a href="{{ URL::to('/users/unsetDevices/' . $value->id) }}" class="btn btn-dark btn-xs"><i class="fa fa-times"></i> Unset Devices </a>
+                                    @endif
+
                                     @if(\Helper::checkRules('delete-user') && $value->deleted_by == null && $value->group_id != 1)
                                         <a onclick="deleteUser('{{ $value->id }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                                     @endif

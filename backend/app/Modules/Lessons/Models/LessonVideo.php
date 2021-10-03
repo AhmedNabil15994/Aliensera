@@ -108,9 +108,10 @@ class LessonVideo extends Model{
         $data->duration = self::getDuration($source->duration);
         $data->size = self::getSize($source->size);
         $data->title = $source->title;
+        $data->url = $source->url;
         $data->free = $source->free == 1 ? 'Yes' : 'No';
         $data->video_id = $source->video_id; 
-        $data->link = "https://player.vimeo.com/video/".$source->video_id;
+        $data->link = "https://player.vimeo.com/video/".$source->video_id.'?h='.$source->url.'&app_id=58479';
         $data->video = self::getVideoPath($source->lesson_id,$source->video) != null ? self::getVideoPath($source->lesson_id,$source->video) : [];
         $data->attachment = $source->attachment != null ? self::getVideoAttachment($source->id,$source->attachment) : '';
         return $data;

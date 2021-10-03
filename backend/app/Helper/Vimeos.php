@@ -115,7 +115,7 @@ class Vimeos {
                 'description' => $title
             ));
             // Get the metadata response from the upload and log out the Vimeo.com url
-            $video_data = $lib->request($uri . '?fields=link');
+            $old_video_data = $lib->request($uri . '?fields=link');
             // Make an API call to edit the title and description of the video.
             $lib->request($uri, array(
                 'name' => $title,
@@ -123,10 +123,12 @@ class Vimeos {
             ), 'POST');
             // Make an API call to see if the video is finished transcoding.
             $video_data = $lib->request($uri . '?fields=transcode.status');
-            $arr = explode("/", $uri, 3);
-            $video_id = $arr[2];
+            $arr = explode("/", $old_video_data['body']['link']);
+            
+            $video_id = $arr[3];
+            $queryStringId = $arr[4];
             $this->moveToFolder($video_id , $project_id);
-            return $video_id;
+            return [$video_id,$queryStringId];
         } catch (VimeoUploadException $e) {
             // We may have had an error. We can't resolve it here necessarily, so report it to the user.
             echo 'Error uploading ' . $title . "\n";

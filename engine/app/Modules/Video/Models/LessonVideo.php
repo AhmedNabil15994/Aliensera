@@ -106,7 +106,9 @@ class LessonVideo extends Model{
         $data->free = $source->free;
         $data->title = $source->title;
         $data->video_id = $source->video_id; 
-        $data->link = "https://player.vimeo.com/video/".$source->video_id;
+        // $data->link = "https://player.vimeo.com/video/".$source->video_id;
+        $data->url = $source->url;
+        $data->link = "https://player.vimeo.com/video/".$source->video_id.'?h='.$source->url.'&app_id=58479';
         $data->attachment = $source->attachment != null ? self::getVideoAttachment($source->id,$source->attachment) : null;
         $data->commentsCount = VideoComment::NotDeleted()->where('status',1)->where('video_id',$source->id)->count();
         $data->comments = VideoComment::dataList($source->id,null,'0');
