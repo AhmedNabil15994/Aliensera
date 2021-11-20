@@ -21,6 +21,7 @@ return [
     'CertificateControllers@index' => 'general',
     'CertificateControllers@download' => 'general',
     'LessonControllers@removeAttachment' => 'general',
+    'LessonControllers@moveToAnotherCourse' => 'general',
     'ChatControllers@uploadAttachment' => 'general',
     'AuthControllers@login' => 'login',
     'AuthControllers@doLogin' => 'doLogin',
