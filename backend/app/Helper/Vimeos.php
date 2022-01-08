@@ -126,7 +126,7 @@ class Vimeos {
             $arr = explode("/", $old_video_data['body']['link']);
             
             $video_id = $arr[3];
-            $queryStringId = $arr[4];
+            $queryStringId = isset($arr[4]) ? $arr[4] : '';
             $this->moveToFolder($video_id , $project_id);
             return [$video_id,$queryStringId];
         } catch (VimeoUploadException $e) {
