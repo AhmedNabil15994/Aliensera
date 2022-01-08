@@ -14,6 +14,10 @@ class Course extends Model{
         return $this->belongsTo('App\Models\User', 'instructor_id');
     }
 
+    function Account(){
+        return $this->belongsTo('App\Models\Account', 'account_id');
+    }
+
     function University(){
         return $this->belongsTo('App\Models\University', 'university_id');
     }
@@ -232,6 +236,7 @@ class Course extends Model{
         $data->price = $source->price;
         $data->year = $source->year;
         $data->what_learn = $source->what_learn;
+        $data->account_id = $source->account_id;
         $data->requirements = $source->requirements;
         $data->valid_until = $source->valid_until;
         if( $withOutStudentCount == null){

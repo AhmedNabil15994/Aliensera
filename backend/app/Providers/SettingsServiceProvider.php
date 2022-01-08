@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Variable;
+use App\Models\Account;
 
 class SettingsServiceProvider extends ServiceProvider {
 
@@ -12,9 +13,19 @@ class SettingsServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $client_id = Variable::getVar('CLIENT_ID');
-        $client_secret = Variable::getVar('CLIENT_SECRET');
-        $access_token = Variable::getVar('ACCESS_TOKEN');
+        $accounts = Account::NotDeleted()->get();
+        $connections = [];
+        $first = 'main';
+        foreach ($accounts as $key => $account) {
+            if($key == 0){
+                $first = $account->name;
+            }
+            $connections[$account->name] = [
+                'client_id' => env('VIMEO_CLIENT', $account->client_id),
+                'client_secret' => env('VIMEO_SECRET', $account->client_secret),
+                'access_token' => env('VIMEO_ACCESS', $account->access_token),
+            ];
+        }
 
         $PUSHER_APP_ID = Variable::getVar('PUSHER_APP_ID');
         $PUSHER_APP_KEY = Variable::getVar('PUSHER_APP_KEY');
@@ -23,14 +34,8 @@ class SettingsServiceProvider extends ServiceProvider {
 
 
         $this->app['config']['vimeo'] = [
-            'default' => 'main',
-            'connections' => [
-                'main' => [
-                    'client_id' => env('VIMEO_CLIENT', $client_id),
-                    'client_secret' => env('VIMEO_SECRET', $client_secret),
-                    'access_token' => env('VIMEO_ACCESS', $access_token),
-                ],
-            ],
+            'default' => $first,
+            'connections' => $connections,
         ];
 
         $this->app['config']['broadcasting'] = [

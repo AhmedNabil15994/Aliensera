@@ -115,6 +115,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Vimeo Accounts</label>
+                                        <select name="account_id" class="form-control">
+                                            <option value="">Select An Account...</option>
+                                            @foreach($data->accounts as $account)
+                                            <option value="{{$account->id}}" {{ $data->data->account_id == $account->id ? 'selected' : '' }}>{{$account->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             @endif
                             <div class="col-xs-12">
                                 <div class="row">

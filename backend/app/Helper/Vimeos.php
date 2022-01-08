@@ -8,10 +8,10 @@ class Vimeos {
     protected $client_secret;
     protected $access_token;
 
-    function __construct() {
-        $this->client_id = Variable::getVar('CLIENT_ID');
-        $this->client_secret = Variable::getVar('CLIENT_SECRET');
-        $this->access_token = Variable::getVar('ACCESS_TOKEN');
+    function __construct($accountObj) {
+        $this->client_id = $accountObj->client_id;
+        $this->client_secret = $accountObj->client_secret;
+        $this->access_token = $accountObj->access_token;
     }
 
     public function createFolder($name) {  
