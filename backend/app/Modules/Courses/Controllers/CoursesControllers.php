@@ -8,6 +8,7 @@ use App\Models\Faculty;
 use App\Models\CoursePrice;
 use App\Models\Lesson;
 use App\Models\LessonVideo;
+use App\Models\Account;
 use App\Models\Devices;
 use App\Models\InstructorRate;
 use App\Models\CourseFeedback;
@@ -63,6 +64,7 @@ class CoursesControllers extends Controller {
         $data['data'] = Course::getData($courseObj,true);
         $data['fields'] = Field::where('status',1)->get();
         $data['universities'] = University::where('status',1)->get();
+        $data['accounts'] = Account::NotDeleted()->get();
         $data['faculties'] = Faculty::where('status',1)->where('university_id',$courseObj->university_id)->get();
         $data['instructors'] = User::getUsersByType(2);
         return view('Courses.Views.edit')->with('data', (object) $data);      
@@ -77,6 +79,7 @@ class CoursesControllers extends Controller {
         }
 
         $data['data'] = Course::getData($courseObj,'course');
+        $data['accounts'] = Account::NotDeleted()->get();
         $data['fields'] = Field::where('status',1)->get();
         $data['universities'] = University::where('status',1)->get();
         $data['faculties'] = Faculty::where('status',1)->where('university_id',$courseObj->university_id)->get();
@@ -306,6 +309,7 @@ class CoursesControllers extends Controller {
         $courseObj->instructor_id = $input['instructor_id'];
         if(IS_ADMIN){
             $courseObj->status = $input['status'];
+            $courseObj->account_id = $input['account_id'];
         }
         $courseObj->course_type = $input['course_type'];
         $courseObj->field_id = $input['field_id'];
@@ -399,7 +403,7 @@ class CoursesControllers extends Controller {
         }
 
         if($old_title != $input['title']){
-            $vimeoObj = new \Vimeos();
+            $vimeoObj = new \Vimeos($courseObj->Account);
             $project_id = $vimeoObj->renameFolder($input['title'],$courseObj->project_id);
         }
 
@@ -464,6 +468,7 @@ class CoursesControllers extends Controller {
     public function add() {
         $dataList['instructors'] = User::getUsersByType(2);
         $dataList['fields'] = Field::where('status',1)->get();
+        $dataList['accounts'] = Account::NotDeleted()->get();
         return view('Courses.Views.add')->with('data', (Object) $dataList);
     }
 
@@ -532,6 +537,7 @@ class CoursesControllers extends Controller {
 
         $courseObj = new Course;
         $courseObj->title = $input['title'];
+        $courseObj->account_id = $input['account_id'];
         $courseObj->description = $input['description'];
         $courseObj->instructor_id = $input['instructor_id'];
         $courseObj->field_id = $input['field_id'];
@@ -564,7 +570,7 @@ class CoursesControllers extends Controller {
         }
 
         if(IS_ADMIN){
-            $vimeoObj = new \Vimeos();
+            $vimeoObj = new \Vimeos($courseObj->Account);
             $project_id = $vimeoObj->createFolder($courseObj->title);
             $courseObj->project_id = $project_id;
             $courseObj->save();

@@ -292,7 +292,7 @@ class LessonControllers extends Controller {
                 }
             }
 
-            $vimeoObj = new \Vimeos();
+            $vimeoObj = new \Vimeos($lessonObj->Course->Account);
             $fileName = \ImagesHelper::UploadVideo('lessons', $files, $id);
             if($fileName == false){
                 return \TraitsFunc::ErrorMessage('Upload Video Failed !!', 400);
