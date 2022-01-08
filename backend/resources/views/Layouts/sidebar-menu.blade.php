@@ -88,6 +88,10 @@
                                 <li class="{{ Active(URL::to('/groups*')) }}"><a href="{{ URL::to('/groups') }}">User Groups</a></li>
                             @endif
                             
+                            @if(\Helper::checkRules('list-accounts'))
+                                <li class="{{ Active(URL::to('/accounts*')) }}"><a href="{{ URL::to('/accounts') }}">Vimeo Accounts</a></li>
+                            @endif
+
                             @if(\Helper::checkRules('list-variables'))
                                 <li class="{{ Active(URL::to('/variables*')) }}"><a href="{{ URL::to('/variables') }}">Variables</a></li>
                             @endif
