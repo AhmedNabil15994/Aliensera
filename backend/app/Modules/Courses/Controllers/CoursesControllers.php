@@ -309,7 +309,7 @@ class CoursesControllers extends Controller {
         $courseObj->instructor_id = $input['instructor_id'];
         if(IS_ADMIN){
             $courseObj->status = $input['status'];
-            $courseObj->account_id = $input['account_id'];
+            $courseObj->account_id = !isset($input['account_id']) || empty($input['account_id']) ? 1 : $input['account_id'];
         }
         $courseObj->course_type = $input['course_type'];
         $courseObj->field_id = $input['field_id'];
@@ -537,7 +537,7 @@ class CoursesControllers extends Controller {
 
         $courseObj = new Course;
         $courseObj->title = $input['title'];
-        $courseObj->account_id = $input['account_id'];
+        $courseObj->account_id = !isset($input['account_id']) || empty($input['account_id']) ? 1 : $input['account_id'];
         $courseObj->description = $input['description'];
         $courseObj->instructor_id = $input['instructor_id'];
         $courseObj->field_id = $input['field_id'];
