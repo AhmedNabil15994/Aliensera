@@ -90,6 +90,13 @@ return [
     'FieldControllers@create' => 'add-field',
     'FieldControllers@delete' => 'delete-field',
 
+    'AccountControllers@index' => 'list-accounts',
+    'AccountControllers@edit' => 'edit-account',
+    'AccountControllers@update' => 'edit-account',
+    'AccountControllers@add' => 'add-account',
+    'AccountControllers@create' => 'add-account',
+    'AccountControllers@delete' => 'delete-account',
+
     'LessonControllers@index' => 'list-lessons',
     'LessonControllers@edit' => 'edit-lesson',
     'LessonControllers@update' => 'edit-lesson',
