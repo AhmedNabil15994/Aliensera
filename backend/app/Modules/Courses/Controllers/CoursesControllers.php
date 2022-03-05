@@ -257,6 +257,7 @@ class CoursesControllers extends Controller {
 
         $old_title = $courseObj->title;
         $coursePriceObj = $courseObj->CoursePrice;
+        $oldStatus = $courseObj->status;
 
         $validate = $this->validateCourse($input);
         if($validate->fails()){
@@ -402,10 +403,18 @@ class CoursesControllers extends Controller {
             }
         }
 
+        if($oldStatus != $courseObj->status && $courseObj->status == 1 && IS_ADMIN){
+            $vimeoObj = new \Vimeos($courseObj->Account);
+            $project_id = $vimeoObj->createFolder($courseObj->title);
+            $courseObj->project_id = $project_id;
+            $courseObj->save();
+        }
+
         if($old_title != $input['title']){
             $vimeoObj = new \Vimeos($courseObj->Account);
             $project_id = $vimeoObj->renameFolder($input['title'],$courseObj->project_id);
         }
+
 
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
