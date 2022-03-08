@@ -49,6 +49,7 @@ class CoursesControllers extends Controller {
         $dataList = Course::dataList(null,null,null,null,null,'courses');
         $dataList['fields'] = Field::where('status',1)->get();
         $dataList['instructors'] = User::getUsersByType(2);
+        $dataList['accounts'] = Account::NotDeleted()->get();
         return view('Courses.Views.index')
             ->with('data', (Object) $dataList);
     }

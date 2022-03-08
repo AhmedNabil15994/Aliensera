@@ -10,7 +10,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <div align="right">
                                 <button type="submit" class="btn btn-primary" style="width:110px;"><i class="fa fa fa-search"></i> Search ..</button>
-                                @if(Input::has('title') || Input::has('instructor_id') || Input::has('status') || Input::has('course_type') || Input::has('university_id') || Input::has('faculty') || Input::has('status') )
+                                @if(Input::has('title') || Input::has('instructor_id') || Input::has('status') || Input::has('course_type') || Input::has('university_id') || Input::has('faculty') || Input::has('status') || Input::has('account_id') )
                                     <a href="{{ URL::to('/courses') }}" type="submit" class="btn btn-danger" style="color: black;"><i class="fa fa fa-refresh"></i></a>
                                 @endif
                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -35,6 +35,17 @@
                                             <option value="">Select An Instructor...</option>
                                             @foreach($data->instructors as $instructor)
                                             <option value="{{ $instructor->id }}" {{ Input::get('instructor_id') == $instructor->id ? 'selected' : '' }}>{{ $instructor->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-4">
+                                    <div class="form-group">
+                                        <label>Vimeo Account</label>
+                                        <select name="account_id" class="form-control">
+                                            <option value="">Select A Vimeo Account...</option>
+                                            @foreach($data->accounts as $account)
+                                            <option value="{{ $account->id }}" {{ Input::get('account_id') == $account->id ? 'selected' : '' }}>{{ $account->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

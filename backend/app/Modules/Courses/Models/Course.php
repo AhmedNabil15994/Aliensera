@@ -123,6 +123,9 @@ class Course extends Model{
         if (isset($input['faculty_id']) && !empty($input['faculty_id'])) {
             $source->where('faculty_id', $input['faculty_id']);
         } 
+        if (isset($input['account_id']) && !empty($input['account_id'])) {
+            $source->where('account_id', $input['account_id']);
+        } 
         if (isset($input['field_id']) && !empty($input['field_id'])) {
             $source->where('field_id', $input['field_id']);
         } 
