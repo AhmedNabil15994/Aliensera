@@ -404,7 +404,7 @@ class CoursesControllers extends Controller {
             }
         }
 
-        if($oldStatus != $courseObj->status && $courseObj->status == 1 && IS_ADMIN){
+        if($oldStatus != $courseObj->status && $courseObj->status == 3 && IS_ADMIN){
             $vimeoObj = new \Vimeos($courseObj->Account);
             $project_id = $vimeoObj->createFolder($courseObj->title);
             $courseObj->project_id = $project_id;
