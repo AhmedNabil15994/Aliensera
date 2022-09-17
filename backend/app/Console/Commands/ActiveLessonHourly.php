@@ -61,5 +61,6 @@ class ActiveLessonHourly extends Command
             $lessonControllerObj->sendNotification($tokens,$msg,$lesson->id);
             // }   
         }
+        return 1;
     }
 }

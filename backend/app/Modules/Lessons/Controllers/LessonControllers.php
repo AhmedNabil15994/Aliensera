@@ -9,6 +9,7 @@ use App\Models\StudentVideoDuration;
 use App\Models\StudentScore;
 use App\Models\Devices;
 use App\Models\VideoComment;
+use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -148,7 +149,7 @@ class LessonControllers extends Controller {
         $universityObj->description = isset($input['description']) && !empty($input['description']) ? $input['description'] : '';
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         if(IS_ADMIN){
-            $universityObj->status = isset($input['status']) ? 1 : 0;
+            $universityObj->status = isset($input['status']) ? ($input['status'] == 'on' ? 1 : 0) : $universityObj->status;
         }else{
             if($universityObj->Course->status == 3){
                 $universityObj->status = isset($input['status']) ? 1 : 0;
@@ -171,6 +172,7 @@ class LessonControllers extends Controller {
             foreach ($tokens as $value) {
                 $this->sendNotification($value,$msg,$id);
             }
+            $this->sendReminders($users,$universityObj);
         }
 
         if(isset($input['course_id']) && !empty($input['course_id']) && $oldCourseID != $input['course_id']){
@@ -197,6 +199,29 @@ class LessonControllers extends Controller {
         return view('Lessons.Views.add')->with('data', (object) $data);
     }
 
+    public function sendReminders($users,$lessonObj){
+        $msg = 'New Reminder Set For Lesson '.$lessonObj->title . ' Please Check it!';
+        foreach (reset($users) as $key => $student_id) {
+            $reminderObj = new Reminder;
+            $reminderObj->course_id = (int)$lessonObj->course_id;
+            $reminderObj->lesson_id = (int)$lessonObj->id;
+            $reminderObj->student_id = (int)$student_id;
+            $reminderObj->status = 0;
+            $reminderObj->finished = 0;
+            $reminderObj->created_at = date('Y-m-d H:i:s');
+            $reminderObj->save();
+
+            $token = Devices::getDevicesBy([$student_id]);
+            $token = reset($token);
+
+            $fireBase = new \FireBase();
+            $metaData = ['title' => "New Reminder", 'body' => $msg,];
+            $myData = ['type' => 10 , 'id' => $reminderObj->id];
+            $fireBase->send_android_notification($token,$metaData,$myData);
+        }
+        return 1;
+    }
+
     public function create() {
         $input = \Input::all();
         
@@ -217,7 +242,7 @@ class LessonControllers extends Controller {
 
         $universityObj->valid_until = date('Y-m-d',strtotime($input['valid_until']));
         if(IS_ADMIN){
-            $universityObj->status = isset($input['status']) ? 1 : 0 ;
+            $universityObj->status = 1;
         }elseif(!IS_ADMIN){
             $universityObj->questions_sort = $input['questions_sort'];
             if($universityObj->Course->status == 3){
@@ -246,6 +271,7 @@ class LessonControllers extends Controller {
             foreach ($tokens as $value) {
                 $this->sendNotification($value,$msg,$universityObj->id);
             }
+            $this->sendReminders($users,$universityObj);
         }
 
         \Session::flash('success', "Alert! Create Successfully");

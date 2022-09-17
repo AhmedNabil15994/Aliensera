@@ -16,6 +16,9 @@ class Lesson extends Model{
     public function Videos(){
         return $this->hasMany('App\Models\LessonVideo','lesson_id','id');
     }
+    public function Reminders(){
+        return $this->hasMany('App\Models\Reminder','lesson_id','id')->where('student_id',USER_ID);
+    }
     public function ActiveVideos(){
         return $this->Videos()->NotDeleted();
     }
@@ -105,6 +108,7 @@ class Lesson extends Model{
         $data->free_videos =  LessonVideo::dataList($source->id,null,1);
         $data->videos =  LessonVideo::dataList($source->id);
         $data->questions =  LessonQuestion::dataList($source->id);
+        $data->reminders =  Reminder::dataList($source->id);
         $data->independent_quiz = Quiz::dataList($source->course_id,$source->id);
         return $data;
     }

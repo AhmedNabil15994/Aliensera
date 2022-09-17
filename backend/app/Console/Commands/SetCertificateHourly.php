@@ -78,5 +78,6 @@ class SetCertificateHourly extends Command
                 }
             }
         }
+        return 1;
     }
 }
