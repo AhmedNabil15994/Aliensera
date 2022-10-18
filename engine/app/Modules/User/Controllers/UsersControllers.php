@@ -5,6 +5,7 @@ use App\Models\Profile;
 use App\Models\User;
 use App\Models\University;
 use App\Models\Faculty;
+use App\Models\ApiAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -157,4 +158,28 @@ class UsersControllers extends Controller {
         return \Response::json((object) $statusObj);
     }
 
+    public function deactivate(){
+        $userObj = User::getOne(USER_ID);
+        if ($userObj == null) {
+            return \TraitsFunc::ErrorMessage("This User not found", 400);
+        }
+        
+        $userObj->is_active = 0 ;
+        $userObj->save();
+
+        $authObj = ApiAuth::checkUserToken(APP_TOKEN);
+        if($authObj == null){
+            return \TraitsFunc::ErrorMessage("Invalid Process, Please try again later", 400);
+        }
+
+        $authObj['auth']->auth_expire = 0;
+        $authObj['auth']->save();
+
+        \Auth::logout();
+        session()->flush();
+
+        $statusObj['data'] = $userObj;
+        $statusObj['status'] = \TraitsFunc::SuccessResponse();
+        return \Response::json((object) $statusObj);
+    }
 }

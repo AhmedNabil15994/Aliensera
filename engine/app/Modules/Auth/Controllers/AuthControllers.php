@@ -46,7 +46,7 @@ class AuthController extends Controller {
         if ($userObj == null) {
             $userObj = User::getUserByUsername($email);
             if($userObj == null){
-                return \TraitsFunc::ErrorMessage("Sorry this email/username not found, Or your email/username not active", 400);
+                return \TraitsFunc::ErrorMessage("Sorry this email/username not found, Or your email/username deactivated", 400);
             }
         }
 
