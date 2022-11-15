@@ -7,7 +7,7 @@ class ImagesHelper {
 
     static function GetImagePath($strAction, $id, $filename) {
 
-        $default = asset('/assets/images/not-available.jpg');
+        $default = asset('/assets/images/not-available.jpeg');
 
         if($filename == '') {
             return $default;

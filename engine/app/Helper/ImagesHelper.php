@@ -9,7 +9,7 @@ class ImagesHelper {
         $path = Config::get('app.IMAGE_BASE');
         // $path = Config::get('app.IMAGE_BASE').'public/';
 
-        $default = $path . 'assets/images/not-available.jpg';
+        $default = $path . 'assets/images/not-available.jpeg';
 
         if($filename == '') {
             return $default;

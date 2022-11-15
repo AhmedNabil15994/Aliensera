@@ -241,7 +241,7 @@
                                                 </figure>
                                             @else
                                                 <div class="empty">
-                                                    <img src="{{ URL::to('/assets/images/not-available.jpg') }}" class="avatar img-circle" alt="avatar" style="width: 250px;height: 250px;">
+                                                    <img src="{{ URL::to('/assets/images/not-available.jpeg') }}" class="avatar img-circle" alt="avatar" style="width: 250px;height: 250px;">
                                                 </div>
                                             @endif
                                         </div>
