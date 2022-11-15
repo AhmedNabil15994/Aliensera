@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'password' => 'chdxjbirsappgobh',
+    'password' => 'wvdmpixmtmuwxiki',
 
     /*
     |--------------------------------------------------------------------------
