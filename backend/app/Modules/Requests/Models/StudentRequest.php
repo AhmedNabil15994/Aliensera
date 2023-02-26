@@ -28,7 +28,8 @@ class StudentRequest extends Model{
 
     static function dataList($instructor_id=null,$student_id=null,$withPaginate = false) {
         $input = \Input::all();
-
+        $isAdmin = IS_ADMIN;
+        $userId = USER_ID;
         $source = self::NotDeleted()->whereHas('Student',function($studentQuery){
             $studentQuery->where('is_active',1);
         })->whereHas('Instructor',function($instructorQuery){
@@ -61,6 +62,9 @@ class StudentRequest extends Model{
             $source->where('student_id', $student_id);
         } 
 
+        if(!$isAdmin){
+            $source->where('instructor_id', $userId);
+        }
         return self::generateObj($source->orderBy('id','DESC'),$withPaginate);
     }
 
