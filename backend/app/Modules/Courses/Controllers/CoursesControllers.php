@@ -382,7 +382,7 @@ class CoursesControllers extends Controller {
         }
 
         if(IS_ADMIN){
-            $coursePriceObj = $courseObj->CoursePrice; 
+            $coursePriceObj = isset($courseObj->CoursePrice) ? $courseObj->CoursePrice : new CoursePrice; 
             $coursePriceObj->start_date = $input['start_date'];
             $coursePriceObj->end_date = $input['end_date'];
             $coursePriceObj->course_duration = $input['course_duration'];
