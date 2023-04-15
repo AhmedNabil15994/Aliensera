@@ -91,11 +91,15 @@ class Lesson extends Model{
         $data = new  \stdClass();
         $data->id = $source->id;
         $data->title = $source->title;
+        $data->course = $source->Course;
         $data->course_id = $source->course_id;
         $data->questions_sort = $source->questions_sort;
         $data->quiz_duration = $source->quiz_duration;
         $data->pass_quiz = $source->pass_quiz;
         $data->course = $source->Course->title;
+        $data->account_name = $source->Course->Account->name;
+        $data->project_id = $source->Course->project_id;
+        $data->accountObj = $source->Course->Account;
         $data->description = $source->description;
         $data->valid_until = $source->valid_until;
         $data->active_at = $source->active_at; 

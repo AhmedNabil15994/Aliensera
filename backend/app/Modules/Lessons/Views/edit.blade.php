@@ -231,7 +231,8 @@
                                                 <div class="col-xs-2 text-center">Duration</div>
                                                 <div class="col-xs-2 text-center">Size</div>
                                                 <div class="col-xs-2 text-center">Free</div>
-                                                <div class="col-xs-3 text-center">Action</div>
+                                                <div class="col-xs-1 text-center">Account</div>
+                                                <div class="col-xs-2 text-center">Action</div>
                                             </div>
                                             @foreach($data->data->videos as $key => $video)
                                             <div class="row results" id="results{{ $video->id }}" data-tab="{{ $video->id }}" data-area="{{ $video->lesson_id }}" data-plot="{{ $video->course_id }}">
@@ -240,8 +241,14 @@
                                                 <div class="col-xs-2 text-center">{{ $video->duration }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->size }}</div>
                                                 <div class="col-xs-2 text-center">{{ $video->free }}</div>
-                                                <div class="col-xs-3 text-center">
+                                                <div class="col-xs-1 text-center">{{ ucwords($data->data->account_name) }}</div>
+                                                <div class="col-xs-2 text-center">
                                                     <button class="btn btn-default btn-xs" data-link="{{ $video->link }}"><i class="fa fa-play"></i> Play Video</button>
+                                                    @php
+                                                    $vimeoObj = new \Vimeos($data->data->accountObj);
+                                                    $download = $vimeoObj->getVideo($video->video_id);
+                                                    @endphp 
+                                                    <a href="{{ $download }}" class="btn btn-success btn-xs" target="_blank"><i class="fa fa-download"></i> Download Video</a>
                                                     @if(\Helper::checkRules('delete-lesson-video'))
                                                     <button class="btn btn-danger btn-xs" onclick="deleteLecture({{ $video->id }})"><i class="fa fa-trash"></i> Delete</button>
                                                     @endif

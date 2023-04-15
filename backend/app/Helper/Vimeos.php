@@ -139,4 +139,19 @@ class Vimeos {
         }
     }
 
+    public function getVideo($video_id) {  
+        $lib = new Vimeo($this->client_id, $this->client_secret, $this->access_token);
+        $url = "/videos/".$video_id;
+        $videoUrl = '';  
+        $old_video_data = $lib->request($url);
+        if($old_video_data && isset($old_video_data['body']) && isset($old_video_data['body']['download'])){
+            foreach($old_video_data['body']['download'] as $link){
+                if($link['quality'] == 'source'){
+                    return $link['link'];
+                }
+            }
+        }
+        return $videoUrl;
+    }
+
 }
