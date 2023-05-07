@@ -34,7 +34,7 @@ class GeneralAuthEngine
         $appVer = Variable::getVar('APP_VER');
         $appVer = explode(',', $appVer);
         if(!in_array($studentVer, $appVer)){
-            return \TraitsFunc::ErrorMessage("Invalid APP Version, Please Update Application", 401);
+            return \TraitsFunc::ErrorMessage("Invalid APP Version, Please Update Application ".$studentVer, 401);
         }
 
         define('API_KEY', $apiKey);
