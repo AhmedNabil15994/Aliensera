@@ -9,9 +9,9 @@ class ApiAuth extends Model{
     protected $primaryKey = 'id';
     public $timestamps = false;
     
-    static function logoutOtherSessions($userId, $apiKey) {
+    static function logoutOtherSessions($userId, $apiKeys) {
         $authList = self::where('user_id', $userId)
-            ->where('api_id', $apiKey)
+            ->whereIn('api_id', $apiKeys)
             ->get();
 
         foreach($authList as $key => $value) {

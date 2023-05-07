@@ -187,6 +187,8 @@ class UsersControllers extends Controller {
         $profileObj->mac_address = null;
         $profileObj->save();
 
+        ApiAuth::logoutOtherSessions($userObj->id,[1,2,3]);
+
         \Session::flash('success', "Alert! Update Successfully");
         return \Redirect::back()->withInput();
     }
