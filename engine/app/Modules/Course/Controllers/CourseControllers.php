@@ -59,7 +59,7 @@ class CourseControllers extends Controller {
             $enrollObj->created_at = DATE_TIME;
             $enrollObj->save();
         }else{
-            if($enrollObj->status != 1){
+            if($enrollObj->status == 0){
                 $enrollObj->status = 2;
                 $enrollObj->save();
             }
